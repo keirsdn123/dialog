@@ -106,7 +106,7 @@
 		<if test="dataSetSearchType == 'dataSetTitle'">
 			AND dt.dataset_name like '%${dataSetSearchWrd}%'
 		</if>
-		GROUP BY dt.data_code desc
+		GROUP BY dt.data_code
 		LIMIT ${(currentPage-1)*perPage},${perPage}
 		;
 	</select>
@@ -129,7 +129,7 @@
 		<if test="dataSetSearchType == 'dataSetTitle'">
 			AND dt.dataset_name like '%${dataSetSearchWrd}%'
 		</if>
-		GROUP BY dt.data_code desc
+		GROUP BY dt.data_code
 		LIMIT ${(currentPage-1)*perPage},${perPage}
 		;
 	</select>

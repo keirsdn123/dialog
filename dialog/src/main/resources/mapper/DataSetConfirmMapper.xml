@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="net.su.dialog.dataSet.mapper.DataSetConfirmMapper">
+
+        
+<!--         데이터 셋 정보 (상세조회) -->
+    <select id="selectNormalDataInfo" parameterType="net.su.dialog.dataSet.domain.DataSetConfirmVo" resultType="net.su.dialog.dataSet.domain.DataSetConfirmVo">
+        SELECT d.data_code AS dataCode, dataset_name AS datasetName, type_normal_regularly AS typeNormalRegular, dataset_info AS datasetInfo,  member_id AS memberId,
+        	 member_name AS dataEnrollName, data_enroll_date AS dataEnrollDate, data_mod_date AS dataModDate, dataset_views AS datasetViews, dataset_from AS datasetFrom,
+        	 file_original_name as fileOriginalName, ROUND(file_size/1024,1) AS fileSize, file_path AS filePath, file_extension as fileExtension,viz_requests AS vizRequests, 
+        	 status, reject_reason AS rejectReason
+        FROM dataset d JOIN dataset_normal n ON d.data_code = n.data_code JOIN file_list f ON f.data_code = d.data_code JOIN member m ON d.member_code = m.member_code
+        WHERE d.data_code = #{dataCode};
+    </select>
+
+    <select id="selectNormalDataCategInfo" parameterType="net.su.dialog.dataSet.domain.DataSetConfirmVo" resultType="net.su.dialog.dataSet.domain.DataSetCategoryVo">
+    	SELECT DISTINCT(c.cate_title) AS cateTitle1, c2.cate_title AS cateTitle2
+		FROM category1 c JOIN dataset_category d ON c.cate_code = d.cate_code 
+		LEFT JOIN category2 c2 ON c2.cate_code2 = d.cate_code2
+		WHERE data_code = #{dataCode};
+    </select>
+    
+<!--     이건뭐야 은애야? -->
+<!--     파일 정보 조회 -->
+    <select id="selectFileInfo" parameterType="net.su.dialog.dataSet.domain.DataSetConfirmVo" resultType="net.su.dialog.dataSet.domain.DataSetConfirmVo">
+    	SELECT data_code AS dataCode, file_name AS fileName, file_path AS filePath, file_extension AS fileExtension ,file_original_name as fileOriginalName
+    	FROM file_list
+    	WHERE data_code = #{dataCode};
+    </select>
+    
+<!--     파일 데이터 db화  -->
+	<!-- 테이블 생성 -->
+    <select id="createFileTable" parameterType="HashMap">
+		${create_table};
+	</select>
+	<!-- 생성된 테이블에 파일 데이터 삽입 -->
+	<insert id="insertDataInFileTable" parameterType="java.util.HashMap">
+		INSERT
+		INTO ${tableName} 
+		(
+			<foreach collection="colNameList" item="colNameList" separator=",">
+				${colNameList}
+			</foreach>
+		)
+		VALUES 
+			<foreach collection="selectedDataList" item="dataList" separator=",">
+<!-- 				#{dataList} -->
+			(
+				<foreach collection="dataList" item="data" separator=",">
+					#{data}
+				</foreach>
+			)	
+			</foreach>
+			;
+	</insert>
+	<!--파일 데이터 삽입 실패 시 테이블 삭제 -->
+	<update id="dropFileTable" parameterType="String">
+		DROP TABLE ${tableName};
+	</update>
+	
+	<update id="updateNormalDataSetTableName" parameterType="net.su.dialog.dataSet.domain.DataSetConfirmVo">
+		UPDATE dataset_normal 
+		SET normal_data_table_title = #{normalDataTableTiltle} 
+		WHERE data_code = #{dataCode};
+	</update>
+	
+	<update id="updateDatasetProcessingWhether" parameterType="net.su.dialog.dataSet.domain.DataSetConfirmVo">
+		UPDATE dataset
+		SET processing_whether = 'Y'
+		WHERE data_code = #{dataCode};
+	</update>
+				
+	<select id="selectNormalDataSetTableName" parameterType="net.su.dialog.dataSet.domain.DataSetConfirmVo" resultType="String">
+		SELECT normal_data_table_title AS normalDataTableTiltle
+		FROM dataset_normal
+		WHERE data_code = #{dataCode};
+	</select>
+	
+	<select id="selectNormalDatabase" parameterType="net.su.dialog.dataSet.domain.DataSetConfirmVo" resultType="java.util.LinkedHashMap">
+		SELECT *
+		FROM ${normalDataTableTiltle}
+		LIMIT ${(currentPage-1)*perPage},${perPage};
+	</select>
+	
+	<select id="selectNormalDataRowCount" parameterType="net.su.dialog.dataSet.domain.DataSetConfirmVo" resultType="java.lang.Integer">
+		SELECT COUNT(*) AS rowCount
+		FROM ${normalDataTableTiltle};
+	</select>
+	
+	<update id="updateRejectReason" parameterType="net.su.dialog.dataSet.domain.DataSetConfirmVo">
+		UPDATE dataset_normal
+		SET reject_reason = #{rejectReason}, status='R'
+		WHERE data_code = #{dataCode};
+	</update>
+    
+   	<select id="selectReferenceReportList" resultType="net.su.dialog.report.domain.ReportDomain">
+		SELECT re.report_code as reportCode,
+				re.report_title as reportTitle,
+		        re.report_enroll_date as reportEnrollDate,
+		        mem.member_name as memberName,
+		        reda.data_code as dataCode
+		FROM report_dataset reda, report re, member mem
+		WHERE reda.report_code = re.report_code 
+		AND re.member_code = mem.member_code
+		AND data_code = #{dataCode};
+	</select>
+</mapper>

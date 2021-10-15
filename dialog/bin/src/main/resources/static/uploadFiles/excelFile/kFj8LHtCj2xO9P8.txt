@@ -1,0 +1,78 @@
+					<div class ="wsize_100 fl bd_bd" style="height:5%;">
+								<div class ="wsize_100 fl mt_10">
+									카테고리
+								</div>						
+							</div>
+							
+							<div class ="wsize_100 fl bd_bd" id="cate1" style="height:8%;">
+								<div class ="wsize_20 fl hsize_100" style="min-width:65px;">
+									<img src="/resources/img/categorys/mun.svg" style="height:80%; width:80%; margin-top:10%;">
+								</div>
+								<div class ="wsize_70 fl mt_19">
+									문학 / 인문과학
+								</div>
+							</div>
+							
+							<div class ="wsize_100 fl bd_bd" id="cate2" style=" height:8%;">
+								<div class ="wsize_20 fl hsize_100" style="min-width:65px;" >
+									<img src="/resources/img/categorys/culs.svg" style="height:80%; width:80%; margin-top:10%;">
+								</div>
+								<div class ="wsize_70 fl mt_19">
+									문학 / 예술
+								</div>
+							</div>
+							
+							<div class ="wsize_100 fl bd_bd" id="cate3" style="height:8%;">
+								<div class ="wsize_20 fl hsize_100" style="min-width:65px;" >
+									<img src="/resources/img/categorys/cul.svg" style="height:80%; width:80%; margin-top:10%;">
+								</div>
+								<div class ="wsize_70 fl mt_19">
+									사회 / 사회과학
+								</div>
+							</div>
+							
+							<div class ="wsize_100 fl bd_bd" id="cate4" style="height:8%;">
+								<div class ="wsize_20 fl hsize_100" style="min-width:65px;">
+									<img src="/resources/img/categorys/nat.svg" style="height:80%; width:80%; margin-top:10%;">
+								</div>
+								<div class ="wsize_70 fl mt_19">
+									자연 / 자연과학
+								</div>
+							</div>
+							
+							<div class ="wsize_100 fl bd_bd" id="cate5" style="height:8%;">
+								<div class ="wsize_20 fl hsize_100" style="min-width:65px;">
+									<img src="/resources/img/categorys/med.svg" style="height:80%; width:80%; margin-top:10%;" >
+								</div>
+								<div class ="wsize_70 fl mt_19">
+									건강 / 보건
+								</div>
+							</div>
+							
+							<div class ="wsize_100 fl bd_bd" id="cate6" style="height:8%;">
+								<div class ="wsize_20 fl hsize_100" style="min-width:65px;">
+									<img src="/resources/img/categorys/gong.svg" style="height:80%; width:80%; margin-top:10%;" >
+								</div>
+								<div class ="wsize_70 fl mt_19">
+									공학 / 응용공학
+								</div>
+							</div>
+							
+							<div class ="wsize_100 fl bd_bd" id="cate7" style="height:8%;">
+								<div class ="wsize_20 fl hsize_100" style="min-width:65px;">
+									<img src="/resources/img/categorys/any.svg" style="height:80%; width:80%; margin-top:10%;">
+								</div>
+								<div class ="wsize_70 fl mt_19">
+									기타
+								</div>
+							</div>
+							
+							<div class ="wsize_100 fl bd_bd" id="cate8" style="height:8%;">
+								<div class ="wsize_20 fl hsize_100" style="min-width:65px;">
+									<img src="/resources/img/categorys/new.svg" style="height:80%; width:80%; margin-top:10%;">
+								</div>
+								<div class ="wsize_70 fl mt_19">
+									뉴스
+								</div>
+												
+						</div>	

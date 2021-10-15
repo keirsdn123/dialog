@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.su.dialog.main.mapper.MainMapper">
+<!--    사용자 쪽지함 조회 -->
+   <select id="selectMessageList" parameterType="net.su.dialog.main.domain.User" resultType="net.su.dialog.main.domain.User">
+      SELECT *
+      FROM message_box
+      WHERE rec_seq= #{memberCode}
+      AND rec_mes_delete_whether='N'
+      ORDER BY message_seq DESC
+      LIMIT ${(currentPage-1)*perPage},${perPage};
+   </select>
+<!--    읽지않은 쪽지 행수  -->
+    <select id="selectUnMessage" parameterType="net.su.dialog.main.domain.User" resultType="java.lang.Integer">
+      SELECT COUNT(*) as mesCount
+      FROM message_box
+      WHERE message_views= 'N'
+      AND rec_seq = #{memberCode}
+      AND rec_mes_delete_whether='N'
+      
+   </select>
+   
+   
+   
+<!-- 	사용자 쪽지 등록 -->
+      <insert id="insertMessage">
+      insert into message_box 
+      						(message_seq
+      						,rec_id
+      						,rec_seq
+      						,sen_seq
+      						,sen_id
+      						,mes_content
+      						,mes_date
+      						,rec_mes_delete_whether
+      						,sen_mes_delete_whether
+      						,message_views
+      						)
+      VALUES            (
+      				  (SELECT IFNULL(MAX(a.message_seq),0) + 1 AS message_seq FROM message_box as a)
+                     ,#{memberId}
+                     , (SELECT member_code as memberCode 
+                        FROM member
+                        WHERE member_id=#{memberId})
+                     ,#{memberCode}
+                     , (SELECT member_id as memberId
+                     	FROM member
+                     	WHERE member_code=#{memberCode})
+                     ,#{mesContent}
+                     ,CURDATE()
+                     ,'N'
+                     ,'N'
+                     ,'N'
+                     )
+   </insert>
+
+   <insert id="insertViewInfo" parameterType="net.su.dialog.main.domain.User">
+      insert into member
+      					(member_code
+      					,member_id
+      					,member_password
+      					,member_name
+      					,member_email_address
+      					,member_rating_code
+      					,member_status)
+      VALUES ((SELECT IFNULL(MAX(a.member_code),0) + 1 AS member_code FROM   member as a)
+					      ,#{memberId}
+					      ,hex(AES_ENCRYPT(#{memberPassword},SHA2('password',512)))
+					      ,#{memberName}
+					      ,CONCAT (#{memberEmail1},'@',#{memberEmail2})
+					      ,1
+					      ,'Y'
+      )
+   </insert>
+
+   <select id="selectMemIdCheck" parameterType="net.su.dialog.main.domain.User" resultType="net.su.dialog.main.domain.User">
+      SELECT member_id as memberId
+      FROM member
+      WHERE member_id = #{memberId}
+   </select>
+   
+   <select id="selectGiveMessageList" parameterType="net.su.dialog.main.domain.User" resultType="net.su.dialog.main.domain.User" >
+      SELECT *
+      FROM message_box
+      WHERE sen_seq= #{memberCode}
+      AND sen_mes_delete_whether='N'
+      ORDER BY message_seq DESC
+      LIMIT ${(currentPage-1)*perPage},${perPage};
+   </select>
+
+<!--    아이디 찾기 -->
+	<select id="selectId" parameterType="net.su.dialog.main.domain.User" resultType="net.su.dialog.main.domain.User">
+	SELECT member_id as memberId
+	FROM member
+	WHERE member_name=#{memberName} AND member_email_address=#{memberEmailAddress}
+	</select>
+<!--   비밀번호 찾기 -->
+	<select id="selectPw" parameterType="net.su.dialog.main.domain.User" resultType="net.su.dialog.main.domain.User">
+	SELECT  member_code as memberCode
+	FROM member
+	WHERE member_name=#{memberName} AND member_email_address=#{memberEmailAddress} AND member_id=#{memberId};
+	</select>
+	
+	<!--   비밀번호 수정 -->
+	<select id="updatePw" parameterType="net.su.dialog.main.domain.User" resultType="net.su.dialog.main.domain.User">
+	UPDATE member
+	SET member_password=hex(AES_ENCRYPT(#{memberPassword},SHA2('password',512)))
+	WHERE member_code = #{memberCode};
+	</select>
+<!-- 로그인 체크 -->
+   <select id="selectLoginCheck" parameterType="net.su.dialog.main.domain.User" resultType="net.su.dialog.main.domain.User">
+      SELECT *
+      FROM member
+      WHERE member_id = #{memberId}
+      AND member_password = hex(AES_ENCRYPT(#{memberPassword},SHA2('password',512)))
+   </select>
+<!--  사용자  메세지 상세조회 -->
+   <select id="selectMessageInfo" parameterType="net.su.dialog.main.domain.User" resultType="net.su.dialog.main.domain.User">
+      SELECT *
+      FROM message_box
+      WHERE message_seq = #{messageSeq}
+   </select>
+   
+   <!-- 	Q&A 상세조회시 조회수 증가 -->
+	<update id="updateMessageViews" parameterType="net.su.dialog.main.domain.User" >
+		UPDATE message_box
+		SET	   message_views='Y'
+		WHERE  message_seq=#{messageSeq}
+		AND	   rec_seq=#{memberCode}
+	</update>
+
+<!--    메세지 삭제 -->
+   <update id="delMessage">
+      UPDATE message_box
+      SET rec_mes_delete_whether='Y'
+      WHERE message_seq = #{messageSeq}
+   </update> 
+   
+   
+   
+   <!--  체크박스  받은 메세지 삭제 -->
+   <update id="recMessageDel">
+      UPDATE message_box
+      SET rec_mes_delete_whether='Y'
+      WHERE message_seq = #{messageSeq}
+   </update> 
+   
+      <!--  체크박스  보낸 메세지 삭제 -->
+   <update id="senMessageDel">
+      UPDATE message_box
+      SET sen_mes_delete_whether='Y'
+      WHERE message_seq = #{messageSeq}
+   </update> 
+   
+   <!-- 관리자  메세지 조회 -->
+   <select id="selectMessageAdmin" resultType="net.su.dialog.main.domain.User">
+      SELECT *
+      FROM message_box
+        <choose>
+			<when test="searchType==1">
+				WHERE	 mes_content LIKE '%${searchContent}%'
+			</when>
+			<when test="searchType==2">
+				WHERE	 rec_id LIKE '%${searchContent}%'
+			</when>
+			<when test="searchType==3">
+				WHERE		 sen_id LIKE '%${searchContent}%'
+			</when>
+		</choose>
+      ORDER BY message_seq DESC
+      LIMIT ${(currentPage-1)*perPage},${perPage};
+   </select>
+   
+   
+ 
+   
+
+   
+   
+   
+<!--    (관리자) 메세지 삭제 -->
+   <delete id="adminMessageDel">
+   	  DELETE
+   	  FROM		message_box
+   	  WHERE		message_seq=#{messageSeq}
+   </delete>
+   
+   	<!--관리자 쪽지 등록시 1차 회원등급 조회 -->
+		<select id="selectMember" resultType="net.su.dialog.management.domain.Authority" >
+		select 	member_rating_code as memberRatingCode
+				,rating_name as ratingName
+		from member_rating;
+	</select>
+<!--    	쪽지등록시 2차 회원조회 -->
+   	<select id="getMemberList" resultType="net.su.dialog.main.domain.User" >
+		select 	member_code as memberCode
+				,member_id as memberId
+		from  member
+		WHERE member_status='Y'
+		<choose>
+			<when test="memberRatingCode==0">
+				;
+			</when>
+			<otherwise>
+				AND	 member_rating_code = #{memberRatingCode};
+			</otherwise>
+		</choose>
+	</select>
+   
+   <!-- 	데이터 셋 등록(관리자) -->
+	<insert id="adminInsertMessage" parameterType="net.su.dialog.main.domain.User">
+		INSERT INTO 
+					message_box
+					(message_seq 
+					, rec_seq
+					, rec_id 
+					, sen_id 
+					, sen_seq 
+					, mes_content 
+					, mes_date
+					, rec_mes_delete_whether
+					, sen_mes_delete_whether
+					, message_views
+					)
+		      VALUES   ((SELECT IFNULL(MAX(a.message_seq),0) + 1 AS message_seq FROM message_box as a)
+                     ,#{recSeq}
+                     , (SELECT member_id as memberId 
+                        FROM member
+                        WHERE member_code=#{recSeq})
+                     ,#{memberId}
+                     , (SELECT member_code as memberCode
+                     	FROM member
+                     	WHERE member_id=#{memberId})
+                     ,#{mesContent}
+                     ,CURDATE()
+                     ,'N'
+                     ,'N'
+                     ,'N'
+                     )
+		
+	</insert>
+   
+   
+<!-- 사용자 문의사항 조회 -->
+	  <select id="selectQuestionList" parameterType="net.su.dialog.main.domain.Question" resultType="net.su.dialog.main.domain.Question">
+           SELECT n.notice_code as noticeCode
+     		,notice_title as noticeTitle
+     		,notice_content as noticeContent
+     		,notice_date as noticeDate
+     		,n.member_code as memberCode
+     		,notice_views as noticeViews
+     		,notice_status as noticeStatus
+      		,m.member_name as memberName
+      		,f.notice_file_title as noticeFileTitle
+      FROM notice n , member m , notice_file f	
+      WHERE   n.notice_code=f.notice_code
+      AND   m.member_code=n.member_code
+      		<choose>
+				<when test="noticeSort==0">
+				
+				</when>
+				<when test="noticeSort==1">
+				AND	 n.notice_status LIKE '%접수%'
+			 	</when>
+			 	<when test="noticeSort==2">
+				AND	 n.notice_status LIKE '%완료%'
+			 	</when>
+		 	</choose>
+         	<choose>
+				<when test="searchType==1">
+				AND	 n.notice_title LIKE '%${searchContent}%'
+				</when>
+				<when test="searchType==2">
+				AND	 n.notice_content LIKE '%${searchContent}%'
+			 	</when>
+			 	<when test="searchType==3">
+				AND	 m,member_name LIKE '%${searchContent}%'
+			 	</when>
+			 	<when test="searchType==4">
+				AND	 n,notice_status LIKE '%${searchContent}%'
+			 	</when>
+		 	</choose>
+		ORDER BY n.notice_code DESC 	
+		LIMIT ${(currentPage-1)*perPage},${perPage}; 	
+      
+   </select>
+   
+   <!-- 사용자 문의사항 조회 -->
+	  <select id="selectMemberRating" parameterType="net.su.dialog.main.domain.User" resultType="net.su.dialog.main.domain.User">
+     SELECT  member_name as memberName
+     		,member_rating_code as memberRatingCode
+      FROM  member
+      WHERE   member_code=#{memberCode}
+
+      
+   </select>
+   
+   
+   	<!-- 	Q&A 등록 -->
+	<insert id="insertQuestion" parameterType="net.su.dialog.main.domain.Question"  useGeneratedKeys="true" keyProperty="notice_code">
+	INSERT INTO 
+				notice
+				(
+				 notice_title 
+				, notice_content 
+				, notice_date 
+				, member_code
+				, notice_views
+				, notice_status
+				)
+	VALUES		(
+					
+					#{noticeTitle}
+					,#{noticeContent}
+					,CURDATE()
+					,#{memberCode}
+					,0
+					,'접수'
+				)
+	</insert>
+<!-- 	Q&A 파일 등록 -->
+	<insert id="insertQuestionFile" parameterType="net.su.dialog.main.domain.Question" >
+	INSERT INTO 
+				notice_file
+				(notice_file_code 
+				, notice_file_title
+				, notice_file_original_title 
+				, notice_file_route 
+				, notice_file_extension
+				, notice_code
+				)
+	VALUES		(
+					(SELECT IFNULL(MAX(a.notice_file_code),0) + 1 AS notice_file_code FROM   notice_file as a)
+					,#{noticeFileTitle}
+					,#{noticeFileOriginalTitle}
+					,#{noticeFileRoute}
+					,#{noticeFileExtension}
+					,#{notice_code}
+				)
+	</insert>
+<!-- 	Q&A 상세조회시 조회수 증가 -->
+	<update id="updateQuestionViews" parameterType="net.su.dialog.main.domain.Question" >
+		UPDATE notice
+		SET	   notice_views=notice_views+1
+		WHERE  notice_code=#{noticeCode}
+	</update>
+	
+<!-- 	Q&A상세조회 -->
+    <select id="selectQuestionInfo" parameterType="net.su.dialog.main.domain.Question" resultType="net.su.dialog.main.domain.Question">
+      SELECT 	notice_title as noticeTitle
+      			, notice_content as noticeContent
+      			, notice_date as noticeDate
+      			, notice_views as noticeViews
+      			, n.member_code as memberCode
+      			, f.notice_file_title as noticeFileTitle
+      			, f.notice_file_original_title as noticeFileOriginalTitle
+      			, f.notice_file_route as noticeFileRoute
+      			, f.notice_file_extension as noticeFileExtension
+      			, m.member_name as memberName
+      			, n.notice_code as noticeCode
+      			, m.member_rating_code as memberRatingCode
+      			
+      FROM 		notice n, notice_file f, member m
+      WHERE n.notice_code=#{noticeCode}
+      AND   n.notice_code=f.notice_code
+      AND   m.member_code=n.member_code
+   </select>
+   
+<!--    Q&A 삭제 -->
+   <delete id="delNotice" parameterType="net.su.dialog.main.domain.Question">
+   		DELETE 
+   		FROM notice
+   		WHERE notice_code= #{noticeCode}
+   </delete>
+<!--    Q&A삭제시 파일삭제 -->
+   <delete id="delNoticeFile" parameterType="net.su.dialog.main.domain.Question">
+   		DELETE 
+   		FROM 	notice_file
+   		WHERE notice_code=#{noticeCode}
+   	</delete>
+   	 	
+ 	<!-- 	Q&A답변 조회 -->
+    <select id="reList" parameterType="net.su.dialog.main.domain.Question" resultType="net.su.dialog.main.domain.Question">
+      SELECT 	notice_re_code as noticeReCode
+      		   ,notice_re_content as noticeReContent
+      		   ,notice_re_date as noticeReDate
+      		   ,r.notice_code as noticeCode	
+      		   ,n.member_code as memberCode
+      FROM 		notice n, notice_re r
+      WHERE n.notice_code=#{noticeCode}
+      AND   n.notice_code=r.notice_code
+   </select>
+   
+   <!-- 	관리자 Q&A 답변 등록 -->
+	<insert id="insertReNotice" parameterType="net.su.dialog.main.domain.Question" >
+	INSERT INTO 
+				notice_re
+				 (notice_re_content 
+				, notice_code
+				, notice_re_date
+				)
+	VALUES		(
+					#{noticeReContent}
+					,#{noticeCode}
+					, CURDATE()
+				)
+	</insert>
+	
+	<!--    Q&A답변 삭제 -->
+   <delete id="deleteNoticeRe" parameterType="net.su.dialog.main.domain.Question">
+   		DELETE 
+   		FROM notice_re
+   		WHERE notice_re_code= #{noticeReCode}
+   </delete>
+	
+	<update id="updateNoticeStatus" parameterType="net.su.dialog.main.domain.Question">
+		UPDATE notice
+		SET    notice_status='완료'
+		WHERE  notice_code = #{noticeCode}
+	</update>
+	<!--    (관리자) 메세지 삭제 -->
+   <delete id="questionDel">
+   	  DELETE
+   	  FROM		notice
+   	  WHERE		notice_code=#{noticeCode}
+   </delete>
+<!--    관리자 메세지 파일 삭제 -->
+      <delete id="questionFileDel">
+   	  DELETE
+   	  FROM		notice_file
+   	  WHERE		notice_code=#{noticeCode}
+   </delete>
+<!--     파일 조회 -->
+   	<select id="selectQuestionFile" parameterType="net.su.dialog.main.domain.Question" resultType="net.su.dialog.main.domain.Question">
+		SELECT	notice_file_code as noticeFileCode
+				, notice_file_title as noticeFileTitle
+				, notice_file_original_title as noticeFileOriginalTitle
+				, notice_file_route as noticeFileRoute
+				, notice_file_extension as noticeFileExtension
+		FROM	notice_file
+		WHERE	notice_code = ${noticeCode}
+	</select>
+			
+	<!-- 내 회원 정보 조회 -->
+   <select id="selectProFileList" parameterType="net.su.dialog.main.domain.User" resultType="net.su.dialog.main.domain.User">
+      SELECT member_id as memberId
+      		,member_password as memberPassword
+      		,member_name as memberName
+      		,member_email_address as memberEmailAddress
+      		,member_rating_code as memberRatingCode
+      FROM 	member
+      WHERE member_code = #{memberCode}
+   </select>		
+   
+<!--     마이페이지 회원정보 수정 -->
+   <update id="updateInfo" parameterType="net.su.dialog.main.domain.User" >
+      UPDATE member
+      set
+      <if test="memberId == '' and memberEmailAddress == '' ">member_name=#{memberName}</if>
+      <if test="memberName == '' and memberEmailAddress == ''">member_id=#{memberId}</if>
+      <if test="memberId == '' and memberName == ''">member_email_address=#{memberEmailAddress}</if>
+
+      WHERE member_code=#{memberCode}
+      <if test="memberName == '' and memberEmailAddress == '' ">
+       AND NOT EXISTS (SELECT member_id
+       				   FROM
+	       				   (SELECT * 
+	       				   FROM member 
+	                       WHERE  member_id= #{memberId}) a) ;
+      </if> 
+   </update> 
+   
+   
+   <!--   마이페이지 비밀번호 찾기 -->
+	<select id="selectMyInfo" parameterType="net.su.dialog.main.domain.User" resultType="net.su.dialog.main.domain.User">
+	SELECT  member_code as memberCode
+	FROM member
+	WHERE member_name=#{memberName} AND member_email_address=#{memberEmailAddress} AND member_id=#{memberId};
+	</select>
+   
+<!--    문의사항  페이지 행 읽기 -->
+   	<select id="selectQuestionRow" parameterType="net.su.dialog.main.domain.Question" resultType="java.lang.Integer">
+		SELECT COUNT(*) AS rowCount
+        FROM notice n , member m , notice_file f	
+        WHERE   n.notice_code=f.notice_code
+        AND   m.member_code=n.member_code
+			<choose>
+				<when test="searchType==1">
+					AND n.notice_title LIKE '%${searchContent}%'
+				</when>
+				<when test="searchType==2">
+					AND n.notice_content LIKE '%${searchContent}%'
+			 	</when>
+			 	<when test="searchType==3">
+					AND m,member_name LIKE '%${searchContent}%'
+			 	</when>
+			 	<when test="searchType==4">
+					AND n,notice_status LIKE '%${searchContent}%'
+			 	</when>
+		 	</choose>
+	</select>
+   
+<!--     문의사항페이징 -->
+   	<select id="selectQuestionPaging"  resultType="java.util.LinkedHashMap">
+		     SELECT n.notice_code as noticeCode
+     		,notice_title as noticeTitle
+     		,notice_content as noticeContent
+     		,notice_date as noticeDate
+     		,n.member_code as memberCode
+     		,notice_views as noticeViews
+     		,notice_status as noticeStatus
+      		,m.member_name as memberName
+      		,f.notice_file_title as noticeFileTitle
+	      FROM notice n , member m , notice_file f	
+	      WHERE   n.notice_code=f.notice_code
+	      AND   m.member_code=n.member_code
+	      	 <choose>
+				<when test="searchType==1">
+				AND	 n.notice_title LIKE '%${searchContent}%'
+				</when>
+				<when test="searchType==2">
+				AND	 n.notice_content LIKE '%${searchContent}%'
+			 	</when>
+			 	<when test="searchType==3">
+				AND	 m,member_name LIKE '%${searchContent}%'
+			 	</when>
+			 	<when test="searchType==4">
+				AND	 n,notice_status LIKE '%${searchContent}%'
+			 	</when>
+		 	</choose>
+	      ORDER BY n.notice_code DESC
+		LIMIT ${(currentPage-1)*perPage},${perPage};
+	</select>
+			
+	<!--   관리자 쪽지함  페이지 행 읽기 -->
+   	<select id="selectAdminMessageRow" parameterType="net.su.dialog.main.domain.User" resultType="java.lang.Integer">
+		SELECT COUNT(*) AS rowCount
+		FROM message_box 
+        <choose>
+			<when test="searchType==1">
+				WHERE	 mes_content LIKE '%${searchContent}%'
+			</when>
+			<when test="searchType==2">
+				WHERE	 rec_id LIKE '%${searchContent}%'
+			</when>
+			<when test="searchType==3">
+				WHERE	 sen_id LIKE '%${searchContent}%'
+			</when>
+		</choose>		
+	</select>	
+		
+<!-- 	받은 쪽지함 행 읽기 -->
+	 <select id="selectGivenMessageRow" parameterType="net.su.dialog.main.domain.User" resultType="java.lang.Integer">
+      SELECT COUNT(*) AS rowCount
+      FROM message_box
+      WHERE rec_seq= #{memberCode}
+      AND rec_mes_delete_whether='N'
+   </select>
+   
+   <!-- 	보낸 쪽지함 행 읽기 -->
+	<select id="selectGiveMessageRow" parameterType="net.su.dialog.main.domain.User" resultType="java.lang.Integer">
+      SELECT COUNT(*) AS rowCount
+      FROM message_box
+      WHERE sen_seq= #{memberCode}
+      AND sen_mes_delete_whether='N'
+   </select>
+   
+   	<select id="selectMyData" resultType="net.su.dialog.dataSet.domain.Dataset" >
+		select 	data_code as dataCode
+				,dataset_name as datasetName
+				,data_enroll_date as dataEnrollDate
+				,viz_whether as vizWhether
+				,type_normal_regularly as typeNormalRegularly
+		from dataset
+		where member_code = #{memberCode}
+		order by dataCode DESC
+		LIMIT 0,5
+		;
+	</select>
+   
+			
+</mapper>

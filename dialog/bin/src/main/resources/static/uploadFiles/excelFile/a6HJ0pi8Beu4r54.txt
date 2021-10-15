@@ -1,0 +1,860 @@
+<script>
+//연습
+
+
+var vm = new Vue({
+    el:"#dataListView" ,
+    data: {
+       normalDataInfo : {},
+       normalDataCateInfo : {},
+       
+       fileColNameList : {},
+       fileColTypeList : {},
+       fileDataList : [],
+       
+       checkedColumnIndex : [],
+       selectedColumnType : {},
+       	       
+       
+       dataCode : ${dataCode},
+    },
+    methods: {
+    	//일시 데이터 셋 정보 select
+    	selectDataListView: function(){
+    		var vm = this;
+    		$.ajax({
+    			url:'/selectDataListView',
+    			data:{
+    				"dataCode" : vm.dataCode,
+    			},
+    			type:'post',
+    			success: function(data){
+    				vm.normalDataInfo=data.dataDetailInfo;
+    				vm.normalDataCateInfo=data.dataCategoryInfo;
+    			},
+    			error: function(){
+    				alert("selectNormalDataSetInfo 에러");
+    			}
+    		});
+    	},
+    	
+    	selectFileDownload: function(){
+    		var vm = this;
+    		$.ajax({
+    			url:'/selectFileDownload',
+    			data:{
+    				"dataCode" : vm.dataCode,
+    			},
+    			type:'post',
+    			success: function(){
+    				
+    			},
+    			error: function(){
+    				alert("에러");
+    			}
+    		})
+    	}
+    },
+  	  filters: {
+   	       
+  	    },
+  	    watch: {
+  	       
+  	    },
+  	    mounted: function () {
+  			var vm = this;
+  			vm.selectDataListView();
+  			
+  	    },
+  
+});
+
+
+</script>
+
+
+
+
+
+
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+
+//이제 컬럼명 들고와서 selectbox 만들기!
+var vm = new Vue({
+	el : '#mainBox',
+	data : {	
+			columnList: {},
+			columnInfo: {},
+			columnName: '',		
+			list: [],
+			xcolName: '',
+			ycolName: '',	
+
+
+	},
+	methods:{
+		makeSelectBox : function() {
+			
+			var vm = this;
+			$.ajax({
+				url: "/getSelectBox",
+				type : "post",
+				async: false,
+				success : function(list){				
+					console.log(list);
+					vm.columnList = list;
+				},
+			 error:function(){ //ajax 오류인경우  
+	        }
+			})
+		},
+
+		makeChartView : function(){
+			 $('svg').html("");
+			 var vm = this;			 
+			//var queryString = $("form[name=mins]").serialize();		
+			//var barColor = d3.interpolateViridis;
+			var ReportDomain = this;
+			$.ajax({
+						
+				url: "/makeChartView",
+				data:{
+					"xcolName" : vm.xcolName,
+					"ycolName" : vm.ycolName,
+				}, 
+				type: "post",
+				//async: false,
+				success : function(list){
+					//alert(JSON.stringify(list));
+					//vm.test = alist;
+					console.log(list);
+				
+					
+		               var svg = d3.select("#graph"), //svg 크기 구하는것
+		              	 margin = {top: 20, right: 20, bottom: 30, left: 40},
+		                   width = +svg.attr("width") - margin.left - margin.right,
+		                   height = +svg.attr("height") - margin.top - margin.bottom;
+		            
+		               var x = d3.scaleBand().rangeRound([0, width]).padding(0.1), //x축 넓이
+		                   y = d3.scaleLinear().range([height, 0]); // y축 넓이
+		             		                   
+		               var sequentialScale = d3.scaleSequential()   //색
+		                  .domain([width, 0])
+		             
+		            
+		               var g = svg.append("g")
+		                   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+		               
+		               x.domain(list.map(function(d) { return d.xcolName; })); //x축에 들어가는값
+		               y.domain([0, d3.max(list, function(d) { return d.ycolName; })]); //y축에 들어가는값
+		               
+		               g.append("g")
+		                   .attr("class", "axis axis--x")
+		                   .attr("transform", "translate(0," + height + ")")
+		                   .call(d3.axisBottom(x));
+		               
+		               
+
+		               g.append("g")
+		                   .attr("class", "axis axis--y")
+		                   .call(d3.axisLeft(y))
+		                .append("text")
+		                   .attr("transform", "rotate(-90)")
+		                   .attr("y", 6)
+		                   .attr("dy", "0.71em")
+		                   .attr("text-anchor", "end")
+		                   .text("ycolName");
+
+		               g.selectAll(".bar")
+		                  .data(list)
+		                  .enter().append("rect")
+		                  .attr("class", "bar")
+		                  .attr("x", function(d) { return x(d.xcolName); })
+		                  .attr("y", function(d) { return y(d.ycolName); })
+		                  .attr("width", x.bandwidth())
+		                  .attr("height", function(d) { return height - y(d.ycolName); })
+		                  .text(function(d) { return d.ycolName; })  
+				            .on("mouseover", function() { tooltip.style("display", null); })
+				            .on("mouseout",  function() { tooltip.style("display", "none"); })
+				            .on("mousemove", function(d) {
+				                tooltip.style("left", (d3.event.pageX+10)+"px");
+				                tooltip.style("top",  (d3.event.pageY-10)+"px");
+				                tooltip.html("X값 : " + d.xcolName + "<br/>" + "Y값 : " + d.ycolName);
+				            });
+				            
+		               var tooltip = d3.select("body")
+			              .append("div")
+			              .attr("class", "toolTip")
+			              .style("display", "none");
+		               
+
+		               function replay(list) {
+		            	   var slices = [];
+		            	   for (var i = 0; i < list.length; i++) {
+		            	     slices.push(data.slice(0, i+1));
+		            	   }
+		            	   slices.forEach(function(slice, index){
+		            	     setTimeout(function(){
+		            	       draw(slice);
+		            	     }, index * 300);
+		            	   });
+		            	 }
+		               	         
+		                  													
+				},
+				 error:function(request,status,error){ //ajax 오류인경우  
+// 		               alert("error\nxhr : " + xhr + ", status : " + status + ", error : " + error);    
+		               alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		        }
+			});
+		},
+			// 		line-chart
+		lineChartView : function(){
+			 $('svg').html("");
+			 var vm = this;
+			//var queryString = $("form[name=mins]").serialize();		
+			//var barColor = d3.interpolateViridis;		
+			$.ajax({
+						
+				url: "/makeChartView",
+				data:{
+					"xcolName" : vm.xcolName,
+					"ycolName" : vm.ycolName,
+				}, 
+				type: "post",
+				//async: false,
+				success : function(list){
+					//alert(JSON.stringify(list));
+					//vm.test = alist;
+					console.log(list);
+				
+				var svg = d3.select("#graph"),
+				    margin = {top: 120, right: 20, bottom: 30, left: 50},
+				    width = +svg.attr("width") - margin.left - margin.right,
+				    height = +svg.attr("height") - margin.top - margin.bottom,
+				    g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+				  var x = d3.scaleBand().rangeRound([0, width]).padding(1), //x축 넓이
+                  y = d3.scaleLinear().range([height, 0])
+                  		.clamp(true); // y축 넓이
+
+				
+				var line = d3.line()
+					//.curve(d3.curveBasis)
+				    .x(function(d) { return x(d.xcolName); })
+				    .y(function(d) { return y(d.ycolName); });
+				
+				   x.domain(list.map(function(d) { return d.xcolName; })); //x축에 들어가는값
+		           y.domain([0, d3.max(list, function(d) { return d.ycolName; })]); //y축에 들어가는값
+
+				  g.append("g")
+				      .attr("transform", "translate(0," + height + ")")
+				      .call(d3.axisBottom(x))
+				    .select(".domain")
+				      .remove();
+
+				  g.append("g")
+				      .call(d3.axisLeft(y))
+				    .append("text")
+				      .attr("fill", "#000")
+				      .attr("transform", "rotate(-90)")
+				      .attr("y", 6)
+				      .attr("dy", "0.71em")
+				      .attr("text-anchor", "end")
+				      .text("ycolName");
+
+				  g.append("path")
+				      .datum(list)
+				      .attr("fill", "none")
+				      .attr("stroke", "steelblue")
+				      .attr("stroke-linejoin", "round")
+				      .attr("height", function(d) { return height - y(d.ycolName); })
+				      .attr("stroke-linecap", "round")
+				      .attr("stroke-width", 3)
+				      .attr("d", line);			
+					
+// 				  g.selectAll(".dot")
+// 		            .data(list)
+// 			        .enter()
+// 			          .append("circle")
+// 			            .attr("fill", "blue")
+// 			            .attr("r", 4)
+//  			            .attr("cx", function(d) { return x(d.xcolName); })
+//  			            .attr("cy", function(d) { return y(d.ycolName); })
+				  	//	.attr(margin-top:20);
+			        
+			        //Input text
+			        g.selectAll(".dot")
+			         .data(list)
+			        .enter().append("circle")
+			        	.attr("r", 7)
+			        	.attr("fill", "blue")
+// 			          .append("text")
+// 			            .attr('text-anchor', 'middle')
+			            .attr("cx", function(d) { return x(d.xcolName); })
+			            .attr("cy", function(d) { return y(d.ycolName); })
+			            .attr('dy', '-10')
+			            .text(function(d) { return d.ycolName; })  
+			            .on("mouseover", function() { tooltip.style("display", null); })
+			            .on("mouseout",  function() { tooltip.style("display", "none"); })
+			            .on("mousemove", function(d) {
+			                tooltip.style("left", (d3.event.pageX+10)+"px");
+			                tooltip.style("top",  (d3.event.pageY-10)+"px");
+			                tooltip.html("X값 : " + d.xcolName + "<br/>" + "Y값 : " + d.ycolName);
+			            });
+			            
+			          var tooltip = d3.select("body")
+			              .append("div")
+			              .attr("class", "toolTip")
+			              .style("display", "none");
+			
+				},
+				 error:function(request,status,error){ //ajax 오류인경우  
+		               alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		        }
+							
+			 })										
+		},
+// 		파이차트 시작
+		pieChartView : function(){
+			 $('svg').html("");
+			 var vm = this;
+			//var queryString = $("form[name=mins]").serialize();		
+			$.ajax({
+						
+				url: "/makeChartView",
+				data:{
+					"xcolName" : vm.xcolName,
+					"ycolName" : vm.ycolName,
+				}, 
+				type: "post",				
+				success : function(list){
+							
+					var svg = d3.select("#graph"),
+				    width = +svg.attr("width"),
+				    height = +svg.attr("height"),
+				    radius = Math.min(width, height) / 2,
+				    g = svg.append("g")
+				    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+					
+					var color = d3.scaleOrdinal(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+					
+					var arc = d3.arc()
+				    .outerRadius(radius - 10)
+				    .innerRadius(0);
+					
+					var label = d3.arc()
+				    .outerRadius(radius - 40)
+				    .innerRadius(radius - 40);
+
+					
+					var pie = d3.pie()
+					.sort(null)
+					.value(function (d) {
+					return d.ycolName;
+					});
+					
+												
+					var g = g.selectAll(".arc")
+					    .data(pie(list))
+					    .enter().append("g")
+					    .attr("class", "arc")
+						.text(function(d) { return d.data.xcolName; })
+					//	.text(function(d) { return d.data.ycolName; })  
+				        .on("mouseover", function() { tooltip.style("display", null); })
+				        .on("mouseout",  function() { tooltip.style("display", "none"); })
+				        .on("mousemove", function(d) {
+				            tooltip.style("left", (d3.event.pageX+10)+"px");
+				            tooltip.style("top",  (d3.event.pageY-10)+"px");
+				            tooltip.html("X값 : " + d.data.xcolName + "<br/>" + "Y값 : " + d.data.ycolName);
+				         });
+				            
+		               var tooltip = d3.select("body")
+			              .append("div")
+			              .attr("class", "toolTip")
+			              .style("display", "none");
+					
+					g.append("path")
+					    .attr("d", arc)
+					    .style("fill", function (d) {
+					    return color(d.data.xcolName);
+					});
+					
+					g.append("text")
+					    .attr("transform", function (d) {
+					    return "translate(" + arc.centroid(d) + ")";
+					})
+					    .attr("dy", ".35em")
+					    .style("text-anchor", "middle")
+					    .text(function (d) {
+					    return d.data.xcolName;
+					});																										
+										//파이 차트 끝
+									},
+									 error:function(request,status,error){ //ajax 오류인경우  
+							               alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+							        }
+												
+								 })										
+							},
+					// 도넛 차트 시작							
+							donutChartView : function(){
+								 $('svg').html("");
+								 var vm = this;
+								//var queryString = $("form[name=mins]").serialize();		
+								$.ajax({
+											
+									url: "/makeChartView",
+									data:{
+										"xcolName" : vm.xcolName,
+										"ycolName" : vm.ycolName,
+									}, 
+									type: "post",				
+									success : function(list){
+												
+										var svg = d3.select("#graph"),
+									    width = +svg.attr("width"),
+									    height = +svg.attr("height"),
+									    radius = Math.min(width, height) / 2,
+									    g = svg.append("g")
+									    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+										
+										var color = d3.scaleOrdinal(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+										
+										var arc = d3.arc()
+									    .outerRadius(radius - 10)
+									    .innerRadius(radius - 50);
+										
+										var label = d3.arc()
+									    .outerRadius(radius - 40)
+									    .innerRadius(radius - 40);
+
+										
+										var pie = d3.pie()
+										.sort(null)
+										.value(function (d) {
+										return d.ycolName;
+										});
+										
+																	
+										var g = g.selectAll(".arc")
+										    .data(pie(list))
+										    .enter().append("g")
+										    .attr("class", "arc");
+										   
+										
+										g.append("path")
+										    .attr("d", arc)
+										    .style("fill", function (d) {
+										    return color(d.data.xcolName);
+										})
+										
+										
+										g.append("text")
+										    .attr("transform", function (d) {
+										    return "translate(" + arc.centroid(d) + ")";
+										})
+										    .attr("dy", ".35em")
+										    .style("text-anchor", "middle")
+										    .text(function (d) {
+										    return d.data.ycolName;
+										});																																						
+															//도넛 차트 끝
+														},
+														 error:function(request,status,error){ //ajax 오류인경우  
+												               alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+												        }
+																	
+													 })										
+												}
+	},
+	filters : {
+
+    },
+    watch : {
+       
+    },
+
+	mounted: function () {
+		var vm = this;
+		vm.makeSelectBox();
+	},
+});
+
+--------살아있슴
+
+
+var vm = new Vue({
+	    el:"#datalistView" ,
+	    data: {
+	       normalDataInfo : {},
+	       normalDataCateInfo : {},
+	       
+	       fileColNameList : {},
+	       fileColTypeList : {},
+	       fileDataList : [],
+	       
+	       checkedColumnIndex : [],
+	       selectedColumnType : {},
+	       	       
+	       
+	       dataCode : ${dataCode},
+	    },
+	    methods: {
+	    	//일시 데이터 셋 정보 select
+	    	selectDataListView: function(){
+	    		var vm = this;
+	    		$.ajax({
+	    			url:'/selectDataListView',
+	    			data:{
+	    				"dataCode" : vm.dataCode,
+	    			},
+	    			type:'post',
+	    			success: function(data){
+	    				vm.normalDataInfo=data.dataDetailInfos;
+	    				vm.normalDataCateInfo=data.dataCategoryInfos;
+	    			},
+	    			error: function(){
+	    				alert("selectNormalDataSetInfo 에러");
+	    			}
+	    		});
+	    	},
+	    	
+	    	selectFileDownload: function(){
+	    		var vm = this;
+	    		$.ajax({
+	    			url:'/selectFileDownload',
+	    			data:{
+	    				"dataCode" : vm.dataCode,
+	    			},
+	    			type:'post',
+	    			success: function(){
+	    				
+	    			},
+	    			error: function(){
+	    				alert("에러");
+	    			}
+	    		});
+	    	},	    	
+	    },
+	    
+	    filters: {
+	       
+	    },
+	    watch: {
+	       
+	    },
+	    mounted: function () {
+			var vm = this;
+			vm.selectDataListView();
+		//	vm.selectFilePreviewList();
+	    },
+	 });
+
+
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+
+	<div class="wsize_100 mt_30" id ="#mainBox" style="height: auto; border: 1px solid black;">
+				<div class ="wsize_70 fl" style="border:1px solid black;">
+					<div class="wsize_100 fl" style="border: 1px solid blue; height: 50px;">
+						그래프 아이콘 들어간다.
+					</div>
+					
+					<div class ="wsize100fl" style="border: 1px solid yellow;">
+						<svg id="graph" width="600" height="400">
+						
+						</svg>
+					</div>
+				</div>
+				
+				<div class ="wsize_30 fl" style="border: 1px solid black;" >
+					<div class="wsize_100 fl" style="border: 1px solid blue; height: 50px;">
+						그래프 아이콘 들어간다.
+					</div>
+					
+					<div class ="wsize100fl" style="border: 1px solid yellow; height: 457px;">
+							 <div class ="fl wsize_100 mt_20">
+					       	 	 <select class="wsize_80" id="xcolName" name="xcolName" v-model = "xcolName">
+					       	  		<option disabled value="">
+					       	  			범주값을 선택	       	  		
+					       	  		</option>
+					       	  		
+					       	  		<option v-for="nme in columnList">
+					       	  	 		{{nme.columnName}}
+					       	  		</option>
+					       	  	</select>	       	  	
+	       					 </div>
+	       					 
+	       					  <div class ="fl wsize_100 mt_20">
+					       	 	 <select class="wsize_80" id="ycolName" name="ycolName" v-model = "ycolName">
+					       	  	 	<option disabled value="">
+					       	  			수치값을 선택
+					       	  		</option>	
+					       	  	
+					       	  		<option v-for="nme in columnList">
+					       	  	 		{{nme.columnName}}
+					       	  		</option>
+					       	  	</select>
+	       					 </div>
+	       					 
+	       					 <div class ="fl wsize_100 mt_20">
+	       					 	  <button type="button" v-on:click="makeChartView">바그래프</button>	       	  
+						       	  <button type="button" v-on:click="lineChartView">라인그래프</button>
+						       	  <button type="button" v-on:click="pieChartView">파이그래프</button>
+						       	  <button type="button" v-on:click="donutChartView">도넛그래프</button>
+						       	  <button type="button" v-on:click="makeChartView">그룹바차트</button>
+	       					 </div>
+	       					 
+					</div>
+				</div>
+			</div>
+
+
+ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ
+
+
+
+ <button type="button" v-on:click="makeChartView">바그래프</button>	       	  
+						       	  <button type="button" v-on:click="lineChartView">라인그래프</button>
+						       	  <button type="button" v-on:click="pieChartView">파이그래프</button>
+						       	  <button type="button" v-on:click="donutChartView">도넛그래프</button>
+						       	  <button type="button" v-on:click="makeChartView">그룹바차트</button>
+
+
+
+
+
+
+
+
+ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁaaaaaaaaaaaaaaaaaaaaaaaㅁㅁㅁㅁㅁㅁㅁㅁ
+
+
+
+
+<div class="tab-content fl wsize_100" id="teacher_tabContent">
+
+							<!--다음 뉴스 데이터-->
+							<div class="tab-pane fade show active" id="teacher_list_now"
+								role="tabpanel" aria-labelledby="now-tab">
+								<div class="table_sc04" id="style-3">
+									<table class="table table-gray table-hover">
+										<colgroup>
+											<col width="80px;" />
+											<col width="120px;" />
+											<col width="120px;" />
+											<col width="" />
+											<col width="100px;" />
+											<col width="100px;" />
+										</colgroup>
+										<tr>
+											<th>NO</th>
+											<th>단어</th>
+											<th>요청 날짜</th>
+											<th>수집 기간</th>
+											<th>현재 상태</th>
+										</tr>
+										<tr v-for="daumRequest in selectMyDaumCollectRequestList"
+											v-on:click="infoDaumList(daumRequest.daumNewsDataCollectRequestCode)">
+											<td>{{daumRequest.daumNewsDataCollectRequestCode}}</td>
+											<td class="bold color_b">{{daumRequest.daumNewsRequestCollectWord}}</td>
+											<td>{{daumRequest.daumNewsRequestCollectDate}}</td>
+											<td><span>{{daumRequest.daumNewsRequestCollectStartDate}}~{{daumRequest.daumNewsRequestCollectEndDate}}</span></td>
+											<td class="text_red"
+												v-if="daumRequest.daumNewsRequestCollectStatus == 'N'">
+												수집 대기</td>
+											<td class="text_red"
+												v-if="daumRequest.daumNewsRequestCollectStatus == 'S'">
+												수집 중</td>
+											<td class="text_red"
+												v-if="daumRequest.daumNewsRequestCollectStatus == 'Y'">
+												수집 완료</td>
+										</tr>
+									</table>
+
+									<!--다음 뉴스 데이터 페이징 -->
+									<div class="buttons mt_35">
+										<nav aria-label="pagination example" class="dis_in">
+										<ul class="pagination pg-blue mb-0">
+
+											<li class="page-item disabled"><a class="page-link">First</a></li>
+
+											<li class="page-item disabled"><a class="page-link"
+												aria-label="Previous"> <span aria-hidden="true">
+														&laquo; </span> <span class="sr-only">Previous</span>
+											</a></li>
+											<li class="page-item active"><a class="page-link">1</a></li>
+											<li class="page-item"><a class="page-link">2</a></li>
+											<li class="page-item"><a class="page-link">3</a></li>
+											<li class="page-item"><a class="page-link">4</a></li>
+											<li class="page-item"><a class="page-link">5</a></li>
+											<li class="page-item"><a class="page-link"
+												aria-label="Next"> <span aria-hidden="true">
+														&raquo; </span> <span class="sr-only">Next</span>
+											</a></li>
+											<li class="page-item"><a class="page-link">Last</a></li>
+										</ul>
+										</nav>
+									</div>
+								</div>
+							</div>
+
+							<!--기타 데이터-->
+							<div class="tab-pane fade" id="teacher_list_last" role="tabpanel"
+								aria-labelledby="last-tab">
+								<div class="table_sc04" id="style-3">
+									<table class="table table-gray table-hover">
+										<colgroup>
+											<col width="80px;" />
+											<col width="" />
+											<col width="100px;" />
+											<col width="120px;" />
+											<col width="100px;" />
+										</colgroup>
+										<tr>
+											<th>NO</th>
+											<th>사이트명</th>
+											<th>요청 날짜</th>
+											<th>현재 상태</th>
+										</tr>
+										<tr v-for="(actRequest) in selectMyActCollectRequestList"
+											v-on:click="infoActList(actRequest.actDataCollectRequestCode)">
+											<td>{{actRequest.actDataCollectRequestCode}}</td>
+											<td>{{actRequest.actRequestCollectSiteName}}</td>
+											<td>{{actRequest.actRequestCollectDate}}</td>
+											<td class="text_red"
+												v-if="actRequest.actRequestCollectStatus == 'N'">수집 대기</td>
+											<td class="text_red"
+												v-if="actRequest.actRequestCollectStatus == 'S'">수집 중</td>
+											<td class="text_red"
+												v-if="actRequest.actRequestCollectStatus == 'Y'">수집 완료</td>
+											<td class="text_red"
+												v-if="actRequest.actRequestCollectStatus == 'D'">수집 거부</td>
+										</tr>
+									</table>
+
+									<!--기타 데이터 페이징 -->
+									<div class="buttons mt_35">
+										<nav aria-label="pagination example" class="dis_in">
+										<ul class="pagination pg-blue mb-0">
+
+											<li class="page-item disabled"><a class="page-link">First</a></li>
+
+											<li class="page-item disabled"><a class="page-link"
+												aria-label="Previous"> <span aria-hidden="true">
+														&laquo; </span> <span class="sr-only">Previous</span>
+											</a></li>
+											<li class="page-item active"><a class="page-link">1</a></li>
+											<li class="page-item"><a class="page-link">2</a></li>
+											<li class="page-item"><a class="page-link">3</a></li>
+											<li class="page-item"><a class="page-link">4</a></li>
+											<li class="page-item"><a class="page-link">5</a></li>
+											<li class="page-item"><a class="page-link"
+												aria-label="Next"> <span aria-hidden="true">
+														&raquo; </span> <span class="sr-only">Next</span>
+											</a></li>
+											<li class="page-item"><a class="page-link">Last</a></li>
+										</ul>
+										</nav>
+									</div>
+								</div>
+							</div>
+
+
+
+ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ
+
+
+						</div>
+
+
+
+
+ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ
+
+
+<div class ="wsize_20 fl" id ="cateCon" style="margin:0 auto; height:100%; border: 1px solid #ddd; font-family:JejuGothic; box-shadow:2px 2px 5px 1px rgba(0,0,0,0.1);">
+							
+							<div class ="wsize_100 fl bd_bd" style="height:5%;">
+								<div class ="wsize_100 fl mt_10">
+									카테고리
+								</div>						
+							</div>
+							
+							<div class ="wsize_100 fl bd_bd" id="cate1" style="height:8%;">
+								<div class ="wsize_20 fl hsize_100" style="min-width:65px;">
+									<img src="/resources/img/categorys/mun.svg" style="height:80%; width:80%; margin-top:10%;">
+								</div>
+								<div class ="wsize_70 fl mt_19">
+									문학 / 인문과학
+								</div>
+							</div>
+							
+							<div class ="wsize_100 fl bd_bd" id="cate2" style=" height:8%;">
+								<div class ="wsize_20 fl hsize_100" style="min-width:65px;" >
+									<img src="/resources/img/categorys/culs.svg" style="height:80%; width:80%; margin-top:10%;">
+								</div>
+								<div class ="wsize_70 fl mt_19">
+									문학 / 예술
+								</div>
+							</div>
+							
+							<div class ="wsize_100 fl bd_bd" id="cate3" style="height:8%;">
+								<div class ="wsize_20 fl hsize_100" style="min-width:65px;" >
+									<img src="/resources/img/categorys/cul.svg" style="height:80%; width:80%; margin-top:10%;">
+								</div>
+								<div class ="wsize_70 fl mt_19">
+									사회 / 사회과학
+								</div>
+							</div>
+							
+							<div class ="wsize_100 fl bd_bd" id="cate4" style="height:8%;">
+								<div class ="wsize_20 fl hsize_100" style="min-width:65px;">
+									<img src="/resources/img/categorys/nat.svg" style="height:80%; width:80%; margin-top:10%;">
+								</div>
+								<div class ="wsize_70 fl mt_19">
+									자연 / 자연과학
+								</div>
+							</div>
+							
+							<div class ="wsize_100 fl bd_bd" id="cate5" style="height:8%;">
+								<div class ="wsize_20 fl hsize_100" style="min-width:65px;">
+									<img src="/resources/img/categorys/med.svg" style="height:80%; width:80%; margin-top:10%;" >
+								</div>
+								<div class ="wsize_70 fl mt_19">
+									건강 / 보건
+								</div>
+							</div>
+							
+							<div class ="wsize_100 fl bd_bd" id="cate6" style="height:8%;">
+								<div class ="wsize_20 fl hsize_100" style="min-width:65px;">
+									<img src="/resources/img/categorys/gong.svg" style="height:80%; width:80%; margin-top:10%;" >
+								</div>
+								<div class ="wsize_70 fl mt_19">
+									공학 / 응용공학
+								</div>
+							</div>
+							
+							<div class ="wsize_100 fl bd_bd" id="cate7" style="height:8%;">
+								<div class ="wsize_20 fl hsize_100" style="min-width:65px;">
+									<img src="/resources/img/categorys/any.svg" style="height:80%; width:80%; margin-top:10%;">
+								</div>
+								<div class ="wsize_70 fl mt_19">
+									기타
+								</div>
+							</div>
+							
+							<div class ="wsize_100 fl bd_bd" id="cate8" style="height:8%;">
+								<div class ="wsize_20 fl hsize_100" style="min-width:65px;">
+									<img src="/resources/img/categorys/new.svg" style="height:80%; width:80%; margin-top:10%;">
+								</div>
+								<div class ="wsize_70 fl mt_19">
+									뉴스
+								</div>
+												
+						</div>	
+					</div>

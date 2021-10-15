@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+	<!-- 홈 화면 타일즈 -->
+	<definition name=".main" template="/WEB-INF/view/main/main.jsp">
+		<put-attribute name="header" value="/WEB-INF/view/main/header.jsp" />
+		<put-attribute name="menu" value="/WEB-INF/view/main/topMenu.jsp" />
+		<put-attribute name="sideMenu" value="/WEB-INF/view/main/sideMenu.jsp" />
+		<put-attribute name="body" value="/WEB-INF/view/main/home.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/view/main/footer.jsp" />
+	</definition>
+
+	<!-- 여기 부터 작성 -->
+
+	<!-- 재영 -->
+	<definition name=".developSourceListView" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/admin/developSource/developSourceList.jsp" />
+	</definition>
+	<definition name=".developSourceInsertView" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/admin/developSource/developSourceInsert.jsp" />
+	</definition>
+	<definition name=".developSourceInfoView" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/admin/developSource/developSourceInfo.jsp" />
+	</definition>
+
+
+	<!-- 세영 -->
+	<definition name=".dbManage" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/admin/dataManage/dbManage.jsp" />
+	</definition>
+
+	<!-- 카테고리관리 -->
+	<definition name=".cateManage" extends=".main">
+		<put-attribute name="body" value="/WEB-INF/view/admin/cateManage/cateManage.jsp" />
+	</definition>
+
+
+
+	<!-- 성진 -->
+	
+<!-- 	회원가입  -->
+	<definition name=".info" extends=".main">
+		<put-attribute name="body" value="/WEB-INF/view/user/login/info.jsp" />
+	</definition>
+<!-- 	로그인 -->
+	<definition name=".login" extends=".main">
+		<put-attribute name="body" value="/WEB-INF/view/user/login/login.jsp" />
+	</definition>
+<!-- 	아이디 비밀번호 찾기 -->
+	<definition name=".selectInfo" extends=".main">
+		<put-attribute name="body" value="/WEB-INF/view/user/login/selectInfo.jsp" />
+	</definition>
+<!-- 	아이디  찾기 -->
+	<definition name=".infoList" extends=".main">
+		<put-attribute name="body" value="/WEB-INF/view/user/login/infoList.jsp" />
+	</definition>	
+<!-- 	아이디  찾기 -->
+	<definition name=".updatePassword" extends=".main">
+		<put-attribute name="body" value="/WEB-INF/view/user/login/updatePassword.jsp" />
+	</definition>	
+<!-- 쪽지조회 -->
+	<definition name=".messageList" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/user/message/messageList.jsp" />
+	</definition>
+<!-- 	쪽지등록 -->
+	<definition name=".messageInsert" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/user/message/messageInsert.jsp" />
+	</definition>
+<!-- 	쪽지 상세조회 -->
+	<definition name=".messageInfo" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/user/message/messageInfo.jsp" />
+	</definition>
+<!-- 	관리자 쪽지 조회 -->
+	<definition name=".messageListManage" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/admin/messageManage/messageListManage.jsp" />
+	</definition>
+	<!-- 	관리자 쪽지 상세조회 -->
+	<definition name=".messageInfoManage" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/admin/messageManage/messageInfoManage.jsp" />
+	</definition>
+	
+	<!-- 	관리자 쪽지 보내기 -->
+	<definition name=".adminMessageInsert" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/admin/messageManage/messageInsertManage.jsp" />
+	</definition>
+	
+	
+	<definition name=".userPower" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/admin/userManage/userPower.jsp" />
+	</definition>
+	
+<!-- 	Q&A -->
+	<definition name=".question" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/user/question/questionList.jsp" />
+	</definition>
+	
+	<!-- 	Q&A 등록 -->
+	<definition name=".questionInsert" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/user/question/questionInsert.jsp" />
+	</definition>
+	
+<!-- 	Q&A상세조회 -->
+	<definition name=".questionInfo" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/user/question/questionInfo.jsp" />
+	</definition>
+	
+	<!-- 	마이페이지 -->
+	<definition name=".myPage" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/user/myPage/myPageList.jsp" />
+	</definition>
+	
+		<!-- 	마이페이지 비밀번호 변경 -->
+	<definition name=".updateMyPassword" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/user/myPage/updateMyPassword.jsp" />
+	</definition>
+	
+	<!-- 정보 조회 -->
+	<definition name=".proFileList" extends=".main">
+		<put-attribute name="body"
+		value="/WEB-INF/view/user/myPage/proFileList.jsp" />
+	</definition>
+
+   <!-- 재경 -->
+    <!-- 데이터 승인 관리 메뉴 -->
+   <definition name=".dataApprovalManagement" extends=".main">
+      <put-attribute name="body" value= "/WEB-INF/view/admin/dataManage/dataApprovalManagement.jsp"/>
+   </definition>
+   
+   <!-- 나의 요청 목록 메뉴 -->
+   <definition name=".listMyCollectList" extends=".main">
+      <put-attribute name="body" value="/WEB-INF/view/user/myData/myCollectList.jsp" />
+   </definition>
+   
+   <!-- 다음 수집 요청 등록 -->
+   <definition name=".insertViewCollectRequest" extends=".main">
+      <put-attribute name="body"
+         value="/WEB-INF/view/user/myData/collectRequest.jsp" />
+   </definition>
+
+	<!-- 다음 수집 요청 조회 -->
+	<definition name=".listViewMyCollectRequestList" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/user/myData/myCollectRequestList.jsp" />
+	</definition>
+	
+	<!-- 다음 수집 요청 상세 조회 -->
+	<definition name=".infoViewMyCollectActRequest" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/user/myData/myCollectRequestActInfo.jsp" />
+	</definition>
+	
+	<!-- 반출 요청 상세 조회 -->
+	<definition name=".infoViewMyCollectRequest" extends=".main">
+		<put-attribute name="body"
+			value= "/WEB-INF/view/user/myData/myExportRequestInfo.jsp"/>
+	</definition>
+	
+	<!-- 반출 요청 관리자 상세 조회 -->
+	<definition name=".infoViewMExportRequest" extends=".main">
+		<put-attribute name="body"
+			value= "/WEB-INF/view/admin/dataManage/dataApprovalMExportInfo.jsp"/>
+	</definition>
+	
+	<!-- 기타 수집 요청 상세 조회 -->
+	<definition name=".infoViewMyCollectDaumRequest" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/user/myData/myCollectRequestDaumNewsInfo.jsp" />
+	</definition>
+
+	<!-- 반출 요청 등록 -->
+	<definition name=".insertViewExportRequest" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/user/myData/exportRequest.jsp" />
+	</definition>
+	
+	<!-- 기타 수집 요청 관리자 상세 조회 -->
+	<definition name=".infoViewMCollectActRequest" extends=".main">
+		<put-attribute name="body"
+			value= "/WEB-INF/view/admin/dataManage/dataApprovalMActInfo.jsp"/>
+	</definition>
+	
+	<!-- 다음 수집 요청 관리자 상세 조회 -->
+	<definition name=".infoViewMCollectDaumRequest" extends=".main">
+		<put-attribute name="body"
+			value= "/WEB-INF/view/admin/dataManage/dataApprovalMDaumInfo.jsp"/>
+	</definition>
+	
+	<!-- 재훈 -->
+
+	<definition name=".scheduleList" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/admin/scheduleManage/scheduleList.jsp" />
+	</definition>
+	
+	<definition name=".scheduleInfoPopup" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/admin/scheduleManage/popup/scheduleInfoPopup.jsp" />
+	</definition>
+	<!-- 파일팀추가 -->
+
+
+
+	<!-- 박은애 -->
+	<definition name=".dataSetManagement" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/admin/dataManage/dataSetManagement.jsp" />
+	</definition>
+	
+	<!-- 규철 -->
+	<definition name=".dataSetAdminList" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/dataSet/dataSetAdminList.jsp" />
+	</definition>
+	
+	<definition name=".dataSetInsertView" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/dataSet/dataSetInsertView.jsp" />
+	</definition>
+
+	<definition name=".dataSetList" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/dataSet/dataSetList.jsp" />
+	</definition>
+	
+	<definition name=".mydataList" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/user/myData/myDataList.jsp" />
+	</definition>
+	
+	<definition name=".dataSetVizRequestList" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/user/myData/dataSetVisualRequest.jsp"/>
+	</definition>
+	
+	<definition name=".UserDataSetInsertView" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/dataSet/UserDataSetInsertView.jsp"/>
+	</definition>
+	
+	<definition name=".listViewMember" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/admin/allManage/userManagement.jsp"/>
+	</definition>
+	
+	<definition name=".listViewMenu" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/admin/allManage/menuManagement.jsp"/>
+	</definition>
+	
+	<definition name=".dataSetUserList" extends=".main">
+		<put-attribute name="body"
+			value="/WEB-INF/view/dataSet/dataSetUserList.jsp"/>
+	</definition>
+	
+	<!-- 태호 -->
+	<definition name=".dataSetListView" extends=".main">
+		<put-attribute name="body" 
+		value="/WEB-INF/view/dataSet/dataSetListView.jsp" />
+	</definition>
+	
+	<definition name=".reportInsert" extends=".main">
+		<put-attribute name="body" 
+		value="/WEB-INF/view/report/reportInsert.jsp" />
+	</definition>
+	
+	<definition name=".adminReportInsert" extends=".main">
+		<put-attribute name="body" 
+		value="/WEB-INF/view/report/adminReportInsert.jsp"/>
+	</definition>
+	
+	<definition name=".reportList" extends=".main">
+		<put-attribute name="body" 
+		value="/WEB-INF/view/report/reportList.jsp" />
+	</definition>
+	
+	<definition name=".reportView" extends=".main">
+		<put-attribute name="body" 
+		value="/WEB-INF/view/report/reportView.jsp" />
+	</definition>
+	
+	<definition name=".reportUpdate" extends=".main">
+		<put-attribute name="body" 
+		value="/WEB-INF/view/report/reportUpdate.jsp" />
+	</definition>
+	
+	<definition name=".adminReportUpdate" extends=".main">
+		<put-attribute name="body" 
+		value="/WEB-INF/view/report/adminReportUpdate.jsp" />
+	</definition>
+	<!-- 수진 -->
+
+	<definition name=".standarData" extends=".main">
+		<put-attribute name="body" value="/WEB-INF/view/admin/dataManage/standarData.jsp" />
+	</definition>
+
+	<definition name=".goStandarPreview" extends=".main">
+		<put-attribute name="body" value="/WEB-INF/view/admin/dataManage/standarPreview.jsp" />
+	</definition>
+
+
+
+	<!-- 여기 까지 작상 -->
+
+	<definition name="*/*" extends=".main">
+		<put-attribute name="body" value="/WEB-INF/view/{1}/{2}.jsp" />
+	</definition>
+
+
+	<definition name="*/*/*" extends=".main">
+		<put-attribute name="body" value="/WEB-INF/view/{1}/{2}/{3}.jsp" />
+	</definition>
+
+	
+</tiles-definitions>

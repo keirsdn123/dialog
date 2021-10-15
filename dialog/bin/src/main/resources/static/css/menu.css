@@ -1,0 +1,70 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*푸터//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+.footer{ background:#e8eaef; font-size:11px; color:#999; width:100%; clear:both; padding:20px 0; float:left; margin-top:4.5%; margin-left:50px;}
+.footer ul { margin:5px 0 5px 35px;}
+.footer ul li { float:left; margin:0 10px 0 0;}
+.mfooter, .push{
+
+}
+/*탑메뉴*/
+.top_menu {width:97.5%; float:left; background:#fff; margin-left:50px; border-bottom:2px solid #545454; height:60px;}
+.whole_menu {width:59px; float:left; background:url(../img/icon/whole_menu.png) #f44e4d no-repeat; background-position:center; height:59px; border-right:1px solid #545454;}
+
+.top_right {float:right; padding:1em; position:relative;}
+.rang {float:left; display:inline-block; position:relative; margin-right:1em; padding-top:.2rem; font-size:.9em; font-weight:500;}
+.rang li:nth-child(n) {color:#1a70db; float:left;}
+.rang li:nth-child(2) {color:#1a70db; margin-right:5px; margin-left:5px;float:left;}
+
+.top_profile {float:left; width:42px; height:42px; border-radius:50%; overflow:hidden; border:2px solid #d0d0d0;  margin-right:1em; margin-top:-.4rem;}
+.top_profile img {width:100%; object-fit:cover;}
+
+.profile_name {float:left; font-size:.9em; font-weight:600; margin-right:1em; padding-top:.2rem;}
+
+.btn-login {background:#034c8f; border:1px solid #064177; color:#fff; font-weight:600; border-radius:0; margin:0; padding:.45rem 1.3rem; font-size:1em; margin-top:-.2rem;}
+.btn-login:hover {background:#1a70db; border:1px solid #034c8f;color:#fff;}
+
+.alarm {width:20px; float:left; text-align:center; margin-right:1em; position:relative; display:inline-block;}
+.alarm img {width:20px;}
+.alarm_n {width: 20px;height: 20px;position:absolute;top: -6px;right: 22px;background:red;font-size: .80rem;font-weight:500;color:#fff;border-radius:50%;text-align:center;}
+
+
+.sub_whole_menu {top:0; border:0; border-radius:0; width:1200px; padding:0; margin:0;}
+
+/*사이드메뉴*/
+.side_menu {width:18rem; height:100vh; display:flex; position:fixed; left:0; top:0; flex-direction:column; z-index:1000;}
+.side_top {padding:1em; position:relative; display:inline-block; border-bottom:1px solid #939191;}
+.logo {width:100%; background:url(../img/logo/logo.png) no-repeat; height:50px; background-size:100%; margin-top:1em; float:left;}
+
+.academy_selectbox {float:left; width:100%; margin-top:.5em; padding:.5rem;}
+.academy_select {border-radius:0; border-color:#ebebeb; color:#fff;}
+.academy_select:focus {color:#fff;}
+
+.today_box {background:#f44e4d; padding:.05rem .15rem; color:#fff; font-weight:600; width:35%; float:left; text-align:center; border:1px solid #f44e4d; font-size:.9rem;}
+.today_date {border:1px solid #f44e4d; padding:.05rem .15rem; color:#fff; font-weight:600; width:65%; float:left; text-align:center; font-size:.9rem;}
+
+.use_data {width:100%; float:left; text-align:center; position:relative; margin-top:.5rem;}
+.use_data ul {width:90%; display:inline-block; padding:0; text-align:center; font-size:.9rem;}
+.use_data ul li:nth-child(1) {color:#8cc5d7; font-weight:600; float:left;}
+.use_data ul li:nth-child(2) {color:#fff; float:left; margin-right:5px; margin-left:5px;}
+.use_data ul li:nth-child(3) {color:#fff; float:left;font-weight:600;}
+
+/*사이드 서브*/
+.sub_menu {width:100%; position:relative; display:inline-block; }
+.sub_menu li {border-bottom:1px solid #939191; margin:0;}
+.sub_menu li a {padding:.65rem 2.25rem; font-size:1.1em; color:#fff; font-weight:500; display:block; position:relative;}
+.sub_menu li a:hover {background:#424141;}
+.sub_menu li a img {width:25px; height:auto; margin-right:.9em;}
+
+.sub_inner {background:#363636;}
+.sub_inner li {border:0;}
+.sub_inner li a {padding:.55rem 3.25rem; font-size:1.1rem; font-weight:400;}
+.sub_inner li a:hover,
+.sub_inner li a:focus,
+.sub_inner li a:active,
+.sub_inner li a.hover,
+.sub_inner li a.focus,
+.sub_inner li a.active,
+.show > .sub_inner li a.dropdown-toggle {background:url(../img/sample/menu_bg.png) #424141 no-repeat; background-position:left;}
+.aactive {color:#218ac9; background:url(../img/backgrond/side_menu.png) no-repeat; background-position:left;}

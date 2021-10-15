@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.su.dialog.schedule.mapper.ScheduleMapper">
+
+   <!-- 스케줄 조회  -->
+   <select id="selectSche" resultType="net.su.dialog.schedule.domain.SchVo">
+      select    s.sche_code as scheCode
+            , sche_work_title as scheWorkTitle
+            , sche_work_cycle as scheWorkCycle
+            , sche_status_code as scheStatusCode
+            , sche_type as scheType
+            , retry_count as retryCount
+            , sche_writer as scheWriter
+            , sche_date as scheDate
+            , sche_cron as scheCron
+      from    schedules s
+      LIMIT   ${(currentPage-1)*perPage},${perPage}
+   </select>
+   <!-- 스케줄 등록 -->
+   <insert id="insertSche" parameterType="net.su.dialog.schedule.domain.SchVo" useGeneratedKeys="true" keyProperty="scheCode">
+      INSERT INTO       schedules (sche_code
+                              ,  sche_work_title
+                              ,  sche_work_cycle
+                              ,  sche_status_code
+                              ,  sche_type
+                              ,  retry_count
+                              ,  sche_writer
+                              ,  sche_date
+                              ,  sche_cron)
+                              
+      VALUES            (  null
+                     ,  #{scheWorkTitle}
+                     ,  #{scheWorkCycle}
+                     ,  0
+                     ,  #{scheType}
+                     ,  0
+                     ,  '관리자'
+                     ,  date_format(now(),'%Y-%m-%d')
+                     ,  #{scheCron}
+                     );
+   </insert>
+   
+   <!-- 스케줄 삭제 -->
+   <delete id="deleteSche" parameterType="net.su.dialog.schedule.domain.SchVo">
+      DELETE
+      FROM          schedules
+      WHERE         sche_code=#{scheCode};
+   </delete>
+   
+   <!-- 스케줄 상세조회  -->
+   <select id="scheduleinfo" parameterType="net.su.dialog.schedule.domain.SchVo" resultType="net.su.dialog.schedule.domain.SchVo">
+      select    sche_code as scheCode
+            , sche_cron as scheCron
+            , sche_work_cycle as scheWorkCycle
+      from schedules
+      where sche_code=#{scheCode};
+   </select>
+   
+   <!-- 스케줄 수정 -->
+   <select id="updateSche" parameterType="net.su.dialog.schedule.domain.SchVo">
+      update schedules
+      set sche_cron =#{scheCron}, sche_work_cycle = #{scheWorkCycle}, sche_status_code = 5
+      where sche_code=#{scheCode};
+   </select>
+   <!-- 스케줄 등록(다음 수집 요청 ) -->
+   <insert id="insertDataCollection" parameterType="net.su.dialog.schedule.domain.DataCollectionVo"  >
+      INSERT INTO       news_crawling (schedule_code
+                              ,  news_collect_keyword
+                              ,  news_collect_start_date
+                              ,  news_collect_end_date
+                              ,  daum_news_collect_request_code
+                              ,  dev_source_code)
+                              
+      VALUES            (  #{scheCode}
+                     ,  #{daumNewsRequestCollectWord}
+                     ,  #{daumNewsRequestCollectStartDate}
+                     ,  #{daumNewsRequestCollectEndDate}
+                     ,  #{daumNewsDataCollectRequestCode}
+                     ,  #{devSourceCode}
+                     );
+   </insert>
+   
+   <!-- 데이터 반출 요청 상태값 변경 - 스케줄 등록 -->
+   <select id="updataRssExportStatus" parameterType="int">
+      update data_export_request
+      set export_collect_status ='S'
+      where data_export_request_code=#{dataExportRequestCode};
+   </select>
+   
+   <!-- 데이터 수집 요청 상태값 변경 - 스케줄 등록 -->
+   <select id="updataDaumNewsExportStatus" parameterType="int">
+      update daum_news_data_collect_request
+      set daum_news_request_collect_status ='S'
+      where daum_news_data_collect_request_code=#{daumNewsDataCollectRequestCode};
+   </select>
+   
+   
+   <!-- 데이터 반출 관리 코드 조회 -->
+   <select id="selectDataExportManagement" parameterType="net.su.dialog.dataSet.domain.DataRequest" resultType="java.lang.Integer">
+      select data_export_management_code
+      from data_export_management
+      where data_export_request_code=#{dataExportRequestCode};
+   </select>
+   <!-- 스케줄 데이터 반출 등록  -->
+   <insert id="insertDataExport" parameterType="net.su.dialog.schedule.domain.DataExportVo" >
+      INSERT INTO       schedule_data_export (
+                                  sche_code
+                              ,  data_export_management_code)
+                              
+      VALUES            (  #{scheCode}
+                     ,  #{dataExportManagementCode}
+                     );
+   </insert>
+   <!-- 스케줄 중복검사 -->
+   <select id="selectOverlap" parameterType="net.su.dialog.schedule.domain.SchVo" resultType="net.su.dialog.schedule.domain.SchVo">
+      select    count(sche_cron) as scheOverlap
+      from schedules
+      where sche_cron=#{scheCron};
+   </select>
+   <!-- 개발소스파일 상세조회 -->
+   <select id="developSourceInfo" parameterType="net.su.dialog.developSource.domain.DevelopSource" resultType="net.su.dialog.developSource.domain.DevelopSource">
+      select    file.dev_source_file_title as devSourceFileTitle
+      			, dev_source_file_route as devSourcefileRoute
+      			, file.dev_source_code as devSourceCode
+      			, cus.dev_source_title as devSourceTitle
+      from development_source_file_list file, development_source_file_customizing cus
+      where file.dev_source_code = ${devSourceCode}
+      and cus.dev_source_code = ${devSourceCode}
+       and dev_source_file_extension = '.class';
+   </select>
+   <!-- 스케줄 크롤링 등록 -->
+   <insert id="insertScheCrawling" parameterType="net.su.dialog.schedule.domain.SchVo" useGeneratedKeys="true" keyProperty="scheCode" >
+      INSERT INTO       schedule_crawling (
+                                  sche_code
+                        )
+                              
+      VALUES            (  #{scheCode}
+                     );
+   </insert>
+   <!-- 개발소스파일 스케줄 수정 -->
+   <update id="updateDevelopmentSche" parameterType="net.su.dialog.schedule.domain.DataDevelopSourceVo">
+      update development_source_file_customizing
+      set sche_code =  #{scheCode}
+      where dev_source_code =  #{devSourceCode};
+   </update>
+   <!-- 스케줄 중지 -->
+   <update id="stopSche" parameterType="net.su.dialog.schedule.domain.SchVo">
+      update schedules
+      set sche_status_code =  4
+      where sche_code =  #{scheCode};
+   </update>
+   <!-- 스케줄 재시작 -->
+   <update id="restartSche" parameterType="net.su.dialog.schedule.domain.SchVo">
+      update schedules
+      set sche_status_code =  0
+      where sche_code =  #{scheCode};
+   </update>
+   
+   <!-- 개발소스파일 정형적 모듈 등록 (다음 뉴스)  -->
+   <insert id="insertDevSourceFormalModule" parameterType="net.su.dialog.schedule.domain.SchVo">
+      INSERT INTO       dev_source_file_formal_module (
+                        dev_source_title
+                     ,   dev_source_explanation
+                     ,   dev_source_enroll_date
+                     ,   file_route
+                     ,   activate_status
+                     ,   dev_source_file_method_name
+                     ,   dev_source_file_package_name
+                     ,   dev_source_file_class_name
+                        ,   sche_code
+                        )
+                              
+      VALUES            (  
+                         '다음뉴스모듈'
+                       , '다음 뉴스 데이터 수집 요청' 
+                       , now()
+                       , #{daumSchedulerPath}
+                       , 0
+                       , 'DaumNewsModuleScheduler'
+                       , 'net.su.dialog.formalModule.scheduler'
+                       , 'DaumNewsModuleScheduler'
+                       , #{scheCode}
+                     );
+   </insert>
+   
+      <!-- 개발소스파일 정형적 모듈 등록 (RSS 뉴스 반출)  -->
+   <insert id="insertDevSourceFormalModuleExport" parameterType="net.su.dialog.schedule.domain.SchVo">
+      INSERT INTO       dev_source_file_formal_module (
+                        dev_source_title
+                     ,   dev_source_explanation
+                     ,   dev_source_enroll_date
+                     ,   file_route
+                     ,   activate_status
+                     ,   dev_source_file_method_name
+                     ,   dev_source_file_package_name
+                     ,   dev_source_file_class_name
+                        ,   sche_code
+                        )
+                              
+      VALUES            
+            <choose>  
+               <when test='scheType=="네이버 쇼핑 반출"'>
+                     (
+                        '네이버 쇼핑 반출모듈'
+                       , #{scheWorkTitle} ' 데이터 반출'
+                       , now()
+                       , #{daumSchedulerPath}
+                       , 0
+                       , 'NaverShoppingExportScheduler'
+                       , 'net.su.dialog.formalModule.scheduler'
+                       , 'NaverShoppingExportScheduler'
+                       , #{scheCode}
+                     );   
+               </when>     
+               <when test='scheType=="RSS 뉴스 반출"'>   
+                     (  
+                         'RSS뉴스모듈'
+                       , #{scheWorkTitle} ' 데이터 반출'
+                       , now()
+                       , #{daumSchedulerPath}
+                       , 0
+                       , 'RssNewsExportScheduler'
+                       , 'net.su.dialog.formalModule.scheduler'
+                       , 'RssNewsExportScheduler'
+                       , #{scheCode}
+                      ); 
+               </when>
+               <when test='scheType=="외부 개발소스 파일"'>
+                     (  
+                         '외부 개발소스 파일'
+                       , #{scheWorkTitle}
+                       , now()
+                       , #{exportFileRoute}
+                       , 0
+                       , 'main'
+                       , ''
+                       , #{devSourceFileTitle}
+                       , #{scheCode}
+                      ); 
+               </when>    
+         </choose>   
+   </insert>
+   
+   <!-- 정형적모듈 스케줄 목록 -->
+   <select id="schedulerList" resultType="net.su.dialog.developSource.domain.DevelopSource">
+      SELECT dev_source_code, dev_source_title, dev_source_explanation, dev_source_enroll_date, file_route, activate_status, dev_source_file_method_name, dev_source_file_package_name, dev_source_file_class_name, sche.sche_cron
+      FROM dev_source_file_formal_module dev, schedules sche
+      where dev.sche_code = sche.sche_code
+       and sche.sche_status_code in (0,1,5);
+   </select>   
+   
+   <!-- 스케줄 로그 조회 -->
+   <select id="selectScheduleLog" parameterType="net.su.dialog.schedule.domain.SchVo" resultType="net.su.dialog.schedule.domain.ScheduleLog">
+      select log_seq as logSeq, dev_source_explanation as explanation, log_title as logTitle, log_contents as logContents, log_meta_contents as logMeteContents, dev_source_file_package_name as packageName ,dev_source_file_class_name as className,dev_source_file_method_name as methodName, log.sche_code as scheduleSeq
+      from schedule_log log, dev_source_file_formal_module dev
+      where log.sche_code = dev.sche_code;
+   </select>   
+   <!--개발소스파일 모듈 조회 -->
+   <select id="selectDevSourceInfo" parameterType="net.su.dialog.schedule.domain.SchVo" resultType="net.su.dialog.schedule.domain.ScheduleLog">
+        select    
+              dev_source_code
+                , dev_source_title
+                , dev_source_explanation
+                , dev_source_enroll_date
+                , file_route
+            , dev_source_file_method_name as methodName
+                , dev_source_file_package_name as packageName
+                , dev_source_file_class_name as className
+      from dev_source_file_formal_module 
+        where sche_code =#{scheCode};
+   </select>
+   
+   <select id="selectScheErrorLog" parameterType="net.su.dialog.schedule.domain.SchVo" resultType="net.su.dialog.schedule.domain.ScheduleLog">
+        select		sche_code    
+              		,log_seq as logSeq
+                	, log_title as logTitle
+                	, log_contents as logContents
+                	, log_meta_contents as logMeteContents
+                	, log_date as logDate
+      	from 		schedule_log 
+        where 		sche_code =#{scheCode}
+        and 		log_contents = '작동오류'
+        group by 	sche_code
+   </select>
+   
+   <select id ="selectScheRowCount" resultType="int">
+      SELECT   count(*)
+      FROM   schedules
+   </select>
+   
+   <insert id="insertDevSourceFormalModuleDaumExport" parameterType="net.su.dialog.schedule.domain.SchVo">
+      INSERT INTO       dev_source_file_formal_module (
+                        dev_source_title
+                     ,   dev_source_explanation
+                     ,   dev_source_enroll_date
+                     ,   file_route
+                     ,   activate_status
+                     ,   dev_source_file_method_name
+                     ,   dev_source_file_package_name
+                     ,   dev_source_file_class_name
+                        ,   sche_code
+                        )
+                              
+      VALUES            (  
+                         '다음뉴스 반출 모듈'
+                       , '다음 뉴스 데이터 반출 요청' 
+                       , now()
+                       , #{daumSchedulerPath}
+                       , 0
+                       , 'daumNewsExportScheduler'
+                       , 'net.su.dialog.formalModule.scheduler'
+                       , 'DaumNewsExportScheduler'
+                       , #{scheCode}
+                     );
+   </insert>
+   
+   <!-- 개발소스파일 커스터마이징 스케줄 코드 업데이트  -->
+   <update id="devFileCusScheUpdate" parameterType="net.su.dialog.schedule.domain.DataDevelopSourceVo">
+      update development_source_file_customizing
+      set    sche_code =  #{scheCode}, dev_source_act_status = '사용중'
+      where dev_source_code =  #{devSourceCode};
+   </update>
+   
+   
+</mapper>

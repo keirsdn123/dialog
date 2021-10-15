@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.su.dialog.management.mapper.CateManageMapper">
+	
+	<!-- 1차카테고리조회 -->
+	<select id="selectCate1" resultType="net.su.dialog.management.domain.CateManage">
+		SELECT a.cate_code as cateCode
+			, a.cate_title as cateTitle
+            , COUNT(DISTINCT b.data_code) as cateCount
+		FROM category1 a
+        LEFT JOIN dataset_category b
+        ON a.cate_code = b.cate_code
+        GROUP BY a.cate_code, a.cate_title;
+	</select>
+	
+	<!-- 2차카테고리조회 -->
+	<select id="selectCate2" resultType="net.su.dialog.management.domain.CateManage">
+		SELECT (a.cate_code2+100) as cateCode
+			, a.cate_title as cateTitle
+			, a.cate_code as cateRoot
+            , COUNT(b.cate_code2) as cateCount
+        FROM category2 a
+        LEFT JOIN dataset_category b
+        ON a.cate_code2 = b.cate_code2
+        GROUP BY a.cate_code2, a.cate_title, a.cate_code;
+	</select>
+	
+	<!-- 상위카테고리등록 -->
+	<insert id="insertCate" parameterType="net.su.dialog.management.domain.CateManage">
+		INSERT INTO category1
+			(cate_code
+			, cate_title
+			, cate_enroll_date
+			, cate_enroll_name)
+		VALUES
+			((SELECT IFNULL(MAX(a.cate_code),0)+1 as cate_code FROM category1 as a WHERE cate_code != 1000)
+			, #{cateTitle}
+			, CURDATE()
+			, #{memberCode})
+	</insert>
+	
+	<!-- 하위카테고리등록 -->
+	<insert id="insertCate2" parameterType="net.su.dialog.management.domain.CateManage">
+		INSERT INTO category2
+			(cate_code2
+			, cate_title
+			, cate_code
+			, cate_enroll_date
+			, cate_enroll_name)
+		VALUES
+			((SELECT IFNULL(MAX(a.cate_code2),0)+1 as cate_code2 FROM category2 as a)
+			, #{cateTitle}
+			, #{cateRoot}
+			, CURDATE()
+			, #{memberCode})
+	</insert>
+	
+	<!-- 하위카테고리조회 -->
+	<select id="selectChild" parameterType="net.su.dialog.management.domain.CateManage" resultType="net.su.dialog.management.domain.CateManage">
+		SELECT cate_code2 as cateCode
+			, cate_title as cateTitle
+		FROM category2
+		WHERE cate_code = #{cateRoot};
+	</select>
+	
+	<!-- 카테고리수정 -->
+	<update id="updateCate" parameterType="net.su.dialog.management.domain.CateManage">
+		<choose>
+			<when test="cateType==1">
+				UPDATE category1
+				SET cate_title = #{cateTitle}
+					, cate_mod_date = CURDATE()
+					, cate_mod_name = #{memberCode}
+				WHERE cate_code = #{cateCode};
+			</when>
+			<when test="cateType==2">
+				UPDATE category2
+				SET cate_title = #{cateTitle}
+					, cate_mod_date = CURDATE()
+					, cate_mod_name = #{memberCode}
+				WHERE cate_code2 = #{cateCode};
+			</when>
+		</choose>
+	</update>
+	
+	<!-- 카테고리삭제 -->
+	<delete id="deleteCate" parameterType="net.su.dialog.management.domain.CateManage">
+		<choose>
+			<when test="cateType==1 and countChild!=0"> 
+				DELETE parent, child FROM category1 parent, category2 child
+				WHERE parent.cate_code = #{cateCode}
+				AND child.cate_code =  #{cateCode};
+			</when>
+			<when test="cateType==1 and countChild==0"> 
+				DELETE FROM category1
+				WHERE cate_code = #{cateCode};
+			</when>
+			<when test="cateType==2"> 
+				DELETE FROM category2
+				WHERE cate_code2 = #{cateCode};
+			</when>
+		</choose>
+	</delete>
+	
+	<!-- 하위카테고리갯수조회 -->
+	<select id="countChild" parameterType="net.su.dialog.management.domain.CateManage" resultType="int">
+		SELECT COUNT(*)
+		FROM category2
+		WHERE cate_code = #{cateCode};
+	</select>
+	
+	<!-- 데이터셋 기타로 수정 -->
+	<update id="updateEtc" parameterType="java.util.List">
+		UPDATE dataset_category
+		SET cate_code = 1000, cate_code2 = 0
+		WHERE seq in
+			<foreach collection="list" item="selectDtset" open="(" close=");" separator=",">
+				${selectDtset}
+			</foreach> 
+	</update>
+	
+	<!-- 데이터셋 조회 -->
+	<select id="selectDtset" parameterType="net.su.dialog.management.domain.CateManage" resultType="int">
+		SELECT seq
+		FROM dataset_category
+		WHERE
+		<choose>
+			<when test="cateType==1">
+				cate_code = #{cateCode};
+			</when>
+			<when test="cateType==2">
+				cate_code2 = #{cateCode};
+			</when>
+		</choose> 
+	</select>
+</mapper>

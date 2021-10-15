@@ -1,0 +1,33 @@
+//메뉴바에서 to 투자관제탑 소개(목적) 구동 x(다른 둘은 가능)(로그인 가동)
+
+<p style="font-size:12px; line-height:200%; color:white;" align="left">
+▶ 돈을 맡긴 투자전문가가 수익은 잘 내고 있는지?
+</p>
+<br>
+<p style=font-size:12px; line-height:200%; color:white;" align="left">
+▶ 전문가가 추천한 투자상품의 수익은 잘 나고 있는지?
+</p>
+<br>
+<p style="font-size:12px; line-height:200%; color:white;" align="left">
+▶ 전문가가 출렁이는 시장에 잘 대응하고 있는지?
+</p>
+<br>
+<p style="font-size:12px; line-height:200%; color:white;" align="left">
+이런 어려움의 원인은 전문가들이 추천한 상품과 대응전략에 대한 객관적인 평가를 위한 기준이없기 때문입니다.저축.투자상품과 대응전략에 대한 객관적인 평가가 이루어지지 않을 경우 감정적인 의사결정을 내리기 쉽게 됩니다.
+</p>
+<br>
+<p style="font-size:12px; line-height:200%; color:white;" align="left">
+투자자는 상승시장에서 투자전문가들에게 무한신뢰를 보내지만 반대로 폭락장에서는 투자전문가에게 거친 항의를 하는 등 여전히 후진적인 투자문화가 남아있는 것도 성과평가를 통한 객관적인 평가기준이 없기 때문입니다.
+</p>
+<br>
+<p style="font-size:12px; line-height:200%; color:white;" align="left">
+투자관제탑에서는 금융에서 한발 앞서간 나라들의 성과평가시스템을 제공하여 투자자 스스로 성과평가를 할 수 있도록 지원합니다.
+</p>
+<br>
+*
+*
+*
+<br>
+<p style="font-size:12px; line-height:200%; color:white;" align="left">
+성과평가에 대한 좀 더 상세한 정보는 홈페이지 하단의 내용을 참조하시길 바랍니다.
+</p>

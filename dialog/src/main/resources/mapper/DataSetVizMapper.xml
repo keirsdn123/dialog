@@ -1,0 +1,542 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.su.dialog.dataSet.mapper.DataSetVizMapper">
+
+	<!-- 칼럼명 가지고 오기 -->
+	<select id="getSelectBox" parameterType="net.su.dialog.dataSet.domain.DataVizVo" resultType="net.su.dialog.dataSet.domain.DataVizVo">
+
+				SELECT ns.pause_standar_column1 AS pauseStandarColumn1, 
+				ns.pause_standar_column2 AS pauseStandarColumn2, 
+				ns.pause_standar_column3 AS pauseStandarColumn3, 
+				ns.pause_standar_column4 AS pauseStandarColumn4, 
+				ns.pause_standar_column5 AS pauseStandarColumn5, 
+				ns.pause_standar_column6 AS pauseStandarColumn6,				
+	       		ns.pause_standar_column7 AS pauseStandarColumn7, 
+	       		ns.pause_standar_column8 AS pauseStandarColumn8,
+	       		ns.pause_standar_column9 AS pauseStandarColumn9, 
+	       		ns.pause_standar_column10 AS pauseStandarColumn10,
+	       		ns.pause_standar_seq AS pauseStandarSeq,
+                dn.normal_data_standard_table_title AS normalDataStandardTableTitle,
+                ns.pause_standar_x AS pauseStandarX,
+                ns.pause_standar_y AS pauseStandarY,
+                ns.pause_standar_lable AS pauseStandarLable,
+                ns.pause_standar_condition AS pauseStandarCondition,
+                ns.pause_standar_style AS pauseStandarStyle
+      			FROM normal_data_standard_info ns, dataset_normal dn
+      			WHERE ns.data_code = dn.data_code AND ns.data_code = #{dataCode};   
+      			
+	</select>
+	
+	<select id="selectDReferenceReportList" resultType="net.su.dialog.report.domain.ReportDomain">
+		SELECT re.report_code as reportCode,
+				re.report_title as reportTitle,
+		        re.report_enroll_date as reportEnrollDate,
+		        mem.member_name as memberName,
+		        reda.data_code as dataCode
+		FROM report_dataset reda, report re, member mem
+		WHERE reda.report_code = re.report_code 
+		AND re.member_code = mem.member_code
+		AND data_code = #{dataCode};
+	</select>
+
+	<!-- 일반차트 -->
+	<select id="makeChartView" parameterType="net.su.dialog.dataSet.domain.DataVizVo" resultType="net.su.dialog.dataSet.domain.DataVizVo">
+			SELECT nt.${xcolName} as xcolName, nt.${ycolName} as ycolName
+			<if test = "xcolInfo != null">
+			,n.${xcolInfo} as xcolInfo	
+			</if>	 		       		         
+			FROM `${normalDataStandardTableTitle}` nt, normal_data_standard_info n
+			where nt.pause_standar_seq = n.pause_standar_seq and nt.pause_standar_seq = #{pauseStandarSeq} 
+			GROUP BY nt.${xcolName};
+	</select>
+		
+		<!-- 일반차트 sum -->
+	<select id="makeChartSumView" parameterType="net.su.dialog.dataSet.domain.DataVizVo" resultType="net.su.dialog.dataSet.domain.DataVizVo">
+			SELECT nt.${xcolName} as xcolName, SUM(nt.${ycolName}) as ycolName
+			<if test = "xcolInfo != null">
+			,n.${xcolInfo} as xcolInfo	
+			</if>		           		       		         
+			FROM `${normalDataStandardTableTitle}` nt, normal_data_standard_info n 
+			where nt.pause_standar_seq = n.pause_standar_seq and nt.pause_standar_seq = #{pauseStandarSeq}
+			GROUP BY nt.${xcolName};
+	</select>
+	
+	<!-- 일반차트 avg -->
+	<select id="makeChartAvgView" parameterType="net.su.dialog.dataSet.domain.DataVizVo" resultType="net.su.dialog.dataSet.domain.DataVizVo">
+			SELECT nt.${xcolName} as xcolName, AVG(nt.${ycolName}) as ycolName
+			<if test = "xcolInfo != null">
+			,n.${xcolInfo} as xcolInfo	
+			</if>	           		       		         
+			FROM `${normalDataStandardTableTitle}` nt, normal_data_standard_info n 
+			where nt.pause_standar_seq = n.pause_standar_seq and nt.pause_standar_seq = #{pauseStandarSeq}
+			GROUP BY nt.${xcolName};
+	</select>
+	
+	<!-- 일반차트 max -->
+	<select id="makeChartMaxView" parameterType="net.su.dialog.dataSet.domain.DataVizVo" resultType="net.su.dialog.dataSet.domain.DataVizVo">
+			SELECT nt.${xcolName} as xcolName, MAX(nt.${ycolName}) as ycolName
+			<if test = "xcolInfo != null">
+			,n.${xcolInfo} as xcolInfo	
+			</if>	           		       		         
+			FROM `${normalDataStandardTableTitle}` nt, normal_data_standard_info n 
+			where nt.pause_standar_seq = n.pause_standar_seq and nt.pause_standar_seq = #{pauseStandarSeq}
+			GROUP BY nt.${xcolName};
+	</select>
+	
+	<!-- 일반차트 min -->
+	<select id="makeChartMinView" parameterType="net.su.dialog.dataSet.domain.DataVizVo" resultType="net.su.dialog.dataSet.domain.DataVizVo">
+			SELECT nt.${xcolName} as xcolName, MIN(nt.${ycolName}) as ycolName
+			<if test = "xcolInfo != null">
+			,n.${xcolInfo} as xcolInfo	
+			</if>		           		       		         
+			FROM `${normalDataStandardTableTitle}` nt, normal_data_standard_info n 
+			where nt.pause_standar_seq = n.pause_standar_seq and nt.pause_standar_seq = #{pauseStandarSeq}
+			GROUP BY nt.${xcolName};
+	</select>
+		
+	<!-- 일반차트 count -->
+	<select id="makeChartCountView" parameterType="net.su.dialog.dataSet.domain.DataVizVo" resultType="net.su.dialog.dataSet.domain.DataVizVo">
+			SELECT nt.${xcolName} as xcolName, COUNT(nt.${ycolName}) as ycolName
+			<if test = "xcolInfo != null">
+			,n.${xcolInfo} as xcolInfo	
+			</if>	           		       		         
+			FROM `${normalDataStandardTableTitle}` nt, normal_data_standard_info n 
+			where nt.pause_standar_seq = n.pause_standar_seq and nt.pause_standar_seq = #{pauseStandarSeq}
+			GROUP BY nt.${xcolName};
+	</select>
+	
+	
+	<!-- 상세조회시 바로 보이는것  BAR, LINE-->
+	<select id="selectBLChart" parameterType="net.su.dialog.dataSet.domain.DataVizVo" resultType="net.su.dialog.dataSet.domain.DataVizVo">			
+			SELECT s.${xcolName} as xcolName , s.${ycolName} as ycolName
+			<if test = "xcolInfo != null">
+			, n.${xcolName}_lable as xcolInfo
+			</if>		           		       		         
+			FROM `${normalDataStandardTableTitle}` s, normal_data_standard_info n
+			where s.pause_standar_seq = n.pause_standar_seq and s.pause_standar_seq = #{pauseStandarSeq}
+			GROUP BY s.${xcolName};
+	</select>
+	
+	<!-- 상세조회시 바로 보이는것 SUM/ BAR, LINE-->
+	<select id="selectBLSumChart" parameterType="net.su.dialog.dataSet.domain.DataVizVo" resultType="net.su.dialog.dataSet.domain.DataVizVo">
+			SELECT s.${xcolName} as xcolName , SUM(s.${ycolName}) as ycolName
+			<if test = "xcolInfo != null">
+			, n.${xcolName}_lable as xcolInfo
+			</if>		           		       		         
+			FROM `${normalDataStandardTableTitle}` s, normal_data_standard_info n
+			where s.pause_standar_seq = n.pause_standar_seq and s.pause_standar_seq = #{pauseStandarSeq}
+			GROUP BY s.${xcolName};
+	</select>
+	
+	<!-- 상세조회시 바로 보이는것  AVG /BAR, LINE-->
+	<select id="selectBLAvgChart" parameterType="net.su.dialog.dataSet.domain.DataVizVo" resultType="net.su.dialog.dataSet.domain.DataVizVo">
+			SELECT s.${xcolName} as xcolName , AVG(s.${ycolName}) as ycolName
+			<if test = "xcolInfo != null">
+			, n.${xcolName}_lable as xcolInfo
+			</if>		           		       		         
+			FROM `${normalDataStandardTableTitle}` s, normal_data_standard_info n
+			where s.pause_standar_seq = n.pause_standar_seq and s.pause_standar_seq = #{pauseStandarSeq}
+			GROUP BY s.${xcolName};
+	</select>
+	
+	<!-- 상세조회시 바로 보이는것  MAX/ BAR, LINE-->
+	<select id="selectBLMaxChart" parameterType="net.su.dialog.dataSet.domain.DataVizVo" resultType="net.su.dialog.dataSet.domain.DataVizVo">
+			SELECT s.${xcolName} as xcolName , MAX(s.${ycolName}) as ycolName
+			<if test = "xcolInfo != null">
+			, n.${xcolName}_lable as xcolInfo
+			</if>		           		       		         
+			FROM `${normalDataStandardTableTitle}` s, normal_data_standard_info n
+			where s.pause_standar_seq = n.pause_standar_seq and s.pause_standar_seq = #{pauseStandarSeq}
+			GROUP BY s.${xcolName};
+	</select>
+	
+	<!-- 상세조회시 바로 보이는것  MIN/ BAR, LINE-->
+	<select id="selectBLMinChart" parameterType="net.su.dialog.dataSet.domain.DataVizVo" resultType="net.su.dialog.dataSet.domain.DataVizVo">
+			SELECT s.${xcolName} as xcolName , MIN(s.${ycolName}) as ycolName
+			<if test = "xcolInfo != null">
+			, n.${xcolName}_lable as xcolInfo
+			</if>		           		       		         
+			FROM `${normalDataStandardTableTitle}` s, normal_data_standard_info n
+			where s.pause_standar_seq = n.pause_standar_seq and s.pause_standar_seq = #{pauseStandarSeq}
+			GROUP BY s.${xcolName};
+	</select>
+		
+	<!-- 상세조회시 바로 보이는것  COUNT/ BAR, LINE-->
+	<select id="selectBLCountChart" parameterType="net.su.dialog.dataSet.domain.DataVizVo" resultType="net.su.dialog.dataSet.domain.DataVizVo">
+			SELECT s.${xcolName} as xcolName , COUNT(s.${ycolName}) as ycolName
+			<if test = "xcolInfo != null">
+			, n.${xcolName}_lable as xcolInfo
+			</if>		           		       		         
+			FROM `${normalDataStandardTableTitle}` s, normal_data_standard_info n
+			where s.pause_standar_seq = n.pause_standar_seq and s.pause_standar_seq = #{pauseStandarSeq}
+			GROUP BY s.${xcolName};
+	</select>
+	
+	
+	<!-- 상세조회시 바로 보이는것  PIE, DONUT-->
+	<select id="selectPDChart" parameterType="net.su.dialog.dataSet.domain.DataVizVo" resultType="java.util.HashMap">
+			SELECT s.${xcolName} as xcolName , s.${ycolName} as ycolName
+			<if test = "xcolInfo != null">
+			, n.${xcolName}_lable as xcolInfo
+			</if>		           		       		         
+			FROM `${normalDataStandardTableTitle}` s, normal_data_standard_info n
+			where s.pause_standar_seq = n.pause_standar_seq and s.pause_standar_seq = #{pauseStandarSeq}
+			GROUP BY s.${xcolName};
+	</select>
+	
+	<!-- 상세조회시 바로 보이는것 SUM/ PIE, DONUT-->
+	<select id="selectPDSumChart" parameterType="net.su.dialog.dataSet.domain.DataVizVo" resultType="java.util.HashMap">
+			SELECT s.${xcolName} as xcolName , SUM(s.${ycolName}) as ycolName
+			<if test = "xcolInfo != null">
+			, n.${xcolName}_lable as xcolInfo
+			</if>		           		       		         
+			FROM `${normalDataStandardTableTitle}` s, normal_data_standard_info n
+			where s.pause_standar_seq = n.pause_standar_seq and s.pause_standar_seq = #{pauseStandarSeq}
+			GROUP BY s.${xcolName};
+	</select>
+	
+	<!-- 상세조회시 바로 보이는것  AVG /PIE, DONUT-->
+	<select id="selectPDAvgChart" parameterType="net.su.dialog.dataSet.domain.DataVizVo" resultType="java.util.HashMap">
+			SELECT s.${xcolName} as xcolName , AVG(s.${ycolName}) as ycolName
+			<if test = "xcolInfo != null">
+			, n.${xcolName}_lable as xcolInfo
+			</if>		           		       		         
+			FROM `${normalDataStandardTableTitle}` s, normal_data_standard_info n
+			where s.pause_standar_seq = n.pause_standar_seq and s.pause_standar_seq = #{pauseStandarSeq}
+			GROUP BY s.${xcolName};
+	</select>
+	
+	<!-- 상세조회시 바로 보이는것  MAX/ PIE, DONUT-->
+	<select id="selectPDMaxChart" parameterType="net.su.dialog.dataSet.domain.DataVizVo" resultType="java.util.HashMap">
+			SELECT s.${xcolName} as xcolName , MAX(s.${ycolName}) as ycolName
+			<if test = "xcolInfo != null">
+			, n.${xcolName}_lable as xcolInfo
+			</if>		           		       		         
+			FROM `${normalDataStandardTableTitle}` s, normal_data_standard_info n
+			where s.pause_standar_seq = n.pause_standar_seq and s.pause_standar_seq = #{pauseStandarSeq}
+			GROUP BY s.${xcolName};
+	</select>
+	
+	<!-- 상세조회시 바로 보이는것  MIN/ PIE, DONUT-->
+	<select id="selectPDMinChart" parameterType="net.su.dialog.dataSet.domain.DataVizVo" resultType="java.util.HashMap">
+			SELECT s.${xcolName} as xcolName , MIN(s.${ycolName}) as ycolName
+			<if test = "xcolInfo != null">
+			, n.${xcolName}_lable as xcolInfo
+			</if>		           		       		         
+			FROM `${normalDataStandardTableTitle}` s, normal_data_standard_info n
+			where s.pause_standar_seq = n.pause_standar_seq and s.pause_standar_seq = #{pauseStandarSeq}
+			GROUP BY s.${xcolName};
+	</select>
+		
+	<!-- 상세조회시 바로 보이는것  COUNT/ PIE, DONUT-->
+	<select id="selectPDCountChart" parameterType="net.su.dialog.dataSet.domain.DataVizVo" resultType="java.util.HashMap">
+			SELECT s.${xcolName} as xcolName , COUNT(s.${ycolName}) as ycolName
+			<if test = "xcolInfo != null">
+			, n.${xcolName}_lable as xcolInfo
+			</if>		           		       		         
+			FROM `${normalDataStandardTableTitle}` s, normal_data_standard_info n
+			where s.pause_standar_seq = n.pause_standar_seq and s.pause_standar_seq = #{pauseStandarSeq}
+			GROUP BY s.${xcolName};
+	</select>
+	
+	<!-- 상세조회시 바로 보이는것 GROUP -->
+	<select id="selectGChart" parameterType="net.su.dialog.dataSet.domain.DataVizGroupVo" resultType="java.util.HashMap">
+			SELECT s.${xcolName} as x, s.${x1colName} as id , s.${ycolName} as y
+			<if test = "xcolInfo != null ">
+			, n.${xcolName}_lable as xcolInfo	           		       		         
+			</if>
+			<if test = "x1colInfo != null ">
+			, n.${x1colName}_lable as x1colInfo
+			</if>
+			FROM `${normalDataStandardTableTitle}` s, normal_data_standard_info n
+			where s.pause_standar_seq = n.pause_standar_seq and s.pause_standar_seq = #{pauseStandarSeq}
+			group by s.${xcolName},s.${x1colName};				
+	</select>
+	
+	
+	<!-- 상세조회시 바로 보이는것 SUM/ GROUP -->
+	<select id="selectGSumChart" parameterType="net.su.dialog.dataSet.domain.DataVizGroupVo" resultType="java.util.HashMap">
+			SELECT s.${xcolName} as x, s.${x1colName} as id , SUM(s.${ycolName}) as y
+			<if test = "xcolInfo != null ">
+			, n.${xcolName}_lable as xcolInfo	           		       		         
+			</if>
+			<if test = "x1colInfo != null ">
+			, n.${x1colName}_lable as x1colInfo
+			</if>
+			FROM `${normalDataStandardTableTitle}` s, normal_data_standard_info n
+			where s.pause_standar_seq = n.pause_standar_seq and s.pause_standar_seq = #{pauseStandarSeq}
+			group by s.${xcolName},s.${x1colName};					
+	</select>
+	
+	
+	<!-- 상세조회시 바로 보이는것 AVG/ GROUP -->
+	<select id="selectGAvgChart" parameterType="net.su.dialog.dataSet.domain.DataVizGroupVo" resultType="java.util.HashMap">
+			SELECT s.${xcolName} as x, s.${x1colName} as id , AVG(s.${ycolName}) as y
+			<if test = "xcolInfo != null ">
+			, n.${xcolName}_lable as xcolInfo	           		       		         
+			</if>
+			<if test = "x1colInfo != null ">
+			, n.${x1colName}_lable as x1colInfo
+			</if>	           		       		         
+			FROM `${normalDataStandardTableTitle}` s, normal_data_standard_info n
+			where s.pause_standar_seq = n.pause_standar_seq and s.pause_standar_seq = #{pauseStandarSeq}
+			group by s.${xcolName},s.${x1colName};								
+	</select>
+	
+	<!-- 상세조회시 바로 보이는것 MAX/ GROUP -->
+	<select id="selectGMaxChart" parameterType="net.su.dialog.dataSet.domain.DataVizGroupVo" resultType="java.util.HashMap">
+			SELECT s.${xcolName} as x, s.${x1colName} as id , MAX(s.${ycolName}) as y
+			<if test = "xcolInfo != null ">
+			, n.${xcolName}_lable as xcolInfo	           		       		         
+			</if>
+			<if test = "x1colInfo != null ">
+			, n.${x1colName}_lable as x1colInfo
+			</if>           		       		         
+			FROM `${normalDataStandardTableTitle}` s, normal_data_standard_info n
+			where s.pause_standar_seq = n.pause_standar_seq and s.pause_standar_seq = #{pauseStandarSeq}
+			group by s.${xcolName},s.${x1colName};						
+	</select>
+	
+	<!-- 상세조회시 바로 보이는것 MIN/ GROUP -->
+	<select id="selectGMinChart" parameterType="net.su.dialog.dataSet.domain.DataVizGroupVo" resultType="java.util.HashMap">
+			SELECT s.${xcolName} as x, s.${x1colName} as id , MIN(s.${ycolName}) as y
+			<if test = "xcolInfo != null ">
+			, n.${xcolName}_lable as xcolInfo	           		       		         
+			</if>
+			<if test = "x1colInfo != null ">
+			, n.${x1colName}_lable as x1colInfo
+			</if>           		       		         
+			FROM `${normalDataStandardTableTitle}` s, normal_data_standard_info n
+			where s.pause_standar_seq = n.pause_standar_seq and s.pause_standar_seq = #{pauseStandarSeq}
+			group by s.${xcolName},s.${x1colName};										
+	</select>
+	
+	<!-- 상세조회시 바로 보이는것 COUNT/ GROUP -->
+	<select id="selectGCountChart" parameterType="net.su.dialog.dataSet.domain.DataVizGroupVo" resultType="java.util.HashMap">
+			SELECT s.${xcolName} as x, s.${x1colName} as id , GROUP(s.${ycolName}) as y
+			<if test = "xcolInfo != null ">
+			, n.${xcolName}_lable as xcolInfo	           		       		         
+			</if>
+			<if test = "x1colInfo != null ">
+			, n.${x1colName}_lable as x1colInfo
+			</if>	           		       		         
+			FROM `${normalDataStandardTableTitle}` s, normal_data_standard_info n
+			where s.pause_standar_seq = n.pause_standar_seq and s.pause_standar_seq = #{pauseStandarSeq}
+			group by s.${xcolName},s.${x1colName};									
+	</select>
+	
+	
+	
+	<!-- 원,파이 -->
+	<select id="pieChartView" parameterType="net.su.dialog.dataSet.domain.DataVizVo" resultType="java.util.HashMap">
+			SELECT nt.${xcolName} as xcolName, nt.${ycolName} as ycolName
+			<if test = "xcolInfo != null">
+			,n.${xcolInfo} as xcolInfo	
+			</if>					           		       		         
+			FROM `${normalDataStandardTableTitle}` nt, normal_data_standard_info n
+			where nt.pause_standar_seq = n.pause_standar_seq and nt.pause_standar_seq = #{pauseStandarSeq} 
+			GROUP BY nt.${xcolName};
+	</select>
+		
+		<!-- 원,파이  sum -->
+	<select id="pieChartSumView" parameterType="net.su.dialog.dataSet.domain.DataVizVo" resultType="java.util.HashMap">
+			SELECT nt.${xcolName} as xcolName, SUM(nt.${ycolName}) as ycolName
+			<if test = "xcolInfo != null">
+			,n.${xcolInfo} as xcolInfo	
+			</if>	           		       		         
+			FROM `${normalDataStandardTableTitle}` nt, normal_data_standard_info n 
+			where nt.pause_standar_seq = n.pause_standar_seq and nt.pause_standar_seq = #{pauseStandarSeq}
+			GROUP BY nt.${xcolName};
+	</select>
+	
+	<!-- 원,파이  avg -->
+	<select id="pieChartAvgView" parameterType="net.su.dialog.dataSet.domain.DataVizVo" resultType="java.util.HashMap">
+			SELECT nt.${xcolName} as xcolName, AVG(nt.${ycolName}) as ycolName
+			<if test = "xcolInfo != null">
+			,n.${xcolInfo} as xcolInfo	
+			</if>		           		       		         
+			FROM `${normalDataStandardTableTitle}` nt, normal_data_standard_info n 
+			where nt.pause_standar_seq = n.pause_standar_seq and nt.pause_standar_seq = #{pauseStandarSeq}
+			GROUP BY nt.${xcolName};
+	</select>
+	
+	<!-- 원,파이  max -->
+	<select id="pieChartMaxView" parameterType="net.su.dialog.dataSet.domain.DataVizVo" resultType="java.util.HashMap">
+			SELECT nt.${xcolName} as xcolName, MAX(nt.${ycolName}) as ycolName
+			<if test = "xcolInfo != null">
+			,n.${xcolInfo} as xcolInfo	
+			</if>           		       		         
+			FROM `${normalDataStandardTableTitle}` nt, normal_data_standard_info n 
+			where nt.pause_standar_seq = n.pause_standar_seq and nt.pause_standar_seq = #{pauseStandarSeq}
+			GROUP BY nt.${xcolName};
+	</select>
+	
+	<!-- 원,파이  min -->
+	<select id="pieChartMinView" parameterType="net.su.dialog.dataSet.domain.DataVizVo" resultType="java.util.HashMap">
+			SELECT nt.${xcolName} as xcolName, MIN(nt.${ycolName}) as ycolName
+			<if test = "xcolInfo != null">
+			,n.${xcolInfo} as xcolInfo	
+			</if>	           		       		         
+			FROM `${normalDataStandardTableTitle}` nt, normal_data_standard_info n 
+			where nt.pause_standar_seq = n.pause_standar_seq and nt.pause_standar_seq = #{pauseStandarSeq}
+			GROUP BY nt.${xcolName};
+	</select>
+		
+	<!-- 원,파이  count -->
+	<select id="pieChartCountView" parameterType="net.su.dialog.dataSet.domain.DataVizVo" resultType="java.util.HashMap">
+			SELECT nt.${xcolName} as xcolName, COUNT(nt.${ycolName}) as ycolName
+			<if test = "xcolInfo != null">
+			,n.${xcolInfo} as xcolInfo	
+			</if>	           		       		         
+			FROM `${normalDataStandardTableTitle}` nt, normal_data_standard_info n 
+			where nt.pause_standar_seq = n.pause_standar_seq and nt.pause_standar_seq = #{pauseStandarSeq}
+			GROUP BY nt.${xcolName};
+	</select>
+	
+	
+	
+	
+	<!-- 그룹바 차트 -->
+	<select id="groupChartView" parameterType="net.su.dialog.dataSet.domain.DataVizGroupVo" resultType="java.util.HashMap">
+			SELECT nt.${xcolName} as x, nt.${x1colName} as id , nt.${ycolName} as y		
+			<if test = "x1colInfo != null">
+			 ,n.${x1colInfo} as x1colInfo
+			 </if>		 
+			 <if test = "xcolInfo != null">
+			 ,n.${xcolInfo} as xcolInfo
+			 </if>	           		       		         
+			FROM `${normalDataStandardTableTitle}` nt, normal_data_standard_info n
+			where nt.pause_standar_seq = n.pause_standar_seq and nt.pause_standar_seq = #{pauseStandarSeq}
+			group by nt.${xcolName},nt.${x1colName};			
+	</select>
+	
+	
+	<!-- 그룹바 차트 sum -->
+	<select id="groupChartSumView" parameterType="net.su.dialog.dataSet.domain.DataVizGroupVo" resultType="java.util.HashMap">
+			SELECT nt.${xcolName} as x, nt.${x1colName} as id , SUM(nt.${ycolName}) as y
+			<if test = "x1colInfo != null">
+			 ,n.${x1colInfo} as x1colInfo
+			 </if>
+			 <if test = "xcolInfo!= null">
+			 ,n.${xcolInfo} as xcolInfo
+			 </if>			           		       		         
+			FROM `${normalDataStandardTableTitle}` nt, normal_data_standard_info n
+			where nt.pause_standar_seq = n.pause_standar_seq and nt.pause_standar_seq = #{pauseStandarSeq}
+			group by nt.${xcolName},nt.${x1colName};				
+	</select>
+	
+	
+	<!-- 그룹바 차트 avg -->
+	<select id="groupChartAvgView" parameterType="net.su.dialog.dataSet.domain.DataVizGroupVo" resultType="java.util.HashMap">
+			SELECT nt.${xcolName} as x, nt.${x1colName} as id , AVG(nt.${ycolName}) as y
+			<if test = "x1colInfo != null">
+			 ,n.${x1colInfo} as x1colInfo
+			 </if>
+			 <if test = "xcolInfo != null">
+			 ,n.${xcolInfo} as xcolInfo
+			 </if>			           		       		         
+			FROM `${normalDataStandardTableTitle}` nt, normal_data_standard_info n
+			where nt.pause_standar_seq = n.pause_standar_seq and nt.pause_standar_seq = #{pauseStandarSeq}
+			group by nt.${xcolName},nt.${x1colName};			
+	</select>
+	
+	<!-- 그룹바 차트 max -->
+	<select id="groupChartMaxView" parameterType="net.su.dialog.dataSet.domain.DataVizGroupVo" resultType="java.util.HashMap">
+			SELECT nt.${xcolName} as x, nt.${x1colName} as id , MAX(nt.${ycolName}) as y
+			<if test = "x1colInfo != null">
+			 ,n.${x1colInfo} as x1colInfo
+			 </if>
+			 <if test = "xcolInfo != null">
+			 ,n.${xcolInfo} as xcolInfo
+			 </if>			           		       		         
+			FROM `${normalDataStandardTableTitle}` nt, normal_data_standard_info n
+			where nt.pause_standar_seq = n.pause_standar_seq and nt.pause_standar_seq = #{pauseStandarSeq}
+			group by nt.${xcolName},nt.${x1colName};			
+	</select>
+	
+	<!-- 그룹바 차트 min -->
+	<select id="groupChartMinView" parameterType="net.su.dialog.dataSet.domain.DataVizGroupVo" resultType="java.util.HashMap">
+			SELECT nt.${xcolName} as x, nt.${x1colName} as id , MIN(nt.${ycolName}) as y
+			<if test = "x1colInfo != null">
+			 ,n.${x1colInfo} as x1colInfo
+			 </if>
+			 <if test = "xcolInfo != null">
+			 ,n.${xcolInfo} as xcolInfo
+			 </if>			           		       		         
+			FROM `${normalDataStandardTableTitle}` nt, normal_data_standard_info n
+			where nt.pause_standar_seq = n.pause_standar_seq and nt.pause_standar_seq = #{pauseStandarSeq}
+			group by nt.${xcolName},nt.${x1colName};							
+	</select>
+	
+	<!-- 그룹바 차트 COUNT -->
+	<select id="groupChartCountView" parameterType="net.su.dialog.dataSet.domain.DataVizGroupVo" resultType="java.util.HashMap">
+			SELECT nt.${xcolName} as x, nt.${x1colName} as id , COUNT(nt.${ycolName}) as y
+			<if test = "x1colInfo != null">
+			 ,n.${x1colInfo} as x1colInfo
+			 </if>
+			 <if test = "xcolInfo != null">
+			 ,n.${xcolInfo} as xcolInfo
+			 </if>	           		       		         
+			FROM `${normalDataStandardTableTitle}` nt, normal_data_standard_info n
+			where nt.pause_standar_seq = n.pause_standar_seq and nt.pause_standar_seq = #{pauseStandarSeq}
+			group by nt.${xcolName},nt.${x1colName};					
+	</select>
+	
+	<update id="updateDataSetRequestViz" parameterType="net.su.dialog.dataSet.domain.DataVizVo" >
+		update dataset_normal 
+		set status = 'P',
+		 	viz_requests = #{requestVizContent}
+		where data_code = #{dataCode};
+	</update>
+	
+	<select id="selectVFTitle" parameterType="net.su.dialog.dataSet.domain.DataVizVo" resultType="net.su.dialog.dataSet.domain.DataVizVo">
+			SELECT data_code as dataCode, 
+					pause_standar_x as vizPauseStandarX, 
+					pause_standar_y as vizPauseStandarY, 
+					pause_standar_lable as vizPauseStandarLable,
+					pause_standar_condition as vizPauseStandarCondition
+			FROM normal_data_standard_info
+			WHERE data_code = #{dataCode};
+	</select>
+	
+	<select id="selectVTitle" parameterType="net.su.dialog.dataSet.domain.DataVizVo" resultType="net.su.dialog.dataSet.domain.DataVizVo">
+      select 	${vizPauseStandarX} as pauseStandarX, ${vizPauseStandarY} as pauseStandarY
+            	,${vizPauseStandarCondition} as pauseStandarCondition
+            	<if test = "vizPauseStandarLable != '' ">
+            	,${vizPauseStandarLable} as pauseStandarLable
+            	</if>
+            	<if test = "vizPauseStandarXInfo != null">
+            ,${vizPauseStandarXInfo}_lable as pauseStandarXInfo
+            </if>
+            <if test = "vizPauseStandarX1Info != null">
+            ,${vizPauseStandarX1Info}_lable as pauseStandarX1Info
+            </if>
+      from normal_data_standard_info
+      where data_code = #{dataCode};
+   </select>
+	
+	<select id="selectDBPreviewTitle" parameterType="net.su.dialog.dataSet.domain.DataVizVo" resultType="net.su.dialog.dataSet.domain.DataVizVo">
+		select normal_data_table_title as normalDataTableTitle
+		from dataset_normal
+		where data_code = #{dataCode};
+	</select>
+	
+	<select id ="selectDBPreviewCol" parameterType="net.su.dialog.dataSet.domain.DataVizVo" resultType="net.su.dialog.dataSet.domain.DataVizVo">
+		SELECT column_name as columnNme
+		FROM INFORMATION_SCHEMA.COLUMNS 
+		WHERE TABLE_SCHEMA = SCHEMA()
+		AND ORDINAL_POSITION not in(1,2
+		,((SELECT MAX(ORDINAL_POSITION)
+										FROM INFORMATION_SCHEMA.COLUMNS 
+										WHERE TABLE_SCHEMA = SCHEMA()
+										AND TABLE_NAME = #{normalDataTableTitle}))
+										)
+		AND TABLE_NAME = '${normalDataTableTitle}';
+	</select>
+	
+	<select id="selectDBdataList" parameterType="HashMap" resultType="java.util.LinkedHashMap" >
+		SELECT ${changeData}
+		FROM  `${normalDataTableTitle}`
+    </select>
+</mapper>

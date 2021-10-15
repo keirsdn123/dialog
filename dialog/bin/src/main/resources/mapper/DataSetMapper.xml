@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="net.su.dialog.dataSet.mapper.DataSetMapper">
+<!--      규철 파트  -->
+
+
+<!--    1차 카테고리 조회 -->
+   	<select id="getCategotyList" resultType="net.su.dialog.dataSet.domain.CategoryValueObject" >
+		select 	cate_code as categorySeq
+				,cate_title as categoryNme
+		from category1;
+	</select>
+<!-- 	2차 카테고리 조회 -->
+	<select id="getCategoryList" resultType="net.su.dialog.dataSet.domain.CategoryValueObject" >
+			select 	cate_code2 as categorySeq
+				,cate_title as categoryNme
+		from  category2
+		where cate_code = #{categorySeq};
+	</select>
+
+<!-- 	데이터셋 목록 카테고리 선택시 데이터목록 조회 -->
+<!-- 	<select id ="selectCDatasetList" resultType="net.su.dialog.dataSet.domain.Dataset"> -->
+<!-- 		SELECT d.data_code as dataCode,  -->
+<!-- 			   d.dataset_name as dataSetName, -->
+<!-- 			   m.member_name as memberName, -->
+<!-- 			   d.data_enroll_date as dataEnrollDate, -->
+<!-- 			   d.viz_whether as vizWhether,			    -->
+<!-- 			   d.type_normal_regularly as typeNormalRegularly -->
+<!-- 		FROM dataset d, dataset_category dc, category1 c, member m -->
+<!-- 		WHERE c.cate_code = dc.cate_code and m.member_code = d.member_code and  d.data_code = dc.data_code and c.cate_code = #{categorySeq} and d.type_normal_regularly = "일시" -->
+<!-- 		GROUP BY dataCode; -->
+<!-- 	</select> -->
+	
+<!-- 	<select id ="selectACDatasetList" resultType="net.su.dialog.dataSet.domain.Dataset"> -->
+<!-- 		SELECT d.data_code as dataCode,  -->
+<!-- 			   d.dataset_name as dataSetName, -->
+<!-- 			   m.member_name as memberName, -->
+<!-- 			   d.data_enroll_date as dataEnrollDate, -->
+<!-- 			   d.viz_whether as vizWhether,			    -->
+<!-- 			   d.type_normal_regularly as typeNormalRegularly -->
+<!-- 		FROM dataset d, dataset_category dc, category1 c, member m -->
+<!-- 		WHERE c.cate_code = dc.cate_code and m.member_code = d.member_code and  d.data_code = dc.data_code and d.type_normal_regularly = "일시" -->
+<!-- 		GROUP BY dataCode; -->
+<!-- 	</select> -->
+
+<!-- 	데이터셋 목록 카테고리 -->
+	<select id="selectDCategory" resultType="net.su.dialog.dataSet.domain.CategoryValueObject" >
+		SELECT cate_code as categorySeq,
+				cate_title as categoryNme
+		FROM category1
+		WHERE cate_code NOT IN (7,8,9);
+	</select>
+<!-- 	메뉴 리스트 조회 -->
+	<select id="SelectMenuList" resultType="net.su.dialog.dataSet.domain.Menulist" >
+		select 	menu_code as menuCode
+				,menu_title as menuTitle
+				,menu_url as menuUrl
+				,menu_index as menuIndex
+				,menu_root as menuRoot
+				,menu_level as menuLevel
+				,menu_use as menuUse
+		from menu_table
+		where menu_use = 'Y'
+		<if test="memberRatingCode == 3">
+		and member_rating_code = #{memberRatingCode};
+		</if>
+		<if test="memberRatingCode != 3">
+		and member_rating_code <![CDATA[<=]]> #{memberRatingCode};
+		</if>
+	</select>
+	
+<!-- 	<select id="SelectMenuListDetail" resultType="net.su.dialog.dataSet.domain.Menulist" parameterType="net.su.dialog.dataSet.domain.MenuRatingInfo"> -->
+<!-- 		select 	menu_code as menuCode -->
+<!-- 				,menu_title as menuTitle -->
+<!-- 				,menu_url as menuUrl -->
+<!-- 				,menu_index as menuIndex -->
+<!-- 				,menu_root as menuRoot -->
+<!-- 				,menu_level as menuLevel -->
+<!-- 		from menu_table -->
+<!-- 		where menu_root = #{menuCode} -->
+<!-- 		and member_rating_code = #{memberRatingCode}; -->
+<!-- 	</select> -->
+
+<!-- 데이터 셋 목록 조회 -->
+	<select id="selectDatasetList" resultType="net.su.dialog.dataSet.domain.Dataset" >
+		SELECT 	dt.data_code as dataCode
+				,dt.dataset_name as datasetName
+				,mb.member_name as memberName
+				,dt.data_enroll_date as dataEnrollDate
+				,dt.viz_whether as vizWhether
+				,dt.type_normal_regularly as typeNormalRegularly
+								
+		FROM dataset dt JOIN member mb ON dt.member_code = mb.member_code
+		JOIN dataset_category dtca ON dt.data_code = dtca.data_code
+		<if test="categorySeq == 0"> 
+        	AND dtca.cate_code not in (7,8)
+        </if>
+   		<if test="categorySeq != 0"> 
+       		AND dtca.cate_code = #{categorySeq}
+        </if>
+			AND dt.member_rating_code <![CDATA[<=]]> #{memberRatingCode}
+		<if test="dataSetSearchType == 'dataSetWriter'">
+			AND mb.member_name like '%${dataSetSearchWrd}%'
+		</if>
+		<if test="dataSetSearchType == 'dataSetTitle'">
+			AND dt.dataset_name like '%${dataSetSearchWrd}%'
+		</if>
+		GROUP BY dt.data_code desc
+		LIMIT ${(currentPage-1)*perPage},${perPage}
+		;
+	</select>
+<!-- 데이터 셋 뉴스 카테고리 목록 조회 -->
+	<select id="selectDatasetNewsList" resultType="net.su.dialog.dataSet.domain.Dataset" >
+		SELECT 	dt.data_code as dataCode
+				,dt.dataset_name as datasetName
+				,mb.member_name as memberName
+				,dt.data_enroll_date as dataEnrollDate
+				,dt.viz_whether as vizWhether
+				,dt.type_normal_regularly as typeNormalRegularly
+								
+		FROM dataset dt JOIN member mb ON dt.member_code = mb.member_code
+		JOIN dataset_category dtca ON dt.data_code = dtca.data_code 
+        AND dtca.cate_code in (7,8)
+		AND dt.member_rating_code <![CDATA[<=]]> #{memberRatingCode}
+		<if test="dataSetSearchType == 'dataSetWriter'">
+			AND mb.member_name like '%${dataSetSearchWrd}%'
+		</if>
+		<if test="dataSetSearchType == 'dataSetTitle'">
+			AND dt.dataset_name like '%${dataSetSearchWrd}%'
+		</if>
+		GROUP BY dt.data_code desc
+		LIMIT ${(currentPage-1)*perPage},${perPage}
+		;
+	</select>
+<!-- 나의 데이터 관리 > 나의 Data > 등록한 데이터 조회	 -->
+	<select id="selectMydataSetList" resultType="net.su.dialog.dataSet.domain.Dataset" >
+		SELECT 	data_code as dataCode
+				,dataset_name as datasetName
+				,data_enroll_date as dataEnrollDate
+				,viz_whether as vizWhether
+				,type_normal_regularly as typeNormalRegularly
+		FROM dataset
+		WHERE member_code = #{memberCode}
+		AND dataset_name LIKE '%${dataSetSearchWrd}%'
+		ORDER BY data_code desc
+		LIMIT ${(currentPage-1)*perPage},${perPage}
+		;
+	</select>
+<!-- 	데이터 셋 등록(관리자) -->
+	<insert id="insertDataset" parameterType="net.su.dialog.dataSet.domain.Dataset" useGeneratedKeys="true" keyProperty="dataCode">
+		INSERT INTO 
+					dataset
+					(data_code 
+					, dataset_name
+					, dataset_info 
+					, dataset_from 
+					, type_normal_regularly 
+					, data_enroll_date 
+					, viz_whether
+					, processing_whether
+					, member_code
+					, member_rating_code
+					)
+		VALUES		(null
+					,#{datasetName}
+					,#{datasetInfo}
+					,#{datasetFrom}
+					,#{typeNormalRegularly}
+					,SYSDATE()
+					,'N'
+					,'N'
+					,#{memberCode}
+					,#{memberRatingCode}
+					)
+		
+	</insert>
+<!-- 	데이터 셋 등록 (사용자)-->
+	<insert id="insertUserDataset" parameterType="net.su.dialog.dataSet.domain.Dataset" useGeneratedKeys="true" keyProperty="dataCode">
+	INSERT INTO 
+				dataset
+				(data_code 
+				, dataset_name
+				, dataset_info 
+				, dataset_from 
+				, type_normal_regularly 
+				, data_enroll_date
+				, viz_whether
+				, processing_whether
+				, member_code
+				, member_rating_code
+				)
+	VALUES		(null
+				,#{datasetName}
+				,#{datasetInfo}
+				,#{datasetFrom}
+				,#{typeNormalRegularly}
+				,SYSDATE()
+				,'N'
+				,'N'
+				,#{memberCode}
+				,#{memberRatingCode}
+				)
+	</insert>
+	
+	
+	<!--다음 뉴스 수집 요청 데이터 테이블 조회 (재훈) -->
+	<select id="selectDaumNewsTableName" parameterType="net.su.dialog.dataSet.domain.DataRequest"  resultType="net.su.dialog.schedule.domain.SchVo">
+		select  sche_code as scheCode
+			   , sche_work_title as scheWorkTitle
+			   , sche_work_cycle as scheWorkCycle
+			   , sche_status_code as scheStatusCode
+			   , sche_type as scheType
+			   , retry_count as retryCount
+			   , sche_date as scheDate
+			   , sche_writer as scheWriter
+			   , sche_cron as scheCron
+		from schedules
+		where sche_code = (select schedule_code
+							from news_crawling
+							where daum_news_collect_request_code = #{daumNewsDataCollectRequestCode});
+	</select>
+
+<!-- 	데이터 셋 등록 (정기) (재훈)-->
+	<insert id="insertRDataset" parameterType="net.su.dialog.dataSet.domain.Dataset" useGeneratedKeys="true" keyProperty="dataCode">
+	INSERT INTO 
+					dataset
+					(data_code 
+					, dataset_name
+					, dataset_info 
+					, dataset_from 
+					, type_normal_regularly 
+					, data_enroll_date 
+					, viz_whether
+					, processing_whether
+					, member_code
+					, member_rating_code
+					)
+		VALUES		(null
+					,#{datasetName}
+					,#{datasetInfo}
+					,#{datasetFrom}
+					,#{typeNormalRegularly}
+					,SYSDATE()
+					,'N'
+					,'Y'
+					,#{memberCode}
+					,#{memberRatingCode}
+					)
+	</insert>	
+
+<!-- 	데이터 셋 정기tb 등록 (재훈)-->
+	<insert id="insertDatasetRegular" parameterType="net.su.dialog.dataSet.domain.Dataset">
+		INSERT INTO 
+					regular_dataset
+					(data_code 
+					, regular_data_table_title 
+					, regular_data_standard_table_title
+					, status
+					, regular_data_code
+					, root
+					)
+		VALUES		(
+					#{dataCode}
+					,#{regularDataTableTitle}
+					,null
+					,'다음뉴스'
+					,null
+					,'#'
+					)
+	</insert>	
+	
+<!-- 	데이터 셋 일시tb 등록 -->
+	<insert id="insertDatasetNormal" parameterType="net.su.dialog.dataSet.domain.Dataset">
+		INSERT INTO 
+					dataset_normal
+					(data_code 
+					, normal_data_table_title 
+					, normal_data_sum
+					, normal_data_standard_table_title
+					, status
+					)
+		VALUES		(
+					#{dataCode}
+					,#{normalDataTableTitle}
+					,#{normalDataSum}
+					,#{normalDataStandardTableTitle}
+					,#{status}
+					)
+	</insert>
+<!-- 	데이터 셋 일시 파일 등록 -->
+	<insert id="insertDatasetFilelist" parameterType="net.su.dialog.dataSet.domain.Dataset">
+		INSERT INTO 
+					file_list
+					(file_list_seq
+					, data_code
+					, file_name
+					, file_path
+					, file_size
+					, file_original_name
+					, file_extension
+					)
+		VALUES		(null
+					,#{dataCode}
+					,#{fileTitle}
+					,#{fileRoute}
+					,#{fileSize}
+					,#{fileOriginalTitle}
+					,#{fileExtension}
+					)
+		
+	</insert>
+<!-- 데이터 셋 카테고리 등록 (재훈)-->
+	<insert id="insertDatasetCategory" parameterType="net.su.dialog.dataSet.domain.Dataset">
+		INSERT INTO 
+					dataset_category
+					(seq
+					, data_code
+					, cate_code
+					, cate_code2
+					)
+		VALUES		
+					(null
+					,#{dataCode}
+					,#{cateCode1}
+					,#{cateCode2}
+					)
+	</insert>
+<!-- 정기데이터 테이블 데이터코드 업데이트 (재훈) -->
+	<update id="updateRegularTableDatacode" parameterType="net.su.dialog.dataSet.domain.Dataset">
+		update ${regularDataTableTitle}
+		set data_code =  #{dataCode}
+	</update>
+<!-- 뉴스크롤링 테이블 데이터코드 업데이트 (재훈) -->
+	<update id="updateNewsCrawlingDatacode" parameterType="net.su.dialog.dataSet.domain.Dataset">
+		update news_crawling
+		set data_code =  #{dataCode}
+		where schedule_code = #{scheCode}
+	</update>
+	
+<!--정기 데이터 셋 개발 소스 조회-->
+	<select id="selectDSource" resultType="net.su.dialog.developSource.domain.DevelopSource" >
+		SELECT	dev_source_title as devSourceTitle
+				,dev_source_enrollment_date as devSourceEnrollmentDate
+				,dev_source_code as devSourceCode
+				,dev_source_type as devSourceType
+		FROM development_source_file_customizing
+		WHERE dev_source_act_status = '미사용'
+	</select>
+	
+<!-- 다음 뉴스 수집 요청 목록조회	(재훈) -->
+	<select id="selectCollectRequestList" resultType="net.su.dialog.dataSet.domain.DataRequest" >
+		SELECT	schedule_code as scheduleCode
+				, news_collect_keyword as daumNewsRequestCollectWord
+				, news_collect_start_date as daumNewsRequestCollectStartDate
+				, news_collect_end_date as daumNewsRequestCollectEndDate
+				, daum_news_collect_request_code as daumNewsDataCollectRequestCode
+				, m.member_id as memberId
+				, m.member_code as memberCode
+		FROM 	news_crawling n
+		JOIN 	daum_news_data_collect_request d
+		ON 		n.daum_news_collect_request_code = d.daum_news_data_collect_request_code
+        JOIN	member m
+        ON		m.member_code = d.member_code
+		WHERE 	n.data_code is null
+		AND 	d.daum_news_request_collect_status = 'Y';
+	</select>
+	
+<!-- 	데이터 셋 (카테고리 일시) 총 목록 개수 -->
+	<select id="selectDataSetRowCount" resultType="java.lang.Integer">
+		SELECT COUNT(DISTINCT dt.data_code)
+		FROM dataset dt JOIN dataset_category dtca ON dt.data_code = dtca.data_code
+        JOIN member mb ON dt.member_code = mb.member_code
+		<if test="categorySeq == 0"> 
+        	AND dtca.cate_code not in (7,8)
+        </if>
+   		<if test="categorySeq != 0"> 
+       		AND dtca.cate_code = #{categorySeq}
+        </if>
+			AND dt.member_rating_code <![CDATA[<=]]> #{memberRatingCode}
+		<if test="dataSetSearchType == 'dataSetWriter'">
+			AND mb.member_name like '%${dataSetSearchWrd}%'
+		</if>
+		<if test="dataSetSearchType == 'dataSetTitle'">
+			AND dt.dataset_name like '%${dataSetSearchWrd}%'
+		</if>
+		;
+	</select>
+<!-- 	데이터 셋 목록 (뉴스 정기) 총 목록 개수  -->
+	<select id="selectDataSetNewsRowCount" resultType="java.lang.Integer">
+		SELECT COUNT(DISTINCT dt.data_code)
+		FROM dataset dt JOIN dataset_category dtca ON dt.data_code = dtca.data_code
+        JOIN member mb ON dt.member_code = mb.member_code
+        AND dtca.cate_code in (7,8)
+		AND dt.member_rating_code <![CDATA[<=]]> #{memberRatingCode}
+		<if test="dataSetSearchType == 'dataSetWriter'">
+			AND mb.member_name like '%${dataSetSearchWrd}%'
+		</if>
+		<if test="dataSetSearchType == 'dataSetTitle'">
+			AND dt.dataset_name like '%${dataSetSearchWrd}%'
+		</if>
+		;
+	</select>
+<!-- 	나의 데이터 셋 개수 조회 -->
+	<select id="selectMyDataSetRowCount" resultType="java.lang.Integer" >
+		SELECT 	count(data_code)
+		FROM dataset
+		WHERE member_code = #{memberCode}
+		AND dataset_name like '%${dataSetSearchWrd}%'
+	</select>
+	<!-- 데이터셋 조회수 업데이트 -->
+	<update id="updateDatasetViews" parameterType="java.lang.Integer">
+		UPDATE dataset
+		SET dataset_views = dataset_views+1
+		WHERE data_code = #{dataCode};
+	</update>
+	<!-- 데이터셋 삭제 (상태 변경) -->
+	<update id="deleteDataSet" parameterType="java.lang.Integer">
+		UPDATE dataset_normal
+		SET status = 'D'
+		WHERE data_code = #{dataCode};
+	</update>
+	<!-- 	정기데이터셋 등록후 크롤링테이블 업데이트 -->
+</mapper>

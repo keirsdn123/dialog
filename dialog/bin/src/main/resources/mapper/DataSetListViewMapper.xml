@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.su.dialog.dataSet.mapper.DataSetListViewMapper">
+
+   <!-- 데이터 셋 정보 (상세조회) -->
+
+   <select id="selectDataListView" parameterType="net.su.dialog.dataSet.domain.DataSetListViewVo"
+      resultType="net.su.dialog.dataSet.domain.DataSetListViewVo">
+<!--       제발 수정 금지 ㅡㅡ (칼럼들 다 필요한거니까 제발 제외 시키지말길 ) -->
+      SELECT d.data_code as dataCode,
+      d.dataset_name as datasetName,
+      d.type_normal_regularly as typeNormalRegular,
+      mb.member_id as memberId,
+      mb.member_name as dataEnrollName,
+      mb.member_code as memberCode,
+      d.data_enroll_date as dataEnrollDate,
+      d.data_mod_date as dataModDate,
+      d.dataset_views as datasetViews,
+      d.dataset_info as datasetInfo,
+      d.dataset_from as datasetFrom,
+      <choose>
+         <when test = "typeNormalRegular.equals('일시')">
+         	n.status as status,
+            f.file_original_name as fileOriginalName,
+           ROUND(file_size/1024,1) AS file_size,
+           f.file_path as filePath,
+           n.normal_data_sum as normalDataSum,   
+         </when>
+         <when test = "typeNormalRegular.equals('정기')">
+           r.regular_data_sum as normalDataSum,   
+         </when>
+      </choose>   
+      d.dataset_info as datasetInfo,
+      d.viz_whether as vizWhether,
+      mb.member_code as memberCode FROM dataset d
+      <choose>
+         <when test = "typeNormalRegular.equals('일시')">
+            JOIN dataset_normal n ON d.data_code = n.data_code
+           JOIN file_list f ON f.data_code = d.data_code
+           JOIN member mb on d.member_code = mb.member_code
+            WHERE d.data_code = #{dataCode};
+         </when>
+         <when test = "typeNormalRegular.equals('정기')">
+            JOIN regular_dataset r ON d.data_code = r.data_code
+            JOIN member mb on d.member_code = mb.member_code
+           WHERE d.data_code = #{dataCode}
+           limit 1;
+         </when>
+      </choose>   
+   </select>
+   
+   <select id="selectDataListViewCate" parameterType="net.su.dialog.dataSet.domain.DataSetListViewVo"
+      resultType="net.su.dialog.dataSet.domain.DataSetListViewVo">
+    	SELECT DISTINCT(c.cate_title) AS cateTitle1, c2.cate_title AS cateTitle2
+		FROM category1 c JOIN dataset_category d ON c.cate_code = d.cate_code 
+		LEFT JOIN category2 c2 ON c2.cate_code2 = d.cate_code2
+		WHERE data_code = #{dataCode};
+   </select>
+</mapper>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="net.su.dialog.dataSet.mapper.DataSetCreateMapper">
+
+
+<!--생성DB컬럼명 조회 -->
+	<select id="selectDbDatasetCoList" parameterType="String" resultType="net.su.dialog.dataSet.domain.DataSetVo">
+      SELECT column_name as columnName, data_type as dataType
+		FROM INFORMATION_SCHEMA.COLUMNS 
+		WHERE TABLE_SCHEMA = SCHEMA()
+		AND ORDINAL_POSITION not in(1,2
+		,((SELECT MAX(ORDINAL_POSITION)
+										FROM INFORMATION_SCHEMA.COLUMNS 
+										WHERE TABLE_SCHEMA = SCHEMA()
+										AND TABLE_NAME = #{normalDataTableTitle}))
+										)
+		AND TABLE_NAME = #{normalDataTableTitle};
+    </select>   
+    
+    <select id="selectVizList" parameterType="net.su.dialog.dataSet.domain.DataSetVo" resultType="net.su.dialog.dataSet.domain.DataSetVo">
+		SELECT viz_requests as vizRequests
+		FROM dataset_normal
+		WHERE data_code = ${dataCode};
+    </select>
+    
+<!--생성DB데이터 조회 -->
+    <select id="selectDbDatasetList" parameterType="HashMap" resultType="java.util.LinkedHashMap" >
+		SELECT ${colNme}
+		FROM `${normalDataTableTitle}`
+		LIMIT 50;
+    </select>   
+
+<!--가공 팝업창 데이터 조회-->
+	<select id="selectProcessList" parameterType="HashMap" resultType="net.su.dialog.dataSet.domain.DataSetVo">
+		SELECT `${colNme}` as processList
+		FROM `${normalDataTableTitle}`
+		WHERE `${colNme}` is not null
+		AND `${colNme}` != ''
+		GROUP BY `${colNme}`;
+    </select>
+    
+    <insert id="insertStandarData" parameterType="HashMap" useGeneratedKeys="true" keyProperty="stId">
+    	${insertList} 
+    	${insertStColNme}
+    </insert>
+    
+<!--표준데이터 상세DB생성-->    
+    <select id="createStandarDetail" parameterType="HashMap">
+		${createStandarTable}  
+	</select>
+	
+	<insert id="insertStandarDataDetail" parameterType="HashMap">
+    	${insertStList} 
+    	SELECT ${stId},${insertStQuery}
+    </insert>
+    
+<!-- 표준데이터 테이블 이름 수정 -->
+    <update id="updateStTableName" parameterType="net.su.dialog.dataSet.domain.DataSetVo">
+    	UPDATE dataset_normal 
+		SET normal_data_standard_table_title = #{standarTbTitle}
+		WHERE data_code = ${dataCode};
+    </update>
+        
+<!-- 표준화 데이터 조회 컬럼리스트-->
+    <select id="selectStandDatasetCoList" parameterType="net.su.dialog.dataSet.domain.DataSetVo" resultType="net.su.dialog.dataSet.domain.DataSetVo">
+		SELECT data_code as dataCode, pause_standar_seq as pauseStandarSeq, 
+				pause_standar_column1 as pauseStandarColumn1,
+				pause_standar_column1_lable as pauseStandarColumn1Lable,
+				pause_standar_column2 as pauseStandarColumn2,
+				pause_standar_column2_lable as pauseStandarColumn2Lable,
+				pause_standar_column3 as pauseStandarColumn3,
+				pause_standar_column3_lable as pauseStandarColumn3Lable,
+				pause_standar_column4 as pauseStandarColumn4,
+				pause_standar_column4_lable as pauseStandarColumn4Lable,
+				pause_standar_column5 as pauseStandarColumn5,
+				pause_standar_column5_lable as pauseStandarColumn5Lable,
+				pause_standar_column6 as pauseStandarColumn6,
+				pause_standar_column7 as pauseStandarColumn7,
+				pause_standar_column8 as pauseStandarColumn8,
+				pause_standar_column9 as pauseStandarColumn9,
+				pause_standar_column10 as pauseStandarColumn10				 
+		FROM normal_data_standard_info
+		WHERE data_code = ${dataCode};
+    </select>
+    
+<!-- 표준화 데이터 조회 상세리스트-->
+    <select id="selectStandDatasetList" parameterType="net.su.dialog.dataSet.domain.DataSetVo" resultType="net.su.dialog.dataSet.domain.DataSetVo">
+		SELECT pause_standar_seq as pauseStandarSeq, pause_standar_detail_seq as pauseStandarDetailSeq,
+				pause_standar_column1 as pauseStandarColumn1d, 		
+				pause_standar_column2 as pauseStandarColumn2d,
+				pause_standar_column3 as pauseStandarColumn3d,
+				pause_standar_column4 as pauseStandarColumn4d,
+				pause_standar_column5 as pauseStandarColumn5d,
+				pause_standar_column6 as pauseStandarColumn6d,
+				pause_standar_column7 as pauseStandarColumn7d,
+				pause_standar_column8 as pauseStandarColumn8d,
+				pause_standar_column9 as pauseStandarColumn9d,
+				pause_standar_column10 as pauseStandarColumn10d	 
+		FROM `${standarTbTitle}`
+		LIMIT 100;
+    </select>
+    
+<!--기본 시각화 설정  -->
+    <update id="updateViz" parameterType="net.su.dialog.dataSet.domain.DataVizVo">
+    	UPDATE normal_data_standard_info 
+		SET pause_standar_x = #{pauseStandarX}, 
+			pause_standar_y = #{pauseStandarY}, 
+			pause_standar_lable = #{pauseStandarLable},
+			pause_standar_condition = ${pauseStandarCondition},
+			pause_standar_style = ${pauseStandarStyle}
+		WHERE data_code = ${dataCode};
+    </update>
+    
+<!--승인여부 변경  -->
+    <update id="updateStatus" parameterType="net.su.dialog.dataSet.domain.DataVizVo">
+    	UPDATE dataset_normal
+		SET status = 'Y'
+		WHERE data_code = ${dataCode};
+    </update>
+    
+<!--표준화여부 변경  -->
+    <update id="updateVizWhether" parameterType="net.su.dialog.dataSet.domain.DataVizVo">
+    	UPDATE dataset
+		SET viz_whether = 'Y' 
+		WHERE data_code = ${dataCode};
+    </update>
+</mapper>

@@ -1,0 +1,69 @@
+			               var svg = d3.select("#graph"), //svg 크기 구하는것
+			              	 margin = {top: 20, right: 20, bottom: 30, left: 40},
+			                   width = +svg.attr("width") - margin.left - margin.right,
+			                   height = +svg.attr("height") - margin.top - margin.bottom;
+			            
+			               var x = d3.scaleBand().rangeRound([0, width]).padding(0.1), //x축 넓이
+			                   y = d3.scaleLinear().range([height, 0]); // y축 넓이
+			             		                   
+			               var sequentialScale = d3.scaleSequential()   //색
+			                  .domain([width, 0])
+			             
+			            
+			               var g = svg.append("g")
+			                   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+			               
+			               x.domain(list.map(function(d) { return d.xcolName; })); //x축에 들어가는값
+			               y.domain([0, d3.max(list, function(d) { return d.ycolName; })]); //y축에 들어가는값
+			               
+			               g.append("g")
+			                   .attr("class", "axis axis--x")
+			                   .attr("transform", "translate(0," + height + ")")
+			                   .call(d3.axisBottom(x));
+			               
+			               
+
+			               g.append("g")
+			                   .attr("class", "axis axis--y")
+			                   .call(d3.axisLeft(y))
+			                .append("text")
+			                   .attr("transform", "rotate(-90)")
+			                   .attr("y", 6)
+			                   .attr("dy", "0.71em")
+			                   .attr("text-anchor", "end")
+			                   .text("ycolName");
+
+			               g.selectAll(".bar")
+			                  .data(list)
+			                  .enter().append("rect")
+			                  .attr("class", "bar")
+			                  .attr("x", function(d) { return x(d.xcolName); })
+			                  .attr("y", function(d) { return y(d.ycolName); })
+			                  .attr("width", x.bandwidth())
+			                  .attr("height", function(d) { return height - y(d.ycolName); })
+			                  .text(function(d) { return d.ycol; })  
+					            .on("mouseover", function() { tooltip.style("display", null); })
+					            .on("mouseout",  function() { tooltip.style("display", "none"); })
+					            .on("mousemove", function(d) {
+					                tooltip.style("left", (d3.event.pageX+10)+"px");
+					                tooltip.style("top",  (d3.event.pageY-10)+"px");
+					                tooltip.html("X값 : " + d.xcol + "<br/>" + "Y값 : " + d.ycolName);
+					            });
+					            
+			               var tooltip = d3.select("body")
+				              .append("div")
+				              .attr("class", "toolTip")
+				              .style("display", "none");
+			               
+
+			               function replay(list) {
+			            	   var slices = [];
+			            	   for (var i = 0; i < list.length; i++) {
+			            	     slices.push(data.slice(0, i+1));
+			            	   }
+			            	   slices.forEach(function(slice, index){
+			            	     setTimeout(function(){
+			            	       draw(slice);
+			            	     }, index * 300);
+			            	   });
+			            	 }

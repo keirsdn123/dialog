@@ -1,0 +1,2060 @@
+@charset "utf-8";
+/* CSS Document */
+/*
+	변경 or 추가 사항
+	태호, 재경 css 추가
+*/
+ul, ul li {
+	margin: 0;
+	padding: 0;
+}
+
+li {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+ 
+.cb {
+	clear: both;
+}
+
+a:hover, a:focus {
+	text-decoration: none !important;
+}
+
+p {
+	margin-bottom: 0;
+}
+
+/*색상 관련/////////////////////////////////////////////////////////////////////////////////////////////////////*/
+.bgwhite {
+	background: #fff;
+}
+
+.bgn {
+	background: none !important;
+}
+
+.color_g {
+	color: #bebebe;
+}
+
+.text_white {
+	color: white !important;
+}
+
+.bg_gray {
+	background: #545454 !important;
+}
+
+
+.bg_red {
+	background: #f44e4d !important;
+}
+
+.bg_blue {
+	background: #1a70db !important;
+}
+
+.bg_darkblue {
+	background: #034c8f !important;
+}
+
+.text_red {
+	color: #f44e4d !important;
+}
+
+.red02 {
+	color: #F00;
+}
+
+.red02 {
+	color: #f44e4d;
+}
+
+.font_w {
+	color: #fff;
+}
+
+.font_blue{
+	color: #1265cb;
+	font-weight: bold;
+}
+
+/*사이즈 관련/////////////////////////////////////////////////////////////////////////////////////////////////////*/
+.size_10 {
+	width: 10px;
+}
+
+.size_20 {
+	width: 20px;
+}
+
+.size_30 {
+	width: 30px;
+}
+
+.size_40 {
+	width: 40px;
+}
+
+.size_50 {
+	width: 50px;
+}
+
+.size_60 {
+	width: 60px;
+}
+
+.size_70 {
+	width: 70px;
+}
+
+.size_80 {
+	width: 80px;
+}
+
+.size_90 {
+	width: 90px;
+}
+
+.size_100 {
+	width: 100px;
+}
+
+.size_110 {
+	width: 110px;
+}
+
+.size_120 {
+	width: 120px;
+}
+
+.size_130 {
+	width: 130px;
+}
+.size_135{
+	width: 135px;
+}
+.size_140 {
+	width: 140px;
+}
+
+.size_142 {
+	width: 142px;
+}
+
+.size_150 {
+	width: 150px;
+}
+
+.size_160 {
+	width: 160px;
+}
+
+.size_170 {
+	width: 170px;
+}
+
+.size_175 {
+	width: 175px;
+}
+
+.size_180 {
+	width: 180px;
+}
+
+.size_190 {
+	width: 190px;
+}
+
+.size_200 {
+	width: 200px;
+}
+
+.size_210 {
+	width: 210px;
+}
+
+.size_220 {
+	width: 220px;
+}
+
+.size_230 {
+	width: 230px;
+}
+
+.size_233 {
+	width: 233px;
+}
+
+.size_235 {
+	width: 235px;
+}
+
+.size_240 {
+	width: 240px;
+}
+
+.size_250 {
+	width: 250px;
+}
+.size_270 {
+	width: 270px;
+}
+.size_280 {
+	width: 280px;
+}
+.size_300 {
+	width: 300px;
+}
+
+.size_320 {
+	width: 320px;
+}
+
+.size_350 {
+	width: 350px;
+}
+
+.size_400 {
+	width: 400px;
+}
+
+.size_450 {
+	width: 450px;
+}
+
+.size_500 {
+	width: 500px;
+}
+
+.size_600 {
+	width: 600px;
+}
+
+.size_800 {
+	width: 800px;
+}
+
+.size_1000 {
+	width: 1000px;
+}
+
+.size_1200 {
+	width: 1200px;
+}
+.wsize_5 {
+	width: 5%;
+}
+.wsize_7 {
+	width: 7% !important;
+}
+
+.wsize_10 {
+	width: 10%;
+}
+
+.wsize_15 {
+	width: 15%;
+}
+
+.wsize_16 {
+	width: 16%;
+}
+.wsize_19 {
+	width: 19%;
+}
+
+.wsize_20 {
+	width: 20%;
+}
+
+.wsize_21 {
+	width: 21%;
+}
+
+.wsize_25{
+	width: 25%;
+}
+
+.wsize_29 {
+	width: 29%;
+}
+
+.wsize_30 {
+	width: 30%;
+}
+
+.wsize_335 {
+	width: 33.5%;
+}
+
+.wsize_33 {
+	width: 33%;
+}
+
+.wsize_35 {
+	width: 35%;
+}
+
+.wsize_37 {
+	width: 37%;
+}
+
+.wsize_40 {
+	width: 40%;
+}
+
+.wsize_45 {
+	width: 45%;
+}
+
+.wsize_35 {
+	width: 35%;
+}
+
+.wsize_48 {
+	width: 48%;
+}
+.wsize_49m{
+	width: 49.2%;
+}
+.wsize_50 {
+	width: 50%;
+}
+
+.wsize_55 {
+	width: 55%;
+}
+
+.wsize_55m {
+	width: 55.2%;
+}
+.wsize_60 {
+	width: 60%;
+}
+
+.wsize_65 {
+	width: 65%;
+}
+
+.wsize_67 {
+	width: 67%;
+}
+
+.wsize_70 {
+	width: 70%;
+}
+
+.wsize_78 {
+	width: 78%;
+}
+
+.wsize_80 {
+	width: 80%;
+}
+
+.wsize_85 {
+	width: 85%;
+}
+
+.wsize_87 {
+	width: 87%;
+}
+
+.wsize_90 {
+	width: 90%;
+}
+
+.wsize_93 {
+	width: 93%;
+}
+
+.wsize_100 {
+	width: 100%;
+}
+
+.wsize_46m {
+	width: 46.6%;
+}
+
+/*간격 관련/////////////////////////////////////////////////////////////////////////////////////////////////////*/
+.mr_0 {
+	margin-right: 0px;
+}
+
+.mr_5 {
+	margin-right: 5px;
+}
+
+.mr_10 {
+	margin-right: 10px;
+}
+
+.mr_15 {
+	margin-right: 15px;
+}
+
+.mr_20 {
+	margin-right: 20px;
+}
+
+.mr_25 {
+	margin-right: 25px;
+}
+
+.mr_30 {
+	margin-right: 30px;
+}
+
+.mr_35 {
+	margin-right: 35px;
+}
+
+.mr_40 {
+	margin-right: 40px;
+}
+
+.mr_45 {
+	margin-right: 45px;
+}
+
+.mr_50 {
+	margin-right: 50px;
+}
+
+.mr_55 {
+	margin-right: 55px;
+}
+
+.mr_60 {
+	margin-right: 60px;
+}
+
+.ml_1 {
+	margin-left: 1% !important;
+}
+
+.ml_5 {
+	margin-left: 5px !important;
+}
+.ml_10 {
+	margin-left: 10px;
+}
+.ml_14{
+	margin-left: 14px;
+}
+.ml_15 {
+	margin-left: 15px;
+}
+
+.ml_20 {
+	margin-left: 20px;
+}
+
+.ml_25 {
+	margin-left: 25px;
+}
+
+.ml_30 {
+	margin-left: 30px;
+}
+
+.ml_35 {
+	margin-left: 35px;
+}
+
+.ml_40 {
+	margin-left: 40px;
+}
+
+.ml_45 {
+	margin-left: 45px;
+}
+
+.ml_50 {
+	margin-left: 50px;
+}
+
+.ml_60 {
+	margin-left: 60px;
+}
+
+.ml_70 {
+	margin-left: 70px;
+}
+
+.ml_80 {
+	margin-left: 80px;
+}
+
+.ml_90 {
+	margin-left: 90px;
+}
+
+.ml_100 {
+	margin-left: 100px;
+}
+
+.ml_110 {
+	margin-left: 110px;
+}
+
+.ml_120 {
+	margin-left: 120px;
+}
+
+.ml_130 {
+	margin-left: 130px;
+}
+
+.ml_140 {
+	margin-left: 140px;
+}
+
+.ml_150 {
+	margin-left: 150px;
+}
+
+.ml_160 {
+	margin-left: 160px;
+}
+
+.ml_170 {
+	margin-left: 170px;
+}
+
+.ml_180 {
+	margin-left: 180px;
+}
+
+.ml_200 {
+	margin-left: 200px;
+}
+
+.ml_400 {
+	margin-left: 400px;
+}
+
+.mt_05 {
+	margin-top: -5px;
+}
+
+.mt_0 {
+	margin-top: 0;
+}
+
+.mt_3 {
+	margin-top: 3px !important;
+}
+
+.mt_5 {
+	margin-top: 5px !important;
+}
+
+.mt_7 {
+	margin-top: 7px;
+}
+
+.mt_10 {
+	margin-top: 10px;
+}
+
+.mt_15 {
+	margin-top: 15px;
+}
+
+.mt_19 {
+	margin-top: 19px;
+}
+.mt_20 {
+	margin-top: 20px;
+}
+
+.mt_25 {
+	margin-top: 25px;
+}
+
+.mt_30 {
+	margin-top: 30px;
+}
+.mt_30i {
+	margin-top: 30px !important;
+}
+.mt_33 {
+	margin-top: 33px;
+}
+.mt_35 {
+	margin-top: 35px;
+}
+
+.mt_40 {
+	margin-top: 40px;
+}
+
+.mt_45 {
+	margin-top: 45px;
+}
+
+.mt_50 {
+	margin-top: 50px;
+}
+.mt_50i {
+	margin-top: 50px !important;
+}
+.mt_60 {
+	margin-top: 60px;
+}
+.mt_70 {
+	margin-top: 70px;
+}
+.mt_200 {
+	margin-top: 200px;
+}
+
+.mmt_5 {
+	margin-top: -5px;
+}
+
+.mmt_10 {
+	margin-top: -10px;
+}
+
+.mb_0 {
+	margin-bottom: 0px;
+}
+
+.mb_5 {
+	margin-bottom: 5px;
+}
+
+.mb_10 {
+	margin-bottom: 10px;
+}
+
+.mb_15 {
+	margin-bottom: 15px;
+}
+
+.mb_20 {
+	margin-bottom: 20px;
+}
+
+.mb_25 {
+	margin-bottom: 25px;
+}
+
+.mb_30 {
+	margin-bottom: 30px;
+}
+
+.mb_35 {
+	margin-bottom: 35px;
+}
+
+.mb_40 {
+	margin-bottom: 40px;
+}
+
+.mb_45 {
+	margin-bottom: 45px;
+}
+
+.mb_50 {
+	margin-bottom: 50px;
+}
+.mb_gyucheol{
+	margin-bottom:3%;
+}
+
+.mg_auto {
+	margin: 0 auto;
+}
+
+.mg_0 {
+	margin: 0;
+}
+
+.pd_0 {
+	padding: 0 !important;
+}
+
+.pd_5 {
+	padding: 5px;
+}
+.pd_10 {
+	padding: 10px;
+}
+.pd_15 {
+	padding: 17px 13px !important;
+}
+
+.pd_1 {
+	padding: 1em !important;
+}
+
+.ptop_09 {
+	padding: 9px 0;
+}
+
+.ptop_10 {
+	padding: 10px 0;
+}
+
+.ptop_11 {
+	padding: 11px 0;
+}
+
+.pttop_10 {
+	padding-top: 10px;
+}
+
+.pttop_06 {
+	padding-top: 6px;
+}
+
+.pttop_05 {
+	padding-top: 5px !important;
+}
+
+.pttop_20 {
+	padding-top: 20px;
+}
+
+.pl_0 {
+	padding-left: 0 !important;
+}
+
+.pl_3 {
+	padding-left: 3px;
+}
+
+.pl_5 {
+	padding-left: 5px;
+}
+
+.pl_10 {
+	padding-left: 10px;
+}
+
+.pl_15 {
+	padding-left: 15px;
+}
+
+.pl_20 {
+	padding-left: 20px;
+}
+
+.pl_25 {
+	padding-left: 25px;
+}
+
+.pl_30 {
+	padding-left: 30px;
+}
+
+.pr_0 {
+	padding-right: 0;
+}
+
+.pr_3 {
+	padding-right: 3px;
+}
+
+.pr_5 {
+	padding-right: 5px;
+}
+
+.pr_10 {
+	padding-right: 10px;
+}
+
+.pr_15 {
+	padding-right: 15px;
+}
+
+.pb_0 {
+	padding-bottom: 0;
+}
+
+.pb_5 {
+	padding-bottom: 5px;
+}
+
+.pb_10 {
+	padding-bottom: 10px;
+}
+
+.pb_150 {
+	padding-bottom: 150px;
+}
+
+/*정렬 관련/////////////////////////////////////////////////////////////////////////////////////////////////////*/
+.fr {
+	float: right;
+}
+
+.fl {
+	float: left;
+}
+.fl_margin {
+	float: left;
+	margin-left:5px;
+}
+.ta_left {
+	text-align: left;
+}
+
+.ta_right {
+	text-align: right;
+}
+
+.ta_center {
+	text-align: center;
+}
+.ta_center_last{
+	text-align-last:center;
+}
+
+
+.va_center {
+	vertical-align: middle;
+}
+
+.va_bottom {
+	vertical-align: bottom;
+}
+
+.po_r {
+	position: relative;
+}
+
+.dis_in {
+	display: inline-block !important;
+}
+
+.dp_n {
+	display: none !important;
+}
+
+.bg {
+	background: #f8f8f8;
+	vertical-align: middle;
+	text-align: center;
+}
+
+.bold {
+	font-weight: bold;
+	margin-bottom: 0;
+}
+
+.bd_r {
+	border-right: 1px solid #ddd !important;
+}
+
+.bd_bd {
+	border-bottom: 1px solid #ddd !important;
+}
+
+.bd_b {
+	border-bottom: 1px solid #034c8f;
+}
+
+.bdt_0 {
+	border-top: 0 !important;
+}
+
+.bdb_0 {
+	border-bottom: 0 !important;
+}
+
+.bd_0 {
+	border: 0 !important;
+}
+
+.bd_d {
+	border: 1px solid #66696e;
+}
+
+.fw_b {
+	font-weight: 600;
+}
+
+.fw_5 {
+	font-weight: 500;
+}
+
+.fw_4 {
+	font-weight: 400;
+}
+
+.f_sq {
+	font-family: 'NanumSquare', sans-serif;
+}
+
+.close {
+	color: #fff;
+}
+
+.min_h {
+	min-height: auto !important;
+}
+
+.min_h400 {
+	min-height: 400px !important;
+}
+
+/* 전세영추가 */
+.min_h180 {
+	min-height:180px !important;
+}
+
+.dp_n1 {
+	display: none;
+}
+
+.min_h710 {
+	min-height:710px !important;
+}
+
+.min_h390 {
+	min-height:391px !important;
+}
+
+.min_h410 {
+	min-height:410px !important;
+} 
+
+.min_h580 {
+	min-height:580px !important;
+}
+.dbbox {
+	width: 96.8%;
+	margin-left: 3%;
+	margin-top: 0.5%;	
+}
+/* 전세영추가 */
+
+.form-group {
+	margin-bottom: 5px;
+}
+
+.line {
+	border: 0.5px solid #ddd;
+}
+
+.font_gr {
+	color: #093;
+}
+
+.font_r {
+	color: #C00;
+}
+
+.font_8 {
+	font-size: .8em !important;
+}
+
+.font_1 {
+	font-size: .9em !important;
+}
+
+.font_1e {
+	font-size: 1em !important;
+}
+
+select
+.form-control
+:not
+ 
+(
+[
+size
+]
+ 
+)
+:not
+ 
+(
+[
+multiple
+]
+ 
+)
+{
+height
+:
+ 
+auto
+;
+
+
+}
+
+/*라인 사이 공간*/
+.em_box {
+	width: 100%;
+	height: 10px;
+}
+
+.em_box20 {
+	width: 100%;
+	height: 20px;
+}
+
+.em_box30 {
+	width: 100%;
+	height: 30px;
+}
+
+.em_box40 {
+	width: 100%;
+	height: 40px;
+}
+
+/*스크롤 디자인*/
+#style-3::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	background-color: #F5F5F5;
+}
+
+#style-3::-webkit-scrollbar {
+	width: 6px;
+	background-color: #F5F5F5;
+}
+
+#style-3::-webkit-scrollbar-thumb {
+	background-color: #a9a6a6;
+}
+
+#style-4::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	background-color: #F5F5F5;
+}
+
+#style-4::-webkit-scrollbar {
+	width: 6px;
+	background-color: #F5F5F5;
+}
+
+#style-4::-webkit-scrollbar-thumb {
+	background-color: #f44e4d;
+}
+
+#style-5::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+	background-color: #F5F5F5;
+}
+
+#style-5::-webkit-scrollbar {
+	width: 6px;
+	background-color: #F5F5F5;
+}
+
+#style-5::-webkit-scrollbar-thumb {
+	background-color: #034c8f;
+}
+
+.btn-amber.active:not ([disabled] ):not (.disabled ), .btn-amber.active:not
+	 ([disabled] ):not (.disabled ):focus, .btn-amber.focus, .btn-amber:focus,
+	.btn-amber:not ([disabled] ):not (.disabled ):active, .btn-aer:not ([disabled]
+	 ):not (.disabled ):active:focus, .btn-black.active:not ([disabled] ):not
+	 (.disabled ), .btn-black.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-black.focus, .btn-black:focus, .btn-black:not ([disabled] ):not (.disabled
+	 ):active, .btn-black:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-blue-grey.active:not ([disabled] ):not (.disabled ),
+	.btn-blue-grey.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-blue-grey.focus, .btn-blue-grey:focus, .btn-blue-grey:not ([disabled]
+	 ):not (.disabled ):active, .btn-blue-grey:not ([disabled] ):not (.disabled
+	 ):active:focus, .btn-blue.active:not ([disabled] ):not (.disabled ),
+	.btn-blue.active:not ([disabled] ):not (.disabled ):focus, .btn-blue.focus,
+	.btn-blue:focus, .btn-blue:not ([disabled] ):not (.disabled ):active,
+	.btn-blue:not ([disabled] ):not (.disabled ):active:focus, .btn-brown.active:not
+	 ([disabled] ):not (.disabled ), .btn-brown.active:not ([disabled] ):not
+	 (.disabled ):focus, .btn-brown.focus, .btn-brown:focus, .btn-brown:not
+	 ([disabled] ):not (.disabled ):active, .btn-brown:not ([disabled] ):not
+	 (.disabled ):active:focus, .btn-cyan.active:not ([disabled] ):not (.disabled
+	 ), .btn-cyan.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-cyan.focus, .btn-cyan:focus, .btn-cyan:not ([disabled] ):not (.disabled 
+	):active, .btn-cyan:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-danger.active:not
+	 ([disabled] ):not (.disabled ), .btn-danger.active:not ([disabled] ):not
+	 (.disabled ):focus, .btn-danger.focus, .btn-danger:focus, .btn-danger:not
+	 ([disabled] ):not (.disabled ):active, .btn-danger:not ([disabled] ):not
+	 (.disabled ):active:focus, .btn-dark-green.active:not ([disabled] ):not
+	 (.disabled ), .btn-dark-green.active:not ([disabled] ):not (.disabled 
+	):focus, .btn-dark-green.focus, .btn-dark-green:focus, .btn-dark-green:not 
+	([disabled]
+	 ):not (.disabled ):active, .btn-dark-green:not ([disabled] ):not (.disabled
+	 ):active:focus, .btn-dark.active:not ([disabled] ):not (.disabled ),
+	.btn-dark.active:not ([disabled] ):not (.disabled ):focus, .btn-dark.focus,
+	.btn-dark:focus, .btn-dark:not ([disabled] ):not (.disabled ):active,
+	.btn-dark:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-deep-orange.active:not ([disabled] ):not (.disabled ),
+	.btn-deep-orange.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-deep-orange.focus, .btn-deep-orange:focus, .btn-deep-orange:not ([disabled]
+	 ):not (.disabled ):active, .btn-deep-orange:not ([disabled] ):not (.disabled
+	 ):active:focus, .btn-deep-purple.active:not ([disabled] ):not (.disabled
+	 ), .btn-deep-purple.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-deep-purple.focus, .btn-deep-purple:focus, .btn-deep-purple:not ([disabled]
+	 ):not (.disabled ):active, .btn-deep-purple:not ([disabled] ):not (.disabled
+	 ):active:focus, .btn-default.active:not ([disabled] ):not (.disabled 
+	), .btn-default.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-default.focus, .btn-default:focus, .btn-default:not ([disabled] ):not
+	 (.disabled ):active, .btn-default:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-elegant.active:not ([disabled] ):not (.disabled ), .btn-elegant.active:not
+	 ([disabled] ):not (.disabled ):focus, .btn-elegant.focus, .btn-elegant:focus,
+	.btn-elegant:not ([disabled] ):not (.disabled ):active, .btn-elegant:not
+	 ([disabled] ):not (.disabled ):active:focus, .btn-green.active:not ([disabled]
+	 ):not (.disabled ), .btn-green.active:not ([disabled] ):not (.disabled
+	 ):focus, .btn-green.focus, .btn-green:focus, .btn-green:not ([disabled]
+	 ):not (.disabled ):active, .btn-green:not ([disabled] ):not (.disabled
+	 ):active:focus, .btn-grey.active:not ([disabled] ):not (.disabled ),
+	.btn-grey.active:not ([disabled] ):not (.disabled ):focus, .btn-grey.focus,
+	.btn-grey:focus, .btn-grey:not ([disabled] ):not (.disabled ):active,
+	.btn-grey:not ([disabled] ):not (.disabled ):active:focus, .btn-indigo.active:not
+	 ([disabled] ):not (.disabled ), .btn-indigo.active:not ([disabled] ):not
+	 (.disabled ):focus, .btn-indigo.focus, .btn-indigo:focus, .btn-indigo:not
+	 ([disabled] ):not (.disabled ):active, .btn-indigo:not ([disabled] ):not
+	 (.disabled ):active:focus, .btn-info.active:not ([disabled] ):not (.disabled
+	 ), .btn-info.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-info.focus, .btn-info:focus, .btn-info:not ([disabled] ):not (.disabled 
+	):active, .btn-info:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-light-blue.active:not ([disabled] ):not (.disabled ),
+	.btn-light-blue.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-light-blue.focus, .btn-light-blue:focus, .btn-light-blue:not ([disabled]
+	 ):not (.disabled ):active, .btn-light-blue:not ([disabled] ):not (.disabled
+	 ):active:focus, .btn-light-green.active:not ([disabled] ):not (.disabled
+	 ), .btn-light-green.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-light-green.focus, .btn-light-green:focus, .btn-light-green:not ([disabled]
+	 ):not (.disabled ):active, .btn-light-green:not ([disabled] ):not (.disabled
+	 ):active:focus, .btn-light.active:not ([disabled] ):not (.disabled ),
+	.btn-light.active:not ([disabled] ):not (.disabled ):focus, .btn-light.focus,
+	.btn-light:focus, .btn-light:not ([disabled] ):not (.disabled ):active,
+	.btn-light:not ([disabled] ):not (.disabled ):active:focus, .btn-lime.active:not
+	 ([disabled] ):not (.disabled ), .btn-lime.active:not ([disabled] ):not
+	 (.disabled ):focus, .btn-lime.focus, .btn-lime:focus, .btn-lime:not ([disabled]
+	 ):not (.disabled ):active, .btn-lime:not ([disabled] ):not (.disabled 
+	):active:focus, .btn-mdb-color.active:not ([disabled] ):not (.disabled 
+	), .btn-mdb-color.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-mdb-color.focus, .btn-mdb-color:focus, .btn-mdb-color:not ([disabled]
+	 ):not (.disabled ):active, .btn-mdb-color:not ([disabled] ):not (.disabled
+	 ):active:focus, .btn-orange.active:not ([disabled] ):not (.disabled 
+	), .btn-orange.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-orange.focus, .btn-orange:focus, .btn-orange:not ([disabled] ):not
+	 (.disabled ):active, .btn-orange:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-amber.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-amber.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-amber:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-amber:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-black.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-black.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-black:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-black:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-blue-grey.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-blue-grey.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-blue-grey:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-blue-grey:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-blue.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-blue.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-blue:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-blue:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-brown.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-brown.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-brown:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-brown:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-cyan.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-cyan.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-cyan:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-cyan:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-danger.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-danger.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-danger:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-danger:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-dark-green.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-dark-green.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-dark-green:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-dark-green:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-dark.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-dark.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-dark:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-dark:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-deep-orange.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-deep-orange.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-deep-orange:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-deep-orange:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-deep-purple.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-deep-purple.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-deep-purple:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-deep-purple:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-default.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-default.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-default:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-default:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-elegant.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-elegant.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-elegant:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-elegant:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-green.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-green.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-green:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-green:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-grey.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-grey.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-grey:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-grey:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-indigo.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-indigo.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-indigo:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-indigo:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-info.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-info.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-info:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-info:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-light-blue.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-light-blue.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-light-blue:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-light-blue:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-light-green.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-light-green.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-light-green:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-light-green:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-light.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-light.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-light:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-light:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-lime.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-lime.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-lime:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-lime:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-mdb-color.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-mdb-color.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-mdb-color:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-mdb-color:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-orange.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-orange.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-orange:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-orange:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-pink.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-pink.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-pink:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-pink:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-primary.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-primary.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-primary:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-primary:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-purple.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-purple.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-purple:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-purple:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-red.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-red.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-red:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-red:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-secondary.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-secondary.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-secondary:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-secondary:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-success.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-success.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-success:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-success:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-teal.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-teal.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-teal:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-teal:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-unique.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-unique.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-unique:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-unique:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-warning.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-warning.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-warning:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-warning:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-white.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-white.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-white:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-white:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-outline-yellow.active:not ([disabled] ):not (.disabled ),
+	.btn-outline-yellow.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-outline-yellow:not ([disabled] ):not (.disabled ):active,
+	.btn-outline-yellow:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-pink.active:not ([disabled] ):not (.disabled ), .btn-pink.active:not
+	 ([disabled] ):not (.disabled ):focus, .btn-pink.focus, .btn-pink:focus,
+	.btn-pink:not ([disabled] ):not (.disabled ):active, .btn-pink:not ([disabled]
+	 ):not (.disabled ):active:focus, .btn-primary.active:not ([disabled] 
+	):not
+	 (.disabled ), .btn-primary.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-primary.focus, .btn-primary:focus, .btn-primary:not ([disabled] ):not
+	 (.disabled ):active, .btn-primary:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-purple.active:not ([disabled] ):not (.disabled ), .btn-purple.active:not
+	 ([disabled] ):not (.disabled ):focus, .btn-purple.focus, .btn-purple:focus,
+	.btn-purple:not ([disabled] ):not (.disabled ):active, .btn-purple:not
+	 ([disabled] ):not (.disabled ):active:focus, .btn-red.active:not ([disabled]
+	 ):not (.disabled ), .btn-red.active:not ([disabled] ):not (.disabled 
+	):focus, .btn-red.focus, .btn-red:focus, .btn-red:not ([disabled] ):not 
+	(.disabled
+	 ):active, .btn-red:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-secondary.active:not ([disabled] ):not (.disabled ),
+	.btn-secondary.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-secondary.focus, .btn-secondary:focus, .btn-secondary:not ([disabled]
+	 ):not (.disabled ):active, .btn-secondary:not ([disabled] ):not (.disabled
+	 ):active:focus, .btn-success.active:not ([disabled] ):not (.disabled 
+	), .btn-success.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-success.focus, .btn-success:focus, .btn-success:not ([disabled] ):not
+	 (.disabled ):active, .btn-success:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-teal.active:not ([disabled] ):not (.disabled ), .btn-teal.active:not
+	 ([disabled] ):not (.disabled ):focus, .btn-teal.focus, .btn-teal:focus,
+	.btn-teal:not ([disabled] ):not (.disabled ):active, .btn-teal:not ([disabled]
+	 ):not (.disabled ):active:focus, .btn-unique.active:not ([disabled] ):not
+	 (.disabled ), .btn-unique.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-unique.focus, .btn-unique:focus, .btn-unique:not ([disabled] ):not
+	 (.disabled ):active, .btn-unique:not ([disabled] ):not (.disabled ):active:focus,
+	.btn-warning.active:not ([disabled] ):not (.disabled ), .btn-warning.active:not
+	 ([disabled] ):not (.disabled ):focus, .btn-warning.focus, .btn-warning:focus,
+	.btn-warning:not ([disabled] ):not (.disabled ):active, .btn-warning:not
+	 ([disabled] ):not (.disabled ):active:focus, .btn-white.active:not ([disabled]
+	 ):not (.disabled ), .btn-white.active:not ([disabled] ):not (.disabled
+	 ):focus, .btn-white.focus, .btn-white:focus, .btn-white:not ([disabled]
+	 ):not (.disabled ):active, .btn-white:not ([disabled] ):not (.disabled
+	 ):active:focus, .btn-yellow.active:not ([disabled] ):not (.disabled 
+	), .btn-yellow.active:not ([disabled] ):not (.disabled ):focus,
+	.btn-yellow.focus, .btn-yellow:focus, .btn-yellow:not ([disabled] ):not
+	 (.disabled ):active, .btn-yellow:not ([disabled] ):not (.disabled ):active:focus,
+	.btn.active:not ([disabled] ):not (.disabled ), .btn:active, .btn:focus,
+	.btn:hover, .btn:not ([disabled] ):not (.disabled ):active,
+	.modal-dialog .modal-content, .modal-dialog.cascading-modal .modal-header,
+	.show>.btn-amber.dropdown-toggle, .show>.btn-amber.dropdown-toggle:focus,
+	.show>.btn-black.dropdown-toggle, .show>.btn-black.dropdown-toggle:focus,
+	.show>.btn-blue-grey.dropdown-toggle, .show>.btn-blue-grey.dropdown-toggle:focus,
+	.show>.btn-blue.dropdown-toggle, .show>.btn-blue.dropdown-toggle:focus,
+	.show>.btn-brown.dropdown-toggle, .show>.btn-brown.dropdown-toggle:focus,
+	.show>.btn-cyan.dropdown-toggle, .show>.btn-cyan.dropdown-toggle:focus,
+	.show>.btn-danger.dropdown-toggle, .show>.btn-danger.dropdown-toggle:focus,
+	.show>.btn-dark-green.dropdown-toggle, .show>.btn-dark-green.dropdown-toggle:focus,
+	.show>.btn-dark.dropdown-toggle, .show>.btn-dark.dropdown-toggle:focus,
+	.show>.btn-deep-orange.dropdown-toggle, .show>.btn-deep-orange.dropdown-toggle:focus,
+	.show>.btn-deep-purple.dropdown-toggle, .show>.btn-deep-purple.dropdown-toggle:focus,
+	.show>.btn-default.dropdown-toggle, .show>.btn-default.dropdown-toggle:focus,
+	.show>.btn-elegant.dropdown-toggle, .show>.btn-elegant.dropdown-toggle:focus,
+	.show>.btn-green.dropdown-toggle, .show>.btn-green.dropdown-toggle:focus,
+	.show>.btn-grey.dropdown-toggle, .show>.btn-grey.dropdown-toggle:focus,
+	.show>.btn-indigo.dropdown-toggle, .show>.btn-indigo.dropdown-toggle:focus,
+	.show>.btn-info.dropdown-toggle, .show>.btn-info.dropdown-toggle:focus,
+	.show>.btn-light-blue.dropdown-toggle, .show>.btn-light-blue.dropdown-toggle:focus,
+	.show>.btn-light-green.dropdown-toggle, .show>.btn-light-green.dropdown-toggle:focus,
+	.show>.btn-light.dropdown-toggle, .show>.btn-light.dropdown-toggle:focus,
+	.show>.btn-lime.dropdown-toggle, .show>.btn-lime.dropdown-toggle:focus,
+	.show>.btn-mdb-color.dropdown-toggle, .show>.btn-mdb-color.dropdown-toggle:focus,
+	.show>.btn-orange.dropdown-toggle, .show>.btn-orange.dropdown-toggle:focus,
+	.show>.btn-outline-amber.dropdown-toggle, .show>.btn-outline-amber.dropdown-toggle:focus,
+	.show>.btn-outline-black.dropdown-toggle, .show>.btn-outline-black.dropdown-toggle:focus,
+	.show>.btn-outline-blue-grey.dropdown-toggle, .show>.btn-outline-blue-grey.dropdown-toggle:focus,
+	.show>.btn-outline-blue.dropdown-toggle, .show>.btn-outline-blue.dropdown-toggle:focus,
+	.show>.btn-outline-brown.dropdown-toggle, .show>.btn-outline-brown.dropdown-toggle:focus,
+	.show>.btn-outline-cyan.dropdown-toggle, .show>.btn-outline-cyan.dropdown-toggle:focus,
+	.show>.btn-outline-danger.dropdown-toggle, .show>.btn-outline-danger.dropdown-toggle:focus,
+	.show>.btn-outline-dark-green.dropdown-toggle, .show>.btn-outline-dark-green.dropdown-toggle:focus,
+	.show>.btn-outline-dark.dropdown-toggle, .show>.btn-outline-dark.dropdown-toggle:focus,
+	.show>.btn-outline-deep-orange.dropdown-toggle, .show>.btn-outline-deep-orange.dropdown-toggle:focus,
+	.show>.btn-outline-deep-purple.dropdown-toggle, .show>.btn-outline-deep-purple.dropdown-toggle:focus,
+	.show>.btn-outline-default.dropdown-toggle, .show>.btn-outline-default.dropdown-toggle:focus,
+	.show>.btn-outline-elegant.dropdown-toggle, .show>.btn-outline-elegant.dropdown-toggle:focus,
+	.show>.btn-outline-green.dropdown-toggle, .show>.btn-outline-green.dropdown-toggle:focus,
+	.show>.btn-outline-grey.dropdown-toggle, .show>.btn-outline-grey.dropdown-toggle:focus,
+	.show>.btn-outline-indigo.dropdown-toggle, .show>.btn-outline-indigo.dropdown-toggle:focus,
+	.show>.btn-outline-info.dropdown-toggle, .show>.btn-outline-info.dropdown-toggle:focus,
+	.show>.btn-outline-light-blue.dropdown-toggle, .show>.btn-outline-light-blue.dropdown-toggle:focus,
+	.show>.btn-outline-light-green.dropdown-toggle, .show>.btn-outline-light-green.dropdown-toggle:focus,
+	.show>.btn-outline-light.dropdown-toggle, .show>.btn-outline-light.dropdown-toggle:focus,
+	.show>.btn-outline-lime.dropdown-toggle, .show>.btn-outline-lime.dropdown-toggle:focus,
+	.show>.btn-outline-mdb-color.dropdown-toggle, .show>.btn-outline-mdb-color.dropdown-toggle:focus,
+	.show>.btn-outline-orange.dropdown-toggle, .show>.btn-outline-orange.dropdown-toggle:focus,
+	.show>.btn-outline-pink.dropdown-toggle, .show>.btn-outline-pink.dropdown-toggle:focus,
+	.show>.btn-outline-primary.dropdown-toggle, .show>.btn-outline-primary.dropdown-toggle:focus,
+	.show>.btn-outline-purple.dropdown-toggle, .show>.btn-outline-purple.dropdown-toggle:focus,
+	.show>.btn-outline-red.dropdown-toggle, .show>.btn-outline-red.dropdown-toggle:focus,
+	.show>.btn-outline-secondary.dropdown-toggle, .show>.btn-outline-secondary.dropdown-toggle:focus,
+	.show>.btn-outline-success.dropdown-toggle, .show>.btn-outline-success.dropdown-toggle:focus,
+	.show>.btn-outline-teal.dropdown-toggle, .show>.btn-outline-teal.dropdown-toggle:focus,
+	.show>.btn-outline-unique.dropdown-toggle, .show>.btn-outline-unique.dropdown-toggle:focus,
+	.show>.btn-outline-warning.dropdown-toggle, .show>.btn-outline-warning.dropdown-toggle:focus,
+	.show>.btn-outline-white.dropdown-toggle, .show>.btn-outline-white.dropdown-toggle:focus,
+	.show>.btn-outline-yellow.dropdown-toggle, .show>.btn-outline-yellow.dropdown-toggle:focus,
+	.show>.btn-pink.dropdown-toggle, .show>.btn-pink.dropdown-toggle:focus,
+	.show>.btn-primary.dropdown-toggle, .show>.btn-primary.dropdown-toggle:focus,
+	.show>.btn-purple.dropdown-toggle, .show>.btn-purple.dropdown-toggle:focus,
+	.show>.btn-red.dropdown-toggle, .show>.btn-red.dropdown-toggle:focus,
+	.show>.btn-secondary.dropdown-toggle, .show>.btn-secondary.dropdown-toggle:focus,
+	.show>.btn-success.dropdown-toggle, .show>.btn-success.dropdown-toggle:focus,
+	.show>.btn-teal.dropdown-toggle, .show>.btn-teal.dropdown-toggle:focus,
+	.show>.btn-unique.dropdown-toggle, .show>.btn-unique.dropdown-toggle:focus,
+	.show>.btn-warning.dropdown-toggle, .show>.btn-warning.dropdown-toggle:focus,
+	.show>.btn-white.dropdown-toggle, .show>.btn-white.dropdown-toggle:focus,
+	.show>.btn-yellow.dropdown-toggle, .show>.btn-yellow.dropdown-toggle:focus,
+	.z-depth-1-half {
+	box-shadow: none;
+}
+
+.file-field.medium .file-path-wrapper {
+	height: 3rem;
+}
+
+.file-field.medium .file-path-wrapper .file-path {
+	height: 2.8rem;
+}
+
+.file-field.big-2 .file-path-wrapper {
+	height: 3.7rem;
+}
+
+.file-field.big-2 .file-path-wrapper .file-path {
+	height: 3.5rem;
+}
+
+label.input-toggle {
+	line-height: 0;
+	font-size: 0;
+	display: inline-block;
+	margin: 0;
+}
+
+label.input-toggle>span {
+	display: inline-block;
+	position: relative;
+	background-image: -webkit-linear-gradient(left, #848484 0%, #848484 50%, #7cbcbf 50%,
+		#7cbcbf 100%);
+	background-image: linear-gradient(to right, #848484 0%, #848484 50%, #7cbcbf 50%, #7cbcbf
+		100%);
+	background-size: 64px 14px;
+	background-position: 0%;
+	border-radius: 32px;
+	width: 32px;
+	height: 14px;
+	cursor: pointer;
+	-webkit-transition: background-position 0.2s ease-in;
+	transition: background-position 0.2s ease-in;
+}
+
+label.input-toggle>input:checked+span {
+	background-position: -100%;
+}
+
+label.input-toggle>span:after {
+	content: "";
+	display: block;
+	position: absolute;
+	width: 18px;
+	height: 18px;
+	background: #F1F1F1;
+	-webkit-align-self: center;
+	-ms-flex-item-align: center;
+	align-self: center;
+	top: 50%;
+	left: 0;
+	-webkit-transform: translateY(0%);
+	transform: translateY(-50%);
+	border-radius: 100%;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+	-webkit-transition: left 0.2s ease-in, background-color 0.2s ease-in,
+		-webkit-transform 0.3s ease;
+	transition: left 0.2s ease-in, background-color 0.2s ease-in,
+		-webkit-transform 0.3s ease;
+	transition: left 0.2s ease-in, background-color 0.2s ease-in, transform
+		0.3s ease;
+	transition: left 0.2s ease-in, background-color 0.2s ease-in, transform
+		0.3s ease, -webkit-transform 0.3s ease;
+}
+
+label.input-toggle>input:checked+span:after {
+	left: calc(100% - 18px);
+	background-color: #1D8B90;
+}
+
+label.input-toggle>span:active:after {
+	-webkit-transform: translateY(-50%) scale3d(1.15, 0.85, 1);
+	transform: translateY(-50%) scale3d(1.15, 0.85, 1);
+}
+
+label.input-toggle>input:disabled+span:active:after {
+	-webkit-transform: translateY(-50%);
+	transform: translateY(-50%);
+}
+
+label.input-toggle>input:disabled+span {
+	cursor: default;
+}
+
+label.input-toggle>input:disabled+span {
+	background: #D5D5D5;
+}
+
+label.input-toggle>input:disabled+span:after {
+	background: #BDBDBD;
+}
+
+label.input-toggle>input {
+	display: block;
+	position: absolute;
+	opacity: 0;
+	width: 0;
+	height: 0;
+}
+
+.badge, .btn, .btn.disabled:active, .btn.disabled:focus, .btn.disabled:hover,
+	.btn:disabled:active, .btn:disabled:focus, .btn:disabled:hover, .card,
+	.jumbotron, .md-form input[type=date].input-alternate, .md-form input[type=datetime-local].input-alternate,
+	.md-form input[type=email].input-alternate, .md-form input[type=number].input-alternate,
+	.md-form input[type=password].input-alternate, .md-form input[type=search-md].input-alternate,
+	.md-form input[type=search].input-alternate, .md-form input[type=tel].input-alternate,
+	.md-form input[type=text].input-alternate, .md-form input[type=time].input-alternate,
+	.md-form input[type=url].input-alternate, .md-form textarea.md-textarea.input-alternate,
+	.media .media-left img, .modal-dialog.cascading-modal .modal-c-tabs .nav-tabs,
+	.modal-dialog.modal-notify .modal-header, .navbar, .pagination .page-item.active .page-link,
+	.z-depth-1 {
+	box-shadow: none;
+}
+
+/*  목록 디자인 김태호 */
+#cateNavi ul>li {
+	padding: 8px;
+	float: left;
+	list-style: none;
+	margin: 0px;
+}
+.hsize_100{
+	height: 100%;
+}
+
+#cateCon:hover{
+	cursor: pointer;
+}
+
+#cate1:hover{
+	background-color: #ddd;
+	color: #fff;
+	transition: background-color 1.2s ease;
+	-webkit-transition: background-color 1.2s ease;
+	-moz-transition: background-color 1.2s eas;
+	-ms-transform: rotate(10deg);
+	cursor: pointer;
+}
+
+#cate2:hover{
+	background-color: #ddd;
+	color: #fff;
+	transition: background-color 1.2s ease;
+	-webkit-transition: background-color 1.2s ease;
+	-moz-transition: background-color 1.2s eas;
+	-ms-transform: rotate(10deg);
+	cursor: pointer;
+}
+
+#cate3:hover{
+	background-color: #ddd;
+	color: #fff;
+	transition: background-color 1.2s ease;
+	-webkit-transition: background-color 1.2s ease;
+	-moz-transition: background-color 1.2s eas;
+	-ms-transform: rotate(10deg);
+	cursor: pointer;
+}
+#cate4:hover{
+	background-color: #ddd;
+	color: #fff;
+	transition: background-color 1.2s ease;
+	-webkit-transition: background-color 1.2s ease;
+	-moz-transition: background-color 1.2s eas;
+	-ms-transform: rotate(10deg);
+	cursor: pointer;
+}
+#cate5:hover{
+	background-color: #ddd;
+	color: #fff;
+	transition: background-color 1.2s ease;
+	-webkit-transition: background-color 1.2s ease;
+	-moz-transition: background-color 1.2s eas;
+	-ms-transform: rotate(10deg);
+	cursor: pointer;
+}
+#cate6:hover{
+	background-color: #ddd;
+	color: #fff;
+	transition: background-color 1.2s ease;
+	-webkit-transition: background-color 1.2s ease;
+	-moz-transition: background-color 1.2s eas;
+	-ms-transform: rotate(10deg);
+	cursor: pointer;
+}
+#cate7:hover{
+	background-color: #ddd;
+	color: #fff;
+	transition: background-color 1.2s ease;
+	-webkit-transition: background-color 1.2s ease;
+	-moz-transition: background-color 1.2s eas;
+	-ms-transform: rotate(10deg);
+	cursor: pointer;
+}
+#cate8:hover{
+	background-color: #ddd;
+	color: #fff;
+	transition: background-color 1.2s ease;
+	-webkit-transition: background-color 1.2s ease;
+	-moz-transition: background-color 1.2s eas;
+	-ms-transform: rotate(10deg);
+	cursor: pointer;
+}
+
+#cate1:focus{
+	background-color: #ddd;
+	color: #fff;
+}
+
+#cate2:focus{
+	background-color: #ddd;
+	color: #fff;
+}
+
+#cate3:focus{
+	background-color: #ddd;
+	color: #fff;
+}
+
+#cate4:focus{
+	background-color: #ddd;
+	color: #fff;
+}
+
+#cate5:focus{
+	background-color: #ddd;
+	color: #fff;
+}
+
+#cate6:focus{
+	background-color: #ddd;
+	color: #fff;
+}
+
+#cate7:focus{
+	background-color: #ddd;
+	color: #fff;
+}
+
+#cate8:focus{
+	background-color: #ddd;
+	color: #fff;
+}
+
+.tab {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
+
+.tab li {
+	float: left;
+	width:50%;
+}
+
+.tab li a {
+	display: inline-block;
+	color: #C2C2C2;
+	text-align: center;
+	text-decoration: none;
+	padding: 14px 16px;
+	font-size: 17px;
+	transition:0.3s;
+}
+
+
+.tabcontent {
+	display: none;
+/* 	background-color:rgb(0,154,200); */
+	padding: 6px 12px;
+}
+ul.tab li.current{
+ 	background-color: #545454 !important;
+	color: white;
+}
+.tabcontent.current {
+	display: block;
+}
+#barChart:hover{
+	box-shadow:2px 2px 5px 1px rgba(0,0,0,0.4);
+	cursor: pointer;
+}
+#lineChart:hover{
+	box-shadow:2px 2px 5px 1px rgba(0,0,0,0.4);
+	cursor: pointer;
+}
+#pieChart:hover{
+	box-shadow:2px 2px 5px 1px rgba(0,0,0,0.4);
+	cursor: pointer;
+}
+#donutChart:hover{
+	box-shadow:2px 2px 5px 1px rgba(0,0,0,0.4);
+	cursor: pointer;
+}
+#groupChart:hover{
+	box-shadow:2px 2px 5px 1px rgba(0,0,0,0.4);
+	cursor: pointer;	
+}
+#areaChart:hover{
+	box-shadow:2px 2px 5px 1px rgba(0,0,0,0.4);
+	cursor: pointer;	
+}
+#stackAreaChart:hover{
+	box-shadow:2px 2px 5px 1px rgba(0,0,0,0.4);
+	cursor: pointer;	
+}
+.xcol{
+	width:70%;
+	float: left;
+	margin-left: 8%;
+	cursor: pointer;
+	text-align:left;
+	border-bottom: 1px solid #fff;
+}
+.ycol{
+	width:70%;
+	float: left;
+	margin-left: 8%;
+	cursor: pointer;
+	text-align:left;
+	border-bottom: 1px solid #fff;
+}
+.x1col{
+	width:70%;
+	float: left;
+	margin-left: 8%;
+	cursor: pointer;
+	text-align:left;
+	border-bottom: 1px solid #fff;
+}
+#xcol1:hover{
+	background-color: #ddd;
+	color: #fff;
+	transition: background-color 1.2s ease;
+	-webkit-transition: background-color 1.2s ease;
+	-moz-transition: background-color 1.2s eas;
+	-ms-transform: rotate(10deg);
+	cursor: pointer;
+}
+.xcol:hover{
+	background-color: #ddd;
+	color: #fff;
+	transition: background-color 1.2s ease;
+	-webkit-transition: background-color 1.2s ease;
+	-moz-transition: background-color 1.2s eas;
+	-ms-transform: rotate(10deg);
+	cursor: pointer;
+}
+.x1col:hover{
+	background-color: #ddd;
+	color: #fff;
+	transition: background-color 1.2s ease;
+	-webkit-transition: background-color 1.2s ease;
+	-moz-transition: background-color 1.2s eas;
+	-ms-transform: rotate(10deg);
+	cursor: pointer;
+}
+.ycol:hover{
+	background-color: #ddd;
+	color: #fff;
+	transition: background-color 1.2s ease;
+	-webkit-transition: background-color 1.2s ease;
+	-moz-transition: background-color 1.2s eas;
+	-ms-transform: rotate(10deg);
+	cursor: pointer;
+}
+.dCol2{
+	background-color:skyblue; 
+	text-decoration: none;
+	color:white; 
+	width:5%; 
+	height:28px; 
+	border: none; 
+	margin-top:5px;
+}
+.dCol1{
+	background-color:skyblue; 
+	text-decoration: none;
+	color:white; 
+	width:5%; 
+	height:28px; 
+	border: none; 
+}
+/* ***********************************************************************************/
+
+/* -------------- 재경이가 추가함------------------------------*/
+.ml_700 {
+	margin-left: 700px;
+}
+.jarea {
+	float: right;
+	width: 90% !important;
+}
+
+.jarea2 {
+	float: right;
+	width: 100% !important;
+}
+
+.mt_80 {
+	margin-top: 80px;
+}
+
+.mt_45{
+	margin-top : 45px;
+}
+
+.mt_375{
+	margin-top : 375px;
+}
+
+.mt_410{
+	margin-top : 410px;
+}
+
+.mt_050{
+	margin-top : -5%;
+}
+.bd_t{
+	border-top : 1px solid #ddd;
+}
+.bd_d05{
+	border : 0.5px solid #ddd;
+}
+.ml_001{
+	margin-left : 1%;
+}
+
+.ml_002{
+	margin-left : -2%;
+}
+.mr_002{
+	margin-right : 2%;
+}
+.mt_002 {
+	margin-top : 2%;
+}
+.mt_003 {
+	margin-top : 3%;
+}
+.ml_85 {
+	margin-left : 85px;
+}
+
+.mt_007{
+	margin-top : 7%;
+}
+
+.mr_050{
+	margin-right : -50%;
+}
+
+.ml_23 {
+	margin-left: 23px;
+}
+.ml_43 {
+	margin-left: 43px;
+}
+.size_440 {
+	width: 440px;
+}
+.size_207 {
+	width: 207px;
+}
+.mt_100 {
+	margin-top: 100px;
+}
+
+.bd_btt {
+	border-bottom : 1px solid #545454 !important;
+}
+.line01 {
+	border-left: 1px solid #ddd;
+}
+
+.mt1_26 {
+	margin-top: 26%;
+}
+
+.mt1_28 {
+	margin-top: 28%;
+}
+
+.ml1_60 {
+	margin-left: 60%;
+}
+
+.ml1_76 {
+	margin-left: 76px;
+}
+
+.ml1_82 {
+	margin-left: -82%;
+}
+
+.h_50{
+	height : 50px;
+}
+
+.h_430 {
+	height: 430px;
+}
+
+.h_460 {
+	height: 460px;
+}
+
+.padding_10 {
+	padding: 10px 0 148px 2.5%;
+}
+
+.width_100 {
+	width: 100% !important;
+}
+
+.width_030 {
+	width: 30%;
+}
+.bg_f1 {
+	background: #f1f1f1;
+}
+
+.col_50 {
+	color: #e50500 !important;
+}
+
+.ml_875 {
+	margin-left: 861px;
+}
+.ml_900{
+	margin-left: 900px;
+}
+.ml_060{
+	margin-left: 60%;
+}
+.ml_050{
+	margin-left: 50%;
+}
+.bt_d{
+	border-top : 1px solid #ddd;
+}
+
+.mr_010{
+	margin-right : 10px;
+}
+/* -------------- 수진 추가 ------------------------------*/
+.wsize_49 {
+	width: 49%;
+}
+.wsize_69 {
+	width: 69%;
+}
+
+.subtn {
+	padding: .48rem .75rem;
+}
+
+.suarea {
+	float: right;
+	width: 94% !important;
+}
+
+.payment_way {
+	width: 100%;
+	border-bottom: 1px solid #ddd;
+	border-top: 2px solid #03427b;
+	display: inline-block;
+	padding: 20px 15px 15px 15px;
+}
+
+.payment_way2 {
+	width: 100%;
+	border-top: 2px solid #e1e4e6;
+	display: inline-block;
+	padding: 20px 15px 15px 15px;
+}
+
+.payment_way3 {
+	width: 100%;
+	border-top: 2px solid #e1e4e6;
+	display: inline-block;
+	padding: 1px 5px 5px 5px;
+}
+.payment_way4 {
+	width: 100%;
+	border-top: 2px solid #e1e4e6;
+	display: inline-block;
+	padding: 5px 15px 15px 15px;
+}
+.div_bg{
+	background-color: #66696e;
+	border: 1px solid #eee9e9fa;
+    color: white;
+}
+.ml_3{
+	margin-left:3%;
+}
+.mr_3{
+	margin-right:3%;
+}
+.fon_md{
+	font-size:medium;
+	border-top: 1px solid #dddddd !important;
+}
+.pdstyle{
+	padding: 1px;
+}
+.tbSize{
+	table-layout: fixed;
+    width: 1600px;
+}
+.btn_set{
+	height:2.2rem; 
+	margin-top:0; 
+	padding: 0;
+	margin-left: 13px;
+}
+.pd_10{
+	padding: 10px;
+}
+.div_set{
+	height: 27vh; 
+	width: 100%;
+}
+.hwsize_30{
+	height: 30%;
+}
+.fn{
+	float: none;
+}
+.mt_41m{
+	margin-top: -41px;
+}
+/* -------------- 수진 여기위까지 ------------------------------*/
+.button_div {
+	width: 100%;
+	display: inline-block;
+	padding: 20px 5px 5px 5px;
+}
+
+.pn {
+	padding: none;
+}
+.insert_text{
+	width:30%;
+}
+.display_inline{
+	display:inline;
+}
+
+/*-------은애----------*/
+.cs-pointer{
+	cursor:pointer;
+}

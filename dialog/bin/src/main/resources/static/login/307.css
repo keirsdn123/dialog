@@ -1,0 +1,184 @@
+@charset "UTF-8";
+
+.contWrap{padding:40px 0;}
+.contWrap h4{font-size:1.4em;color:#1763b1;margin-bottom:20px;}
+.contWrap h5{font-size:1.1em;font-weight:normal;color:#fff;background:#1763b1;border-radius:50px;padding:10px 30px;display:inline-block;margin-bottom:20px;}
+
+ul.ulStyle1 li{background:url('/images/new/sub/bar_detail.gif') no-repeat 0 15px;padding:6px 0 6px 20px;line-height:1.6;}
+
+a.btnStyle4{padding:8px 50px 8px 20px;background:#1763b1 url('/images/new/sub/arrow_btnstyle4.gif') no-repeat 100% 0;;background-size:auto 100%;color:#fff;border-radius:2px;display:inline-block;margin:4px 0;}
+a.btnStyle5{padding:12px 50px 12px 20px;background:#169db1 url('/images/new/sub/arrow_btnstyle5.png') no-repeat 93% 50%;color:#fff;border-radius:2px;}
+
+
+/* 개발자공간 > OPENAPI소개 */
+.boxLine{width:100%;background:url('/resources/login/box_line.gif');margin-bottom:40px;}
+.boxLine .boxEdge{background:url('/resources/login/box_edge.png') no-repeat;padding:6px;}
+.boxLine .boxEdge > div{padding:30px 30px 150px 150px;}
+.boxLine .boxEdge > div.boxStyle1{background:#fff url('/images/new/sub/ico_boxstyle1.gif') no-repeat 30px 50%;}
+.boxLine .boxEdge > div > strong{display:block;font-size:1.3em;color:#1763b1;margin-bottom:10px;}
+.boxLine .boxEdge > div > p{line-height:1.6;}
+
+.stepStyle1{background:#f9f9f9;padding:30px 20px;}
+.stepStyle1 > ul{background:url('/images/new/sub/step_line.png') no-repeat 0 30%;overflow:hidden;}
+.stepStyle1 > ul.stepA > li{width:25%;}
+.stepStyle1 > ul.stepB > li{width:20%;}
+.stepStyle1 > ul > li{float:left;background:url('/images/new/sub/step_circle.png') no-repeat 50% 0;text-align:center;}
+.stepStyle1 > ul > li > div{padding-top:140px;}
+.stepStyle1 > ul > li > div.stepA_1{background:url('/images/new/sub/ico_step1.png') no-repeat 50% 25%;}
+.stepStyle1 > ul > li > div.stepA_2{background:url('/images/new/sub/ico_step2.png') no-repeat 50% 25%;}
+.stepStyle1 > ul > li > div.stepA_3{background:url('/images/new/sub/ico_step3.png') no-repeat 50% 25%;}
+.stepStyle1 > ul > li > div.stepA_4{background:url('/images/new/sub/ico_step4.png') no-repeat 54% 23%;}
+.stepStyle1 > ul > li > div.stepB_1{background:url('/images/new/sub/ico_step1.png') no-repeat 50% 25%;}
+.stepStyle1 > ul > li > div.stepB_2{background:url('/images/new/sub/ico_step5.png') no-repeat 50% 25%;}
+.stepStyle1 > ul > li > div.stepB_3{background:url('/images/new/sub/ico_step2.png') no-repeat 50% 25%;}
+.stepStyle1 > ul > li > div.stepB_4{background:url('/images/new/sub/ico_step3.png') no-repeat 50% 25%;}
+.stepStyle1 > ul > li > div.stepB_5{background:url('/images/new/sub/ico_step4.png') no-repeat 54% 23%;}
+.stepStyle1 > ul > li > div > strong{display:block;margin-bottom:10px;}
+.stepStyle1 > ul > li > div > strong > span{color:#1287d7;}
+
+
+/* 개발자공간 > API활용신청안내 */
+.applyStyle1{width:100%;margin:60px 0 40px;}
+.applyStyle1 > ul{overflow:hidden;width:90%;margin:0 auto;background:url('/images/new/sub/apply_line.png') no-repeat 50% 20%;}
+.applyStyle1 > ul > li{width:32%;float:left;text-align:center;}
+.applyStyle1 > ul > li > strong{display:block;width:138px;height:138px;border-radius:100%;color:#fff;padding-top:100px;margin:0 auto 30px;font-weight:normal;}
+.applyStyle1 > ul > li > div.txt > p{margin-bottom:15px;font-size:0.95em;line-height:1.6;}
+.applyStyle1 > ul > li:nth-child(2){width:36%;}
+.applyStyle1 > ul > li:nth-child(2) > div{background:#eef7fc;width:138px;height:138px;border-radius:100%;padding:8px;line-height:120px;margin:0 auto;}
+.applyStyle1 > ul > li:nth-child(2) > div > strong{font-size:1.3em;display:block;background:#fff;width:100%;height:100%;border:1px solid #61b6f1;border-radius:100%;color:#1763b1;font-weight:normal;}
+.applyStyle1 > ul > li:nth-child(2) > div > strong > span{color:#e67f31;}
+.applyStyle1 > ul.applyA > li:nth-child(1) > strong{background:#42a8ee url('/images/new/sub/ico_apply1.png') no-repeat 50% 40%;}
+.applyStyle1 > ul.applyA > li:nth-child(3) > strong{background:#42a8ee url('/images/new/sub/ico_apply2.png') no-repeat 50% 35%;}
+.applyStyle1 > ul.applyB > li:nth-child(1) > strong{background:#42a8ee url('/images/new/sub/ico_apply3.png') no-repeat 54% 40%;}
+.applyStyle1 > ul.applyB > li:nth-child(3) > strong{background:#42a8ee url('/images/new/sub/ico_apply4.png') no-repeat 50% 35%;}
+
+.stepStyle2{background:#f9f9f9;padding:20px;}
+.stepStyle2 > ul > li{border-bottom:1px solid #d6d6d6;padding:20px 0;overflow:hidden;}
+.stepStyle2 > ul > li:last-child{border:none;}
+.stepStyle2 > ul > li > span{width:22%;float:left;display:block;width:100px;height:100px;border-radius:100%;border:1px solid #d6d6d6;margin:10px 0 0 20px;}
+.stepStyle2 > ul > li > div.txt{width:78%;float:right;}
+.stepStyle2 > ul > li > div.txt > strong{padding:5px 20px;background:#1287d7;color:#fff;font-weight:normal;border-radius:20px;display:inline-block;margin-bottom:10px;}
+.stepStyle2 > ul > li > div.txt p{line-height:1.6;}
+.stepStyle2 > ul > li > span.ico1{background:#fff url('/images/new/sub/ico_step6.png') no-repeat 50% 50%;}
+.stepStyle2 > ul > li > span.ico2{background:#fff url('/images/new/sub/ico_step7.png') no-repeat 50% 50%;}
+.stepStyle2 > ul > li > span.ico3{background:#fff url('/images/new/sub/ico_step8.png') no-repeat 50% 50%;}
+.stepStyle2 > ul > li > span.ico4{background:#fff url('/images/new/sub/ico_step9.png') no-repeat 50% 50%;}
+.stepStyle2 > ul > li > span.ico5{background:#fff url('/images/new/sub/ico_step10.png') no-repeat 50% 50%;}
+.stepStyle2 > ul > li > span.ico6{background:#fff url('/images/new/sub/ico_step11.png') no-repeat 50% 50%;}
+.stepStyle2 > ul > li > span.ico7{background:#fff url('/images/new/sub/ico_step12.png') no-repeat 50% 50%;}
+.stepStyle2 > ul > li > span.ico8{background:#fff url('/images/new/sub/ico_step13.png') no-repeat 50% 50%;}
+.stepStyle2 > ul > li > span.ico9{background:#fff url('/images/new/sub/ico_step14.png') no-repeat 50% 50%;}
+.stepStyle2 > ul > li > span.ico10{background:#fff url('/images/new/sub/ico_step15.png') no-repeat 50% 50%;}
+.stepStyle2 > ul > li > span.ico11{background:#fff url('/images/new/sub/ico_step16.png') no-repeat 54% 50%;}
+
+
+/* 이용안내 > 센터소개 */
+.introduce{background:#fff url('/images/new/sub/bg_introduce.gif') no-repeat 0 100%;padding-bottom:150px;background-size:100% auto;}
+.introduce > h4{background:url('/images/new/sub/bg_introduce_h4.png') no-repeat;background-size:auto 100%;font-family:'THEFACESHOP INKLIPQUID','더페이스샵 잉크립퀴드체';font-size:4.5em;font-weight:normal;padding-left:40px;margin-bottom:40px;}
+.introduce > p{line-height:1.6;}
+.introduce table.basicT{border-top:2px solid #d6d6d6;border-spacing:0;padding:0;table-layout:fixed;margin-bottom:20px;}
+.introduce table.basicT td, .introduce .basicT th{padding:15px;}
+.introduce table.basicT td{text-align:left;}
+.introduce .btnArea > a{display:inline-block;margin:2px;}
+
+
+/* 회원관련 > 로그인 */
+.login .boxStyle2{background:#fff;padding-left:30px !important;}
+.login .boxStyle2 > p{background:url('/images/new/sub/ico_boxstyle2.gif') no-repeat 10px 10px;}
+.login .boxStyle2 .loginIn{padding:0 30px 30px;border-bottom:1px solid #e7e7e7;overflow:hidden;}
+.login .boxStyle2 .loginIn > ul{width:60%;float:left;margin-right:15px;}
+.login .boxStyle2 .loginIn > ul > li{line-height:38px;padding-bottom:10px;}
+.login .boxStyle2 .loginIn > ul > li > label{width:30%;display:inline-block;}
+.login .boxStyle2 .loginIn > ul > li > input{width:67%;height:38px;padding:0 10px;border:1px solid #e4e4e4;background:#f9f9f9 url('/images/new/sub/bg_input2.gif');color:#333;}
+.login .boxStyle2 .loginIn > input.loginBtn{float:left;background:#002266 url('/images/new/sub/bg_submit.gif');color:#fff;text-align:center;border:0;padding:34px 30px;cursor:pointer;font-size:1em;}
+.login .boxStyle2 .joinIn{padding-top:30px;overflow:hidden;}
+.login .boxStyle2 .joinIn > p{float:left;width:59%;color:#747474;margin-right:15px;line-height:1.6;}
+.login .boxStyle2 .joinIn > a.joinBtn{float:left;display:inline-block;padding:15px 25px;background:#ddd;color:#747474;text-align:center;}
+
+
+
+
+
+
+
+
+/* pad */
+@media only screen and (max-width : 1024px){
+
+	.contWrap{padding:40px 10px;}
+
+	/* 개발자공간 > OPENAPI소개 */
+	.boxLine .boxEdge > div{padding:30px;}
+	.boxLine .boxEdge > div.boxStyle1{background-image:none;}
+	
+	.stepStyle1{padding:10px 20px;}
+	.stepStyle1 > ul{background:none;}
+	.stepStyle1 > ul.stepA > li{width:100%;}
+	.stepStyle1 > ul.stepB > li{width:100%;}
+	.stepStyle1 > ul > li{height:100px;text-align:left;overflow:hidden;background-position:0 0;margin:15px 0;border-bottom:1px solid #d6d6d6;background-size:auto 80px;}
+	.stepStyle1 > ul > li:last-child{border:none;margin-bottom:0;}
+	.stepStyle1 > ul > li > div{height:100%;padding:10px 20px 10px 100px;background-size:auto 35px !important;}
+	.stepStyle1 > ul > li > div.stepA_1{background:url('/images/new/sub/ico_step1.png') no-repeat 20px 30%;}
+	.stepStyle1 > ul > li > div.stepA_2{background:url('/images/new/sub/ico_step2.png') no-repeat 20px 33%;}
+	.stepStyle1 > ul > li > div.stepA_3{background:url('/images/new/sub/ico_step3.png') no-repeat 28px 30%;}
+	.stepStyle1 > ul > li > div.stepA_4{background:url('/images/new/sub/ico_step4.png') no-repeat 28px 33%;}
+	.stepStyle1 > ul > li > div.stepB_1{background:url('/images/new/sub/ico_step1.png') no-repeat 20px 33%;}
+	.stepStyle1 > ul > li > div.stepB_2{background:url('/images/new/sub/ico_step5.png') no-repeat 28px 33%;}
+	.stepStyle1 > ul > li > div.stepB_3{background:url('/images/new/sub/ico_step2.png') no-repeat 20px 33%;}
+	.stepStyle1 > ul > li > div.stepB_4{background:url('/images/new/sub/ico_step3.png') no-repeat 28px 33%;}
+	.stepStyle1 > ul > li > div.stepB_5{background:url('/images/new/sub/ico_step4.png') no-repeat 28px 33%;}
+	.stepStyle1 > ul > li > div > strong{font-size:1.3em;}
+	.stepStyle1 > ul > li > div > p > br{display:none;}
+	
+	/* 회원관련 > 로그인 */
+	.boxLine .boxEdge > div.boxStyle2{padding:30px 30px 300px 150px;}
+	.login .boxStyle2 .loginIn > ul, .login .boxStyle2 .joinIn > p{width:60%;}
+	
+}
+
+/* mobile */
+@media only screen and (max-width : 767px){	
+
+	/* 개발자공간 > API활용신청안내 */
+	.applyStyle1 > ul{background:none;width:100%;}
+	.applyStyle1 > ul > li{width:100%;overflow:hidden;margin-bottom:30px;}
+	.applyStyle1 > ul > li:nth-child(2){display:none;}
+	.applyStyle1 > ul > li > strong{margin:0;float:left;width:100px;height:100px;padding-top:70px;background-size:40% !important;}
+	.applyStyle1 > ul > li > div.txt{float:left;text-align:left;width:60%;margin-left:30px;}
+	.applyStyle1 > ul > li > div.txt > p{background:url('/images/new/sub/bar_detail.gif') no-repeat 0 15px;padding-left:20px;}
+	.applyStyle1 > ul > li > div.txt > p > br{display:none;}
+
+	.stepStyle2 > ul > li > span{display:none;}
+	.stepStyle2 > ul > li > div.txt{width:100%;float:none;}
+	
+	/* 이용안내 > 센터소개 */
+	.introduce > h4{padding-left:0;font-size:2.8em;}
+	.introduce table.basicT{overflow:hidden;width:70%;}
+	.introduce table.basicT tbody tr{padding:0;overflow:visible;border:none}
+	.introduce table.basicT tbody tr:nth-child(1) th{min-height:60px;}
+	.introduce table.basicT tbody tr:nth-child(2) th{min-height:130px;}
+	.introduce table.basicT tbody th{width:40%;float:left;border-bottom:1px solid #dbdbdb;}
+	.introduce table.basicT tbody td{width:60%;float:left;font-size:1em !important;border-bottom:1px solid #dbdbdb;}
+	.introduce table.basicT tbody td:nth-child(1){display:block !important;}
+
+	/* 회원관련 > 로그인 */
+	.login .boxStyle2 .loginIn{padding:0 0 30px 0;}
+	
+
+}
+@media only screen and (max-width : 500px){	
+	/* 이용안내 > 센터소개 */
+	.introduce table.basicT{width:100%;}
+
+	/* 회원관련 > 로그인 */
+	.login .boxStyle2 > p{background:none;padding:0 0 30px;}
+	.login .boxStyle2 .loginIn > ul, .login .boxStyle2 .joinIn > p{width:100%;}
+	.login .boxStyle2 .loginIn > input.loginBtn, .login .boxStyle2 .joinIn > a.joinBtn{width:100%;padding:15px 30px;margin-top:10px;}
+}
+@media only screen and (max-width : 370px){	
+
+	/* 개발자공간 > API활용신청안내 */
+	.applyStyle1{margin:30px 0;}
+	.applyStyle1 > ul > li > strong{margin:0 auto 30px;float:none;}
+	.applyStyle1 > ul > li > div.txt{width:100%;margin-left:0;}	
+}

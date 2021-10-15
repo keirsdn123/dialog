@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.su.dialog.main.mapper.MainMapperPea">
+
+	<select id="selectBestDataList" parameterType="net.su.dialog.dataSet.domain.Dataset" resultType="net.su.dialog.dataSet.domain.Dataset">
+		SELECT data_code AS dataCode, dataset_name AS datasetName, dataset_views AS datasetViews, type_normal_regularly AS typeNormalRegularly, viz_whether AS vizWhether
+		FROM dataset
+		WHERE member_rating_code <![CDATA[<=]]> #{memberRatingCode}
+		ORDER BY dataset_views DESC
+		LIMIT 0,5;
+	</select>
+	
+	<select id="selectBestReportList" parameterType="net.su.dialog.report.domain.ReportDomain" resultType="net.su.dialog.report.domain.ReportDomain">
+		SELECT report_code AS reportCode, report_title AS reportTitle, report_views AS reportViews, report_type_normal_paper AS reportTypeNormalPaper
+		FROM report
+		WHERE member_rating_code <![CDATA[<=]]> #{memberRatingCode}
+		ORDER BY report_views DESC
+		LIMIT 0,5;
+	</select>
+	
+	<select id="datasetCount" resultType="java.lang.Integer">
+		SELECT COUNT(data_code)
+		FROM dataset
+        WHERE type_normal_regularly = '일시';
+	</select>
+	
+	<select id="reportCount" resultType="java.lang.Integer">
+		SELECT COUNT(report_code)
+		FROM report;
+	</select>
+		
+	<select id="vizCount" resultType="java.lang.Integer">
+		SELECT COUNT(data_code)
+		FROM dataset
+		WHERE viz_whether = 'Y';
+	</select>
+	
+</mapper>

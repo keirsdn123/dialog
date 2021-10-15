@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.su.dialog.dataSet.mapper.DataManageMapper">
+	
+	<!-- 카테고리 조회 -->
+	<select id="getCategoryList" resultType="net.su.dialog.dataSet.domain.DataManage">
+		SELECT a.cate_code as cateCode
+			, a.cate_title as cateTitle
+            , COUNT(DISTINCT b.data_code) as cateCount
+		FROM category1 a
+        LEFT JOIN dataset_category b
+        ON a.cate_code = b.cate_code
+        GROUP BY a.cate_code, a.cate_title;
+	</select>
+	
+	<!-- 일시데이터셋 조회 -->
+	<select id="selectDtset1" parameterType="net.su.dialog.dataSet.domain.DataManage" resultType="net.su.dialog.dataSet.domain.DataManage">
+		SELECT a.data_code as dataCode
+			, a.dataset_name as dataName
+			, m.member_name as dataEnrollmentName
+			, a.data_enroll_date as dataEnrollmentDate
+			, a.type_normal_regularly as dataType
+			, a.processing_whether as processingWhether 
+			, a.viz_whether as vizWhether
+		FROM dataset a
+			, dataset_category b
+			, category1 c
+			, member m
+		WHERE
+		<if test="cateCode!=0">
+			c.cate_code = #{cateCode} AND
+		</if>
+		a.data_code = b.data_code
+		AND b.cate_code = c.cate_code
+		AND a.member_code = m.member_code
+		AND a.type_normal_regularly = '일시'
+		<choose>
+			<when test="selected==1">
+				AND dataset_name LIKE '%${searchWrd}%'
+			</when>
+			<when test="selected==2">
+				AND a.dataset_info LIKE '%${searchWrd}%'
+			</when>
+			<when test="selected==3">
+				AND m.member_name LIKE '%${searchWrd}%'
+			</when>
+		</choose>
+		GROUP BY a.data_code
+		ORDER BY a.data_code
+		LIMIT ${(currentPage1-1)*perPage1},${perPage1};
+	</select>
+	
+	<!-- 일시데이터셋 총갯수 -->
+	<select id="countDtset1" parameterType="net.su.dialog.dataSet.domain.DataManage" resultType="int">
+		SELECT count(DISTINCT a.data_code)
+		FROM dataset a
+			, dataset_category b
+			, category1 c
+			, member m
+		WHERE
+		<if test="cateCode!=0">
+			c.cate_code = #{cateCode} AND
+		</if>
+		a.data_code = b.data_code
+		AND b.cate_code = c.cate_code
+		AND a.member_code = m.member_code
+		AND a.type_normal_regularly = '일시'
+		<choose>
+			<when test="selected==1">
+				AND dataset_name LIKE '%${searchWrd}%';
+			</when>
+			<when test="selected==2">
+				AND a.dataset_info LIKE '%${searchWrd}%';
+			</when>
+			<when test="selected==3">
+				AND m.member_name LIKE '%${searchWrd}%';
+			</when>
+		</choose>
+	</select>
+	
+	<!-- 정기데이터셋 조회 -->
+	<select id="selectDtset2" parameterType="net.su.dialog.dataSet.domain.DataManage" resultType="net.su.dialog.dataSet.domain.DataManage">
+		SELECT a.data_code as dataCode
+			, a.dataset_name as dataName
+			, m.member_name as dataEnrollmentName
+			, a.data_enroll_date as dataEnrollmentDate
+			, a.type_normal_regularly as dataType
+			, a.processing_whether as processingWhether 
+			, a.viz_whether as vizWhether
+		FROM dataset a
+			, dataset_category b
+			, category1 c
+			, member m
+		WHERE
+		<if test="cateCode!=0">
+			c.cate_code = #{cateCode} AND
+		</if>
+		a.data_code = b.data_code
+		AND b.cate_code = c.cate_code
+		AND a.member_code = m.member_code
+		AND a.type_normal_regularly = '정기'
+		<choose>
+			<when test="selected==1">
+				AND dataset_name LIKE '%${searchWrd}%'
+			</when>
+			<when test="selected==2">
+				AND a.dataset_info LIKE '%${searchWrd}%'
+			</when>
+			<when test="selected==3">
+				AND m.member_name LIKE '%${searchWrd}%'
+			</when>
+		</choose>
+		GROUP BY a.data_code
+		ORDER BY a.data_code 
+		LIMIT ${(currentPage2-1)*perPage2},${perPage2};
+	</select>
+	
+	<!-- 정기데이터셋 총갯수 -->
+	<select id="countDtset2" parameterType="net.su.dialog.dataSet.domain.DataManage" resultType="int">
+		SELECT COUNT(DISTINCT a.data_code)
+		FROM dataset a
+			, dataset_category b
+			, category1 c
+			, member m
+		WHERE
+		<if test="cateCode!=0">
+			c.cate_code = #{cateCode} AND
+		</if>
+		a.data_code = b.data_code
+		AND b.cate_code = c.cate_code
+		AND a.member_code = m.member_code
+		AND a.type_normal_regularly = '정기'
+		<choose>
+			<when test="selected==1">
+				AND dataset_name LIKE '%${searchWrd}%';
+			</when>
+			<when test="selected==2">
+				AND a.dataset_info LIKE '%${searchWrd}%';
+			</when>
+			<when test="selected==3">
+				AND m.member_name LIKE '%${searchWrd}%';
+			</when>
+		</choose>
+	</select>
+	
+	<!-- 테이블명 조회 -->
+	<select id="selectTbTitle" parameterType="net.su.dialog.dataSet.domain.DataManage" resultType="net.su.dialog.dataSet.domain.DataManage">
+		<choose>
+			<when test="dataType.equals('일시')">
+				SELECT normal_data_table_title as normalDataTableTitle
+					, normal_data_standard_table_title as normalDataStandardTableTitle
+				FROM dataset_normal
+				WHERE data_code = #{dataCode};
+			</when>
+			<when test="dataType.equals('정기')">
+				SELECT regular_data_table_title as normalDataTableTitle
+					, regular_data_standard_table_title as normalDataStandardTableTitle
+				FROM regular_dataset
+				WHERE data_code = #{dataCode}
+				ORDER BY regular_data_code LIMIT 1;
+			</when>
+		</choose>
+	</select>
+	
+	<!-- raw데이터 레코드 조회 -->
+	<select id="infoRawDataRecode" parameterType="net.su.dialog.dataSet.domain.DataManage" resultType="java.util.LinkedHashMap">
+		SELECT *
+		FROM `${normalDataTableTitle}`
+		<choose>
+			<when test="dataType.equals('일시')">
+				LIMIT 100;
+			</when>
+			<when test="dataType.equals('정기') and recodeCount lte 100">
+				LIMIT 100;
+			</when>
+			<when test="dataType.equals('정기') and recodeCount gt 100">
+				LIMIT #{limit}, 100;
+			</when>      
+		</choose>
+	</select>
+	
+	<!-- 표준데이터 정보 조회 -->
+	<select id="infoSdDataRecode" parameterType="net.su.dialog.dataSet.domain.DataManage" resultType="net.su.dialog.dataSet.domain.DataManage">
+		<choose>
+			<when test="dataType.equals('일시')">
+				SELECT data_code as dataCode
+					, pause_standar_seq as pauseStandarSeq 
+					, pause_standar_column1 as pauseStandarColumn1
+					, pause_standar_column1_lable as pauseStandarColumn1Lable
+					, pause_standar_column2 as pauseStandarColumn2
+					, pause_standar_column2_lable as pauseStandarColumn2Lable
+					, pause_standar_column3 as pauseStandarColumn3
+					, pause_standar_column3_lable as pauseStandarColumn3Lable
+					, pause_standar_column4 as pauseStandarColumn4
+					, pause_standar_column4_lable as pauseStandarColumn4Lable
+					, pause_standar_column5 as pauseStandarColumn5
+					, pause_standar_column5_lable as pauseStandarColumn5Lable
+					, pause_standar_column6 as pauseStandarColumn6
+					, pause_standar_column7 as pauseStandarColumn7
+					, pause_standar_column8 as pauseStandarColumn8
+					, pause_standar_column9 as pauseStandarColumn9
+					, pause_standar_column10 as pauseStandarColumn10				 
+					FROM normal_data_standard_info
+			</when>
+			<when test="dataType.equals('정기')">
+				SELECT data_code as dataCode
+					, standar_seq as pauseStandarSeq 
+					, standar_column1 as pauseStandarColumn1
+					, standar_column1_lable as pauseStandarColumn1Lable
+					, standar_column2 as pauseStandarColumn2
+					, standar_column2_lable as pauseStandarColumn2Lable
+					, standar_column3 as pauseStandarColumn3
+					, standar_column3_lable as pauseStandarColumn3Lable
+					, standar_column4 as pauseStandarColumn4
+					, standar_column4_lable as pauseStandarColumn4Lable
+					, standar_column5 as pauseStandarColumn5
+					, standar_column5_lable as pauseStandarColumn5Lable
+					, standar_column6 as pauseStandarColumn6
+					, standar_column7 as pauseStandarColumn7
+					, standar_column8 as pauseStandarColumn8
+					, standar_column9 as pauseStandarColumn9
+					, standar_column10 as pauseStandarColumn10
+				FROM data_standard_date
+			</when>
+		</choose>
+		WHERE data_code = #{dataCode};
+	</select>
+	
+	<!-- 표준데이터 상세 조회 -->
+	<select id="infoSdDataDetailRecode" parameterType="net.su.dialog.dataSet.domain.DataManage" resultType="net.su.dialog.dataSet.domain.DataManage">
+		<choose>
+			<when test="dataType.equals('일시')">
+				SELECT pause_standar_seq as pauseStandarSeq
+					, pause_standar_detail_seq as pauseStandarDetailSeq
+					, pause_standar_column1 as pauseStandarColumn1d 		
+					, pause_standar_column2 as pauseStandarColumn2d
+					, pause_standar_column3 as pauseStandarColumn3d
+					, pause_standar_column4 as pauseStandarColumn4d
+					, pause_standar_column5 as pauseStandarColumn5d
+					, pause_standar_column6 as pauseStandarColumn6d
+					, pause_standar_column7 as pauseStandarColumn7d
+					, pause_standar_column8 as pauseStandarColumn8d
+					, pause_standar_column9 as pauseStandarColumn9d
+					, pause_standar_column10 as pauseStandarColumn10d
+				FROM `${normalDataStandardTableTitle}`
+				LIMIT 100;
+			</when>
+			<when test="dataType.equals('정기') and recodeStandardCount lte 100">
+				SELECT standar_seq as pauseStandarSeq
+					, standar_detail_seq as pauseStandarDetailSeq
+					, standar_column1 as pauseStandarColumn1d 		
+					, standar_column2 as pauseStandarColumn2d
+					, standar_column3 as pauseStandarColumn3d
+					, standar_column4 as pauseStandarColumn4d
+					, standar_column5 as pauseStandarColumn5d
+					, standar_column6 as pauseStandarColumn6d
+					, standar_column7 as pauseStandarColumn7d
+					, standar_column8 as pauseStandarColumn8d
+					, standar_column9 as pauseStandarColumn9d
+					, standar_column10 as pauseStandarColumn10d
+				FROM ${normalDataStandardTableTitle}
+				<if test="recodeStandardCount lte 100">
+					LIMIT 100;
+				</if>
+				<if test="recodeStandardCount gt 100">
+					LIMIT #{standardLimit}, 100;
+				</if>
+			</when>
+		</choose>
+	</select>
+	
+	<!-- 테이블 구조 조회 -->
+	<select id="selectRegularTb" parameterType="net.su.dialog.dataSet.domain.DataManage" resultType="net.su.dialog.dataSet.domain.DataManage">
+		SELECT
+		<choose>
+			<when test="dataType.equals('일시')">
+				data_code as regularDataCode
+				, normal_data_table_title as regularDataTableTitle
+				FROM dataset_normal
+			</when>
+			<when test="dataType.equals('정기')">
+				regular_data_code as regularDataCode
+				, regular_data_table_title as regularDataTableTitle
+				, root as regularDataTableLoot
+				FROM regular_dataset
+			</when>
+		</choose>
+		WHERE data_code = #{dataCode}
+	</select>
+	
+	<!-- raw데이터 레코드 행수 -->
+	<select id="countRawRecode" parameterType="net.su.dialog.dataSet.domain.DataManage" resultType="int">
+		SELECT COUNT(*)
+		FROM `${normalDataTableTitle}`;
+	</select>
+	
+	<!-- 표준데이터 레코드 행수 -->
+	<select id="countStandardRecode" parameterType="net.su.dialog.dataSet.domain.DataManage" resultType="int">
+		SELECT COUNT(*)
+		FROM `${normalDataStandardTableTitle}`;
+	</select>
+</mapper>

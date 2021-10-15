@@ -1,0 +1,79 @@
+					var svg = d3.select("#graph"),
+					    margin = {top: 120, right: 20, bottom: 30, left: 50},
+					    width = +svg.attr("width") - margin.left - margin.right,
+					    height = +svg.attr("height") - margin.top - margin.bottom,
+					    g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+					  var x = d3.scaleBand().rangeRound([0, width]).padding(1), //x축 넓이
+	                  y = d3.scaleLinear().range([height, 0])
+	                  		.clamp(true); // y축 넓이
+
+					
+					var line = d3.line()
+						//.curve(d3.curveBasis)
+					    .x(function(d) { return x(d.xcolName); })
+					    .y(function(d) { return y(d.ycolName); });
+					
+					   x.domain(list.map(function(d) { return d.xcolName; })); //x축에 들어가는값
+			           y.domain([0, d3.max(list, function(d) { return d.ycolName; })]); //y축에 들어가는값
+
+					  g.append("g")
+					      .attr("transform", "translate(0," + height + ")")
+					      .call(d3.axisBottom(x))
+					    .select(".domain")
+					      .remove();
+
+					  g.append("g")
+					      .call(d3.axisLeft(y))
+					    .append("text")
+					      .attr("fill", "#000")
+					      .attr("transform", "rotate(-90)")
+					      .attr("y", 6)
+					      .attr("dy", "0.71em")
+					      .attr("text-anchor", "end")
+					      .text("ycolName");
+
+					  g.append("path")
+					      .datum(list)
+					      .attr("fill", "none")
+					      .attr("stroke", "steelblue")
+					      .attr("stroke-linejoin", "round")
+					      .attr("height", function(d) { return height - y(d.ycol); })
+					      .attr("stroke-linecap", "round")
+					      .attr("stroke-width", 3)
+					      .attr("d", line);			
+						
+//	 				  g.selectAll(".dot")
+//	 		            .data(list)
+//	 			        .enter()
+//	 			          .append("circle")
+//	 			            .attr("fill", "blue")
+//	 			            .attr("r", 4)
+//	  			            .attr("cx", function(d) { return x(d.xcolName); })
+//	  			            .attr("cy", function(d) { return y(d.ycolName); })
+					  	//	.attr(margin-top:20);
+				        
+				        //Input text
+				        g.selectAll(".dot")
+				         .data(list)
+				        .enter().append("circle")
+				        	.attr("r", 7)
+				        	.attr("fill", "blue")
+//	 			          .append("text")
+//	 			            .attr('text-anchor', 'middle')
+				            .attr("cx", function(d) { return x(d.xcolName); })
+				            .attr("cy", function(d) { return y(d.ycolName); })
+				            .attr('dy', '-10')
+				            .text(function(d) { return d.ycol; })  
+				            .on("mouseover", function() { tooltip.style("display", null); })
+				            .on("mouseout",  function() { tooltip.style("display", "none"); })
+				            .on("mousemove", function(d) {
+				                tooltip.style("left", (d3.event.pageX+10)+"px");
+				                tooltip.style("top",  (d3.event.pageY-10)+"px");
+				                tooltip.html("X값 : " + d.xcol + "<br/>" + "Y값 : " + d.ycol);
+				            });
+				            
+				          var tooltip = d3.select("body")
+				              .append("div")
+				              .attr("class", "toolTip")
+				              .style("display", "none");

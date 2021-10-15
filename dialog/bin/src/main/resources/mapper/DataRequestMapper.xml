@@ -1,0 +1,1203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.su.dialog.dataSet.mapper.DataRequestMapper">
+
+	<!-- 다음 뉴스 데이터 수집 요청 등록 -->
+	<insert id="insertDaumCollectRequest" parameterType="net.su.dialog.dataSet.domain.DataRequest"
+		useGeneratedKeys="true" keyProperty="daumNewsDataCollectRequestCode">
+		INSERT INTO
+		daum_news_data_collect_Request(
+		daum_news_data_collect_request_code
+		,daum_news_request_collect_word
+		,daum_news_request_collect_date
+		,daum_news_request_collect_start_date
+		,daum_news_request_collect_end_date
+		,daum_news_request_collect_status
+		,daum_neews_request_collect_remarks
+		,member_code)
+
+		VALUES (null
+		,#{daumNewsRequestCollectWord}
+		,CURRENT_DATE()
+		,#{daumNewsRequestCollectStartDate}
+		,#{daumNewsRequestCollectEndDate}
+		,'N'
+		,#{daumNewsRequestCollectRemarks}
+		,#{memberCode});
+	</insert>
+
+	<!-- 다음 뉴스 데이터 수집 요청 조회 -->
+	<select id="selectMyDaumCollectRequest" resultType="net.su.dialog.dataSet.domain.DataRequest">
+		select DISTINCT d.daum_news_data_collect_request_code as daumNewsDataCollectRequestCode
+		,d.daum_news_request_collect_word as daumNewsRequestCollectWord
+		,d.daum_news_request_collect_date as daumNewsRequestCollectDate
+		,d.daum_news_request_collect_start_date as daumNewsRequestCollectStartDate
+		,d.daum_news_request_collect_end_date as daumNewsRequestCollectEndDate
+		,d.daum_news_request_collect_status as daumNewsRequestCollectStatus
+
+		from daum_news_data_collect_Request d, member m
+
+		where d.member_code = m.member_code
+
+		and d.member_code = #{memberCode}
+
+		<if test="daumSort == 0">
+			AND daum_news_request_collect_word like '%${daumSearchWrd}%'
+			AND daum_news_request_collect_status IN ('N','S','Y')
+		</if>
+
+		<if test="daumSort == 1">
+			AND daum_news_request_collect_word like '%${daumSearchWrd}%'
+			AND daum_news_request_collect_status IN ('N')
+		</if>
+
+		<if test="daumSort == 2">
+			AND daum_news_request_collect_word like '%${daumSearchWrd}%'
+			AND daum_news_request_collect_status IN ('S')
+		</if>
+
+		<if test="daumSort == 3">
+			AND daum_news_request_collect_word like '%${daumSearchWrd}%'
+			AND daum_news_request_collect_status IN ('Y')
+		</if>
+		ORDER BY daumNewsDataCollectRequestCode desc
+		LIMIT ${(currentPage-1)*perPage},${perPage};
+	</select>
+
+	<!-- 다음 뉴스 데이터 수집 요청 게시글 수 -->
+	<select id="selectDaumRequestRecords" resultType="java.lang.Integer">
+		select count(distinct d.daum_news_data_collect_request_code)
+
+		from daum_news_data_collect_Request d, member m
+
+		where d.member_code = m.member_code
+
+		and d.member_code = #{memberCode}
+
+		<if test="daumSort == 0">
+			AND daum_news_request_collect_word like '%${daumSearchWrd}%'
+			AND daum_news_request_collect_status IN ('N','S','Y')
+		</if>
+
+		<if test="daumSort == 1">
+			AND daum_news_request_collect_word like '%${daumSearchWrd}%'
+			AND daum_news_request_collect_status IN ('N')
+		</if>
+
+		<if test="daumSort == 2">
+			AND daum_news_request_collect_word like '%${daumSearchWrd}%'
+			AND daum_news_request_collect_status IN ('S')
+		</if>
+
+		<if test="daumSort == 3">
+			AND daum_news_request_collect_word like '%${daumSearchWrd}%'
+			AND daum_news_request_collect_status IN ('Y')
+		</if>
+	</select>
+
+	<!-- 기타 데이터 수집 요청 등록 -->
+	<insert id="insertActCollectRequest" parameterType="net.su.dialog.dataSet.domain.DataRequest"
+		useGeneratedKeys="true" keyProperty="actDataCollectRequestCode">
+		INSERT INTO
+		act_data_collect_Request(
+		act_data_collect_request_code
+		,act_request_collect_site_url
+		,act_request_collect_site_name
+		,act_request_collect_description
+		,act_request_collect_status
+		,act_request_collect_date
+		,member_code)
+
+		VALUES (null
+		,#{actRequestCollectSiteUrl}
+		,#{actRequestCollectSiteName}
+		,#{actRequestCollectDescription}
+		,'N'
+		,CURRENT_DATE()
+		,#{memberCode});
+	</insert>
+
+	<!-- 기타 데이터 수집 요청 조회 -->
+	<select id="selectMyActCollectRequest" resultType="net.su.dialog.dataSet.domain.DataRequest">
+		select
+		DISTINCT a.act_data_collect_request_code as actDataCollectRequestCode
+		,a.act_request_collect_site_name as actRequestCollectSiteName
+		,a.act_request_collect_date as actRequestCollectDate
+		,a.act_request_collect_status as actRequestCollectStatus
+
+		from act_data_collect_Request a, member m
+
+		where a.member_code = m.member_code
+
+		and a.member_code = #{memberCode}
+
+		<if test="actSort == 0">
+			AND act_request_collect_site_name like '%${actSearchWrd}%'
+			AND act_request_collect_status IN ('N','S','Y','D')
+		</if>
+		<if test="actSort == 1">
+			AND act_request_collect_site_name like '%${actSearchWrd}%'
+			AND act_request_collect_status IN ('N')
+		</if>
+		<if test="actSort == 2">
+			AND act_request_collect_site_name like '%${actSearchWrd}%'
+			AND act_request_collect_status IN ('S')
+		</if>
+		<if test="actSort == 3">
+			AND act_request_collect_site_name like '%${actSearchWrd}%'
+			AND act_request_collect_status IN ('Y')
+		</if>
+		<if test="actSort == 4">
+			AND act_request_collect_site_name like '%${actSearchWrd}%'
+			AND act_request_collect_status IN ('D')
+		</if>
+		ORDER BY actDataCollectRequestCode desc
+		LIMIT ${(currentPage-1)*perPage},${perPage};
+	</select>
+
+
+	<!-- 반출 요청 쇼핑 데이터셋 조회 -->
+	<select id="selectShopDtSet" resultType="net.su.dialog.dataSet.domain.DataRequest">
+		select d.dataset_name as datasetName
+		,d.data_code as dataCode
+
+		from dataset d, regular_dataset r
+
+		where d.data_code = r.data_code
+		and d.type_normal_regularly = '정기'
+		and r.status = '쇼핑'
+		group by dataCode;
+
+	</select>
+	<!-- 기타 데이터 수집 요청 게시글 수 -->
+	<select id="selectActRequestRecords" resultType="java.lang.Integer">
+		select count(distinct a.act_data_collect_request_code)
+
+		from act_data_collect_Request a, member m
+
+		where a.member_code = m.member_code
+
+		and a.member_code = #{memberCode}
+
+		<if test="actSort == 0">
+			AND act_request_collect_site_name like '%${actSearchWrd}%'
+			AND act_request_collect_status IN ('N','S','Y','D')
+		</if>
+		<if test="actSort == 1">
+			AND act_request_collect_site_name like '%${actSearchWrd}%'
+			AND act_request_collect_status IN ('N')
+		</if>
+		<if test="actSort == 2">
+			AND act_request_collect_site_name like '%${actSearchWrd}%'
+			AND act_request_collect_status IN ('S')
+		</if>
+		<if test="actSort == 3">
+			AND act_request_collect_site_name like '%${actSearchWrd}%'
+			AND act_request_collect_status IN ('Y')
+		</if>
+		<if test="actSort == 4">
+			AND act_request_collect_site_name like '%${actSearchWrd}%'
+			AND act_request_collect_status IN ('D')
+		</if>
+	</select>
+
+
+	<!-- 기타 데이터 수집 요청 상세 조회 -->
+	<select id="infoMyActCollectRequest" resultType="net.su.dialog.dataSet.domain.DataRequest">
+		select a.act_data_collect_request_code as actDataCollectRequestCode
+		,a.act_request_collect_site_name as actRequestCollectSiteName
+		,a.act_request_collect_site_url as actRequestCollectSiteUrl
+		,a.act_request_collect_description as actRequestCollectDescription
+		,a.act_request_collect_date as actRequestCollectDate
+		,a.act_request_collect_status as actRequestCollectStatus
+		,a.reject_reason
+		,m.member_id
+		,m.member_code as memberCode
+
+		from act_data_collect_Request a, member m
+
+		where a.member_code = m.member_code
+
+		and a.act_data_collect_request_code = #{actDataCollectRequestCode};
+	</select>
+
+	<!-- 다음 뉴스 데이터 수집 요청 상세 조회 -->
+	<select id="infoMyDaumCollectRequest" resultType="net.su.dialog.dataSet.domain.DataRequest">
+		select
+		d.daum_news_data_collect_request_code as daumNewsDataCollectRequestCode
+		,d.daum_news_request_collect_word as daumNewsRequestCollectWord
+		,d.daum_news_request_collect_date as daumNewsRequestCollectDate
+		,d.daum_news_request_collect_start_date as
+		daumNewsRequestCollectStartDate
+		,d.daum_news_request_collect_end_date as daumNewsRequestCollectEndDate
+		,d.daum_news_request_collect_status as daumNewsRequestCollectStatus
+		,d.daum_neews_request_collect_remarks as daumNewsRequestCollectRemarks
+		,m.member_id
+		,m.member_code as memberCode
+
+		from daum_news_data_collect_Request d, member m
+
+		where d.member_code = m.member_code
+
+		and daum_news_data_collect_request_code = #{daumNewsDataCollectRequestCode};
+	</select>
+
+	<!-- 반출 요청 RSS 데이터셋 조회 -->
+	<select id="selectRssDtSet" resultType="net.su.dialog.dataSet.domain.DataRequest">
+		select d.dataset_name as datasetName
+		,d.data_code as dataCode
+
+		from dataset d, regular_dataset r
+
+		where d.data_code = r.data_code
+		and d.type_normal_regularly = '정기'
+		and r.status = 'rss뉴스'
+		group by dataCode;
+
+	</select>
+
+	<!-- 데이터 반출 요청 등록 -->
+	<insert id="insertExportRequest" parameterType="net.su.dialog.dataSet.domain.DataRequest"
+		useGeneratedKeys="true" keyProperty="dataExportRequestCode">
+		INSERT INTO
+		data_export_request(
+		data_export_request_code
+		,data_code
+		,export_collect_word
+		,export_collect_start_date
+		,export_collect_end_date
+		,export_collect_date
+		,export_collect_status
+		,export_collect_remarks
+		,member_code
+		,export_collect_type)
+
+		VALUES ((SELECT IFNULL(MAX(a.data_export_request_code),0)+ 1 AS data_export_request_code FROM data_export_request as a)
+		,#{dataCode}
+		,#{exportCollectWord}
+		,#{exportCollectStartDate}
+		,#{exportCollectEndDate}
+		,CURRENT_DATE()
+		,'N'
+		,#{exportCollectRemarks}
+		,#{memberCode}
+		,#{exportCollectType});
+	</insert>
+
+	<!-- 데이터 반출 요청 등록 -->
+	<insert id="insertExportRequest2" parameterType="net.su.dialog.dataSet.domain.DataRequest"
+		useGeneratedKeys="true" keyProperty="dataExportManagementCode">
+		INSERT INTO
+		data_export_management(
+		data_export_management_code
+		,data_code
+		,data_export_request_code)
+
+		VALUES ((SELECT IFNULL(MAX(a.data_export_management_code),0) + 1 AS data_export_management_code FROM data_export_management as a)
+		,#{dataCode}
+		,#{dataExportRequestCode});
+	</insert>
+
+
+	<!-- rss 뉴스 데이터 반출 요청 조회 -->
+	<select id="selectMyRssExportRequest" resultType="net.su.dialog.dataSet.domain.DataRequest">
+		select
+		DISTINCT d.data_export_request_code as dataExportRequestCode
+		,d.export_collect_word as exportCollectWord
+		,d.export_collect_date as exportCollectDate
+		,d.export_collect_start_date as exportCollectStartDate
+		,d.export_collect_end_date as exportCollectEndDate
+		,d.export_collect_status as exportCollectStatus
+		,t.dataset_name as datasetName
+		,r.status as status
+
+		from data_export_request d, member m, dataset t, regular_dataset r
+
+		where d.member_code = m.member_code
+
+		and d.member_code = #{memberCode}
+
+		and d.data_code = t.data_code
+
+		and t.data_code = r.data_code
+
+		and r.status = 'rss뉴스'
+
+		<if test="rssSort == 0">
+			AND export_collect_word like '%${rssSearchWrd}%'
+			AND export_collect_status IN ('N','S','Y')
+		</if>
+		<if test="rssSort == 1">
+			AND export_collect_word like '%${rssSearchWrd}%'
+			AND export_collect_status IN ('N')
+		</if>
+		<if test="rssSort == 2">
+			AND export_collect_word like '%${rssSearchWrd}%'
+			AND export_collect_status IN ('S')
+		</if>
+		<if test="rssSort == 3">
+			AND export_collect_word like '%${rssSearchWrd}%'
+			AND export_collect_status IN ('Y')
+		</if>
+		ORDER BY data_export_request_code desc
+		LIMIT ${(currentPage-1)*perPage},${perPage};
+	</select>
+
+
+	<!-- rss 데이터 반출 요청 게시글 수 -->
+	<select id="selectRssRequestRecords" resultType="java.lang.Integer">
+		select count(distinct d.data_export_request_code)
+
+		from data_export_request d, member m, dataset t, regular_dataset r
+
+		where d.member_code = m.member_code
+
+		and d.member_code = #{memberCode}
+
+		and d.data_code = t.data_code
+
+		and t.data_code = r.data_code
+
+		and r.status = 'rss뉴스'
+
+		<if test="rssSort == 0">
+			AND export_collect_word like '%${rssSearchWrd}%'
+			AND export_collect_status IN ('N','S','Y')
+		</if>
+		<if test="rssSort == 1">
+			AND export_collect_word like '%${rssSearchWrd}%'
+			AND export_collect_status IN ('N')
+		</if>
+		<if test="rssSort == 2">
+			AND export_collect_word like '%${rssSearchWrd}%'
+			AND export_collect_status IN ('S')
+		</if>
+		<if test="rssSort == 3">
+			AND export_collect_word like '%${rssSearchWrd}%'
+			AND export_collect_status IN ('Y')
+		</if>
+	</select>
+
+
+
+	<!-- 쇼핑 데이터 반출 요청 게시글 수 -->
+	<select id="selectShopRequestRecords" resultType="java.lang.Integer">
+		select count(distinct d.data_export_request_code)
+
+		from data_export_request d, member m, dataset t, regular_dataset r
+
+		where d.member_code = m.member_code
+
+		and d.member_code = #{memberCode}
+
+		and d.data_code = t.data_code
+
+		and t.data_code = r.data_code
+
+		and r.status = '쇼핑'
+
+		<if test="shopSort == 0">
+			AND export_collect_word like '%${shopSearchWrd}%'
+			AND export_collect_status IN ('N','S','Y')
+		</if>
+		<if test="shopSort == 1">
+			AND export_collect_word like '%${shopSearchWrd}%'
+			AND export_collect_status IN ('N')
+		</if>
+		<if test="shopSort == 2">
+			AND export_collect_word like '%${shopSearchWrd}%'
+			AND export_collect_status IN ('S')
+		</if>
+		<if test="shopSort == 3">
+			AND export_collect_word like '%${shopSearchWrd}%'
+			AND export_collect_status IN ('Y')
+		</if>
+	</select>
+
+	<!-- rss 데이터 반출 요청 상세 조회 -->
+	<select id="infoMyRssExportRequest" resultType="net.su.dialog.dataSet.domain.DataRequest">
+		select
+		d.data_export_request_code as dataExportRequestCode
+		,d.export_collect_word as exportCollectWord
+		,d.export_collect_date as exportCollectDate
+		,d.export_collect_start_date as exportCollectStartDate
+		,d.export_collect_end_date as exportCollectEndDate
+		,d.export_collect_status as exportCollectStatus
+		,d.export_collect_remarks as exportCollectRemarks
+		,t.dataset_name as datasetName
+		,m.member_id
+		,m.member_code as memberCode
+
+		from data_export_request d, dataset t, member m
+
+		where d.data_code = t.data_code
+
+		and m.member_code = d.member_code
+
+		and d.data_export_request_code = #{dataExportRequestCode};
+	</select>
+
+	<!-- 다음 뉴스 데이터 수집 요청 관리자 조회 -->
+	<select id="selectApprovalDaumRequest" resultType="net.su.dialog.dataSet.domain.DataRequest">
+		select
+		DISTINCT d.daum_news_data_collect_request_code as daumNewsDataCollectRequestCode
+		,d.daum_news_request_collect_word as daumNewsRequestCollectWord
+		,d.daum_news_request_collect_date as daumNewsRequestCollectDate
+		,d.daum_news_request_collect_start_date as daumNewsRequestCollectStartDate
+		,d.daum_news_request_collect_end_date as daumNewsRequestCollectEndDate
+		,d.daum_news_request_collect_status as daumNewsRequestCollectStatus
+		,m.member_id as memberId
+
+		from daum_news_data_collect_Request d, member m
+
+		where d.member_code = m.member_code
+
+		<if test="daumSort == 0">
+			AND daum_news_request_collect_word like '%${daumSearchWrd}%'
+			AND daum_news_request_collect_status IN ('N','S','Y')
+
+		</if>
+		<if test="daumSort == 1">
+			AND daum_news_request_collect_word like '%${daumSearchWrd}%'
+			AND daum_news_request_collect_status IN ('N')
+		</if>
+		<if test="daumSort == 2">
+			AND daum_news_request_collect_word like '%${daumSearchWrd}%'
+			AND daum_news_request_collect_status IN ('S')
+		</if>
+		<if test="daumSort == 3">
+			AND daum_news_request_collect_word like '%${daumSearchWrd}%'
+			AND daum_news_request_collect_status IN ('Y')
+		</if>
+		ORDER BY daumNewsDataCollectRequestCode desc
+		LIMIT ${(currentPage-1)*perPage},${perPage};
+	</select>
+
+	<!-- 다음 뉴스 데이터 수집 요청 게시글 수 -->
+	<select id="selectApprovalDaumRequestRecords" resultType="java.lang.Integer">
+		select count(distinct d.daum_news_data_collect_request_code)
+
+		from daum_news_data_collect_Request d, member m
+
+		where d.member_code = m.member_code
+
+		<if test="daumSort == 0">
+			AND daum_news_request_collect_word like '%${daumSearchWrd}%'
+			AND daum_news_request_collect_status IN ('N','S','Y')
+
+		</if>
+		<if test="daumSort == 1">
+			AND daum_news_request_collect_word like '%${daumSearchWrd}%'
+			AND daum_news_request_collect_status IN ('N')
+		</if>
+		<if test="daumSort == 2">
+			AND daum_news_request_collect_word like '%${daumSearchWrd}%'
+			AND daum_news_request_collect_status IN ('S')
+		</if>
+		<if test="daumSort == 3">
+			AND daum_news_request_collect_word like '%${daumSearchWrd}%'
+			AND daum_news_request_collect_status IN ('Y')
+		</if>
+	</select>
+
+	<!-- 기타 데이터 수집 요청 관리자 조회 -->
+	<select id="selectApprovalActRequest" resultType="net.su.dialog.dataSet.domain.DataRequest">
+		select
+		DISTINCT a.act_data_collect_request_code as actDataCollectRequestCode
+		,a.act_request_collect_site_name as actRequestCollectSiteName
+		,a.act_request_collect_date as actRequestCollectDate
+		,a.act_request_collect_status as actRequestCollectStatus
+		,m.member_id as memberId
+
+		from act_data_collect_Request a, member m
+
+		where a.member_code = m.member_code
+
+		<if test="actSort == 0">
+			AND act_request_collect_site_name like '%${actSearchWrd}%'
+			AND act_request_collect_status IN ('N','S','Y','D')
+		</if>
+		<if test="actSort == 1">
+			AND act_request_collect_site_name like '%${actSearchWrd}%'
+			AND act_request_collect_status IN ('N')
+		</if>
+		<if test="actSort == 2">
+			AND act_request_collect_site_name like '%${actSearchWrd}%'
+			AND act_request_collect_status IN ('S')
+		</if>
+		<if test="actSort == 3">
+			AND act_request_collect_site_name like '%${actSearchWrd}%'
+			AND act_request_collect_status IN ('Y')
+		</if>
+		<if test="actSort == 4">
+			AND act_request_collect_site_name like '%${actSearchWrd}%'
+			AND act_request_collect_status IN ('D')
+		</if>
+		ORDER BY actDataCollectRequestCode desc
+		LIMIT ${(currentPage-1)*perPage},${perPage};
+	</select>
+
+	<!-- 기타 데이터 수집 요청 게시글 수 -->
+	<select id="selectApprovalActRequestRecords" resultType="java.lang.Integer">
+		select count(distinct a.act_data_collect_request_code)
+
+		from act_data_collect_Request a, member m
+
+		where a.member_code = m.member_code
+
+		<if test="actSort == 0">
+			AND act_request_collect_site_name like '%${actSearchWrd}%'
+			AND act_request_collect_status IN ('N','S','Y','D')
+		</if>
+		<if test="actSort == 1">
+			AND act_request_collect_site_name like '%${actSearchWrd}%'
+			AND act_request_collect_status IN ('N')
+		</if>
+		<if test="actSort == 2">
+			AND act_request_collect_site_name like '%${actSearchWrd}%'
+			AND act_request_collect_status IN ('S')
+		</if>
+		<if test="actSort == 3">
+			AND act_request_collect_site_name like '%${actSearchWrd}%'
+			AND act_request_collect_status IN ('Y')
+		</if>
+		<if test="actSort == 4">
+			AND act_request_collect_site_name like '%${actSearchWrd}%'
+			AND act_request_collect_status IN ('D')
+		</if>
+	</select>
+
+	<!-- rss 데이터 반출 요청 관리자 조회 -->
+	<select id="selectApprovalRssRequest" resultType="net.su.dialog.dataSet.domain.DataRequest">
+		select
+		DISTINCT d.data_export_request_code as dataExportRequestCode
+		,d.export_collect_word as exportCollectWord
+		,d.export_collect_date as exportCollectDate
+		,d.export_collect_start_date as exportCollectStartDate
+		,d.export_collect_end_date as exportCollectEndDate
+		,d.export_collect_status as exportCollectStatus
+		,t.dataset_name as datasetName
+		,r.status as status
+		,m.member_id as memberId
+
+		from data_export_request d, member m, dataset t, regular_dataset r
+
+		where d.member_code = m.member_code
+
+		and d.data_code = t.data_code
+
+		and t.data_code = r.data_code
+
+		and r.status = 'rss뉴스'
+
+		<if test="rssSort == 0">
+			AND export_collect_word like '%${rssSearchWrd}%'
+			AND export_collect_status IN ('N','S','Y')
+		</if>
+		<if test="rssSort == 1">
+			AND export_collect_word like '%${rssSearchWrd}%'
+			AND export_collect_status IN ('N')
+		</if>
+		<if test="rssSort == 2">
+			AND export_collect_word like '%${rssSearchWrd}%'
+			AND export_collect_status IN ('S')
+		</if>
+		<if test="rssSort == 3">
+			AND export_collect_word like '%${rssSearchWrd}%'
+			AND export_collect_status IN ('Y')
+		</if>
+		ORDER BY dataExportRequestCode desc
+		LIMIT ${(currentPage-1)*perPage},${perPage};
+	</select>
+
+	<!-- rss 데이터 반출 요청 게시글 수 -->
+	<select id="selectApprovalRssRequestRecords" resultType="java.lang.Integer">
+		select count(distinct d.data_export_request_code)
+
+		from data_export_request d, member m, dataset t, regular_dataset r
+
+		where d.member_code = m.member_code
+
+		and d.data_code = t.data_code
+
+		and t.data_code = r.data_code
+
+		and r.status = 'rss뉴스'
+
+		<if test="rssSort == 0">
+			AND export_collect_word like '%${rssSearchWrd}%'
+			AND export_collect_status IN ('N','S','Y')
+		</if>
+		<if test="rssSort == 1">
+			AND export_collect_word like '%${rssSearchWrd}%'
+			AND export_collect_status IN ('N')
+		</if>
+		<if test="rssSort == 2">
+			AND export_collect_word like '%${rssSearchWrd}%'
+			AND export_collect_status IN ('S')
+		</if>
+		<if test="rssSort == 3">
+			AND export_collect_word like '%${rssSearchWrd}%'
+			AND export_collect_status IN ('Y')
+		</if>
+	</select>
+
+	<!-- 쇼핑 데이터 반출 요청 조회 -->
+	<select id="selectMyShopExportRequest" resultType="net.su.dialog.dataSet.domain.DataRequest">
+		select
+		DISTINCT d.data_export_request_code as dataExportRequestCode
+		,d.export_collect_word as exportCollectWord
+		,d.export_collect_date as exportCollectDate
+		,d.export_collect_start_date as exportCollectStartDate
+		,d.export_collect_end_date as exportCollectEndDate
+		,d.export_collect_status as exportCollectStatus
+		,t.dataset_name as datasetName
+		,r.status as status
+
+		from data_export_request d, member m, dataset t, regular_dataset r
+
+		where d.member_code = m.member_code
+
+		and d.member_code = #{memberCode}
+
+		and d.data_code = t.data_code
+
+		and t.data_code = r.data_code
+
+		and r.status = '쇼핑'
+
+		<if test="shopSort == 0">
+			AND export_collect_word like '%${shopSearchWrd}%'
+			AND export_collect_status IN ('N','S','Y')
+		</if>
+		<if test="shopSort == 1">
+			AND export_collect_word like '%${shopSearchWrd}%'
+			AND export_collect_status IN ('N')
+		</if>
+		<if test="shopSort == 2">
+			AND export_collect_word like '%${shopSearchWrd}%'
+			AND export_collect_status IN ('S')
+		</if>
+		<if test="shopSort == 3">
+			AND export_collect_word like '%${shopSearchWrd}%'
+			AND export_collect_status IN ('Y')
+		</if>
+		ORDER BY dataExportRequestCode desc
+		LIMIT ${(currentPage-1)*perPage},${perPage};
+	</select>
+
+	<!-- 쇼핑 데이터 반출 요청 관리자 조회 -->
+	<select id="selectApprovalShopRequest" resultType="net.su.dialog.dataSet.domain.DataRequest">
+		select
+		DISTINCT d.data_export_request_code as dataExportRequestCode
+		,d.export_collect_word as exportCollectWord
+		,d.export_collect_date as exportCollectDate
+		,d.export_collect_start_date as exportCollectStartDate
+		,d.export_collect_end_date as exportCollectEndDate
+		,d.export_collect_status as exportCollectStatus
+		,t.dataset_name as datasetName
+		,r.status as status
+		,m.member_id as memberId
+		
+		from data_export_request d, member m, dataset t, regular_dataset r
+
+		where d.member_code = m.member_code
+
+		and d.data_code = t.data_code
+
+		and t.data_code = r.data_code
+
+		and r.status = '쇼핑'
+
+		<if test="shopSort == 0">
+			AND export_collect_word like '%${shopSearchWrd}%'
+			AND export_collect_status IN ('N','S','Y')
+		</if>
+		<if test="shopSort == 1">
+			AND export_collect_word like '%${shopSearchWrd}%'
+			AND export_collect_status IN ('N')
+		</if>
+		<if test="shopSort == 2">
+			AND export_collect_word like '%${shopSearchWrd}%'
+			AND export_collect_status IN ('S')
+		</if>
+		<if test="shopSort == 3">
+			AND export_collect_word like '%${shopSearchWrd}%'
+			AND export_collect_status IN ('Y')
+		</if>
+		ORDER BY dataExportRequestCode desc
+		LIMIT ${(currentPage-1)*perPage},${perPage};
+	</select>
+
+	<!-- 쇼핑 데이터 반출 요청 게시글 수 -->
+	<select id="selectApprovalShopRequestRecords" resultType="java.lang.Integer">
+		select count(distinct d.data_export_request_code)
+
+		from data_export_request d, member m, dataset t, regular_dataset r
+
+		where d.member_code = m.member_code
+
+		and d.data_code = t.data_code
+
+		and t.data_code = r.data_code
+
+		and r.status = '쇼핑'
+
+		<if test="shopSort == 0">
+			AND export_collect_word like '%${shopSearchWrd}%'
+			AND export_collect_status IN ('N','S','Y')
+		</if>
+		<if test="shopSort == 1">
+			AND export_collect_word like '%${shopSearchWrd}%'
+			AND export_collect_status IN ('N')
+		</if>
+		<if test="shopSort == 2">
+			AND export_collect_word like '%${shopSearchWrd}%'
+			AND export_collect_status IN ('S')
+		</if>
+		<if test="shopSort == 3">
+			AND export_collect_word like '%${shopSearchWrd}%'
+			AND export_collect_status IN ('Y')
+		</if>
+		;
+	</select>
+
+	<!-- 기타 데이터 수집 요청 승인 거부 -->
+	<update id="updateApprovalActRequest" parameterType="net.su.dialog.dataSet.domain.DataRequest">
+		update act_data_collect_request
+
+		set act_request_collect_status = 'D'
+		,reject_reason = #{rejectReason}
+
+		where act_data_collect_request_code = #{actDataCollectRequestCode};
+	</update>
+
+	<!-- 시각화 요청 조회 -->
+	<select id="selectMyVizRequest" resultType="net.su.dialog.dataSet.domain.Dataset">
+		select dtn.data_code as dataCode
+		,dataset_name as datasetName
+		,data_enroll_date as dataEnrollDate
+		,dtn.status as status
+		
+		from dataset dt, dataset_normal dtn
+	
+		where dt.data_code = dtn.data_code
+		
+		and member_code = #{memberCode}
+		<if test="vizSort == 0">
+			AND dataset_name like '%${vizSearchWrd}%'
+			AND status not in ('N','S')
+		</if>
+		<if test="vizSort == 1">
+			AND dataset_name like '%${vizSearchWrd}%'
+			AND status IN ('P')
+		</if>
+		<if test="vizSort == 2">
+			AND dataset_name like '%${vizSearchWrd}%'
+			AND status IN ('Y')
+		</if>
+		<if test="vizSort == 3">
+			AND dataset_name like '%${vizSearchWrd}%'
+			AND status IN ('R')
+		</if>
+		ORDER BY dataCode desc
+		LIMIT ${(currentPage-1)*perPage},${perPage};
+	</select>
+
+	<!-- 시각화 요청 게시글 수 -->
+	<select id="selectMyVizRequestRoecords" resultType="java.lang.Integer">
+		select count(dtn.data_code)
+		
+		from dataset dt, dataset_normal dtn
+		
+		where dt.data_code = dtn.data_code
+		
+		and member_code = #{memberCode}
+		<if test="vizSort == 0">
+			AND dataset_name like '%${vizSearchWrd}%'
+			AND dtn.status not in ('N','S')
+		</if>
+		<if test="vizSort == 1">
+			AND dataset_name like '%${vizSearchWrd}%'
+			AND dtn.status IN ('P')
+		</if>
+		<if test="vizSort == 2">
+			AND dataset_name like '%${vizSearchWrd}%'
+			AND dtn.status IN ('Y')
+		</if>
+		<if test="vizSort == 3">
+			AND dataset_name like '%${vizSearchWrd}%'
+			AND dtn.status IN ('R')
+		</if>
+		;
+	</select>
+
+	<!-- 데이터 승인관리 > 시각화 승인관리 조회 -->
+	<select id="selectApprovalVizRequest" resultType="net.su.dialog.dataSet.domain.Dataset">
+		select dtn.data_code as dataCode
+		,dataset_name as datasetName
+		,data_enroll_date as dataEnrollDate
+		,dtn.status as status
+	
+		from dataset dt, dataset_normal dtn
+		
+		where dt.data_code = dtn.data_code
+		<if test="vizSort == 0">
+			AND dataset_name like '%${vizSearchWrd}%'
+			AND status not in ('N','S')
+		</if>
+		<if test="vizSort == 1">
+			AND dataset_name like '%${vizSearchWrd}%'
+			AND status IN ('P')
+		</if>
+		<if test="vizSort == 2">
+			AND dataset_name like '%${vizSearchWrd}%'
+			AND status IN ('Y')
+		</if>
+		<if test="vizSort == 3">
+			AND dataset_name like '%${vizSearchWrd}%'
+			AND status IN ('R')
+		</if>
+		ORDER BY dataCode desc
+		LIMIT ${(currentPage-1)*perPage},${perPage};
+	</select>
+
+	<!-- 데이터 승인관리 > 데이터 수집요청 상세조회 -->
+	<select id="infoDataCollection" resultType="net.su.dialog.dataSet.domain.DataRequest">
+		select
+		d.daum_news_data_collect_request_code
+		,d.daum_news_request_collect_word
+		,d.daum_news_request_collect_date
+		,d.daum_news_request_collect_start_date
+		,d.daum_news_request_collect_end_date
+		,d.daum_news_request_collect_status
+		,m.member_id
+
+		from daum_news_data_collect_Request d, member m
+
+		where d.member_code = m.member_code
+		
+		and d.daum_news_data_collect_request_code = #{daumNewsDataCollectRequestCode}
+		
+		order by daum_news_data_collect_request_code desc;
+	</select>
+
+	<select id="selectVizRequestRowCount" resultType="java.lang.Integer">
+		select count(dt.data_code)
+		
+		from dataset dt, dataset_normal dtn
+		
+		where dt.data_code = dtn.data_code
+		<if test="vizSort == 0">
+			AND dataset_name like '%${vizSearchWrd}%'
+			AND status not in ('N','S')
+		</if>
+		<if test="vizSort == 1">
+			AND dataset_name like '%${vizSearchWrd}%'
+			AND status IN ('P')
+		</if>
+		<if test="vizSort == 2">
+			AND dataset_name like '%${vizSearchWrd}%'
+			AND status IN ('Y')
+		</if>
+		<if test="vizSort == 3">
+			AND dataset_name like '%${vizSearchWrd}%'
+			AND status IN ('R')
+		</if>
+	</select>
+
+	<!-- 데이터 승인관리 > 데이터 반출 상세조회 -->
+	<select id="infoDataExport" resultType="net.su.dialog.dataSet.domain.DataRequest">
+		select
+		d.data_export_request_code as dataExportRequestCode
+		,d.export_collect_word as exportCollectWord
+		,d.export_collect_date as exportCollectDate
+		,d.export_collect_start_date as exportCollectStartDate
+		,d.export_collect_end_date as exportCollectEndDate
+		,d.export_collect_status as exportCollectStatus
+		,m.member_id as memberId
+
+		from data_export_request d, member m
+		
+		where d.member_code = m.member_code
+		
+		and d.data_export_request_code = #{dataExportRequestCode}
+		
+		order by data_export_request_code desc;
+	</select>
+
+	<!-- 쇼핑 데이터 반출 요청 관리자 조회 -->
+	<select id="selectApprovalShopScheRequest" resultType="net.su.dialog.dataSet.domain.DataRequest">
+		select
+		r.data_code
+		,d.data_export_request_code as dataExportRequestCode
+		,d.export_collect_word as exportCollectWord
+		,d.export_collect_date as exportCollectDate
+		,d.export_collect_start_date as exportCollectStartDate
+		,d.export_collect_end_date as exportCollectEndDate
+		,d.export_collect_status as exportCollectStatus
+		,t.dataset_name as datasetName
+		,m.member_id as memberId
+
+		from data_export_request d, member m, dataset t, regular_dataset r
+
+		where d.member_code = m.member_code
+
+		and d.data_code = t.data_code
+		and t.data_code = r.data_code
+		and r.status = '쇼핑'
+		and d.export_collect_status = 'N'
+		group by r.data_code
+	</select>
+
+	<!-- rss 뉴스 반출 파일 -->
+	<select id="selectDataExportFile" parameterType="net.su.dialog.dataSet.domain.DataRequest" resultType="net.su.dialog.schedule.domain.SchVo">
+		select f.sche_code as scheCode, f.export_file_title as
+		exportFileTitle, f.export_file_route as exportFileRoute,
+		f.export_extension as exportExtension
+		from data_export_request d left join data_export_management m on
+		d.data_export_request_code = m.data_export_request_code
+		left join schedule_data_export s on m.data_export_management_code =
+		s.data_export_management_code
+		left join data_export_file f on s.sche_code = f.sche_code
+		where d.data_export_request_code = #{dataExportRequestCode};
+	</select>
+
+	<!-- rss 데이터 반출 요청 관리자 조회 -->
+	<select id="selectApprovalRssScheRequest" resultType="net.su.dialog.dataSet.domain.DataRequest">
+		select
+		d.data_export_request_code as dataExportRequestCode
+		,d.export_collect_word as exportCollectWord
+		,d.export_collect_date as exportCollectDate
+		,d.export_collect_start_date as exportCollectStartDate
+		,d.export_collect_end_date as exportCollectEndDate
+		,d.export_collect_status as exportCollectStatus
+		,t.dataset_name as datasetName
+		,m.member_id as memberId
+
+		from data_export_request d, member m, dataset t, regular_dataset r
+
+		where d.member_code = m.member_code
+
+		and d.data_code = t.data_code
+		and t.data_code = r.data_code
+		and r.status = 'rss뉴스'
+		and d.export_collect_status = 'N'
+	</select>
+
+	<!-- 다음 뉴스 데이터 수집 요청 관리자 조회 -->
+	<select id="selectApprovalDaumScheRequest" resultType="net.su.dialog.dataSet.domain.DataRequest">
+		select
+		d.daum_news_data_collect_request_code as daumNewsDataCollectRequestCode
+		,d.daum_news_request_collect_word as daumNewsRequestCollectWord
+		,d.daum_news_request_collect_date as daumNewsRequestCollectDate
+		,d.daum_news_request_collect_start_date as daumNewsRequestCollectStartDate
+		,d.daum_news_request_collect_end_date as daumNewsRequestCollectEndDate
+		,d.daum_news_request_collect_status as daumNewsRequestCollectStatus
+		,m.member_id as memberId
+
+		from daum_news_data_collect_Request d, member m
+
+		where d.member_code = m.member_code
+
+		and d.daum_news_request_collect_status = 'N'
+
+		order by daum_news_data_collect_request_code desc;
+	</select>
+<!-- 다음뉴스 반출 데이터셋 조회 -->
+	<select id="selectDaumDtSet" resultType="net.su.dialog.dataSet.domain.DataRequest">
+		select d.dataset_name as datasetName
+		,d.data_code as dataCode
+
+		from dataset d, regular_dataset r
+
+		where d.data_code = r.data_code
+		and d.type_normal_regularly = '정기'
+		and r.status = '다음뉴스'
+		group by dataCode;
+
+	</select>
+<!-- 	다음뉴스 데이터 반출 상세조회 -->
+	<select id="selectDaumDtSetInfo" parameterType="net.su.dialog.dataSet.domain.DataRequest" resultType="net.su.dialog.dataSet.domain.DataRequest">
+		SELECT	news_collect_keyword as daumNewsRequestCollectWord
+				, news_collect_start_date as daumNewsRequestCollectStartDate
+				, news_collect_end_date as daumNewsRequestCollectEndDate
+				
+		FROM	news_crawling
+		WHERE	data_code =${dataCode}
+	</select>
+	
+	<!-- 	MY다음뉴스 데이터반출 조회 -->
+	<select id="selectMyDaumNewsExportRequest" resultType="net.su.dialog.dataSet.domain.DataRequest">
+		select
+		DISTINCT d.data_export_request_code as dataExportRequestCode
+		,d.export_collect_word as exportCollectWord
+		,d.export_collect_date as exportCollectDate
+		,d.export_collect_start_date as exportCollectStartDate
+		,d.export_collect_end_date as exportCollectEndDate
+		,d.export_collect_status as exportCollectStatus
+		,t.dataset_name as datasetName
+		,r.status as status
+
+		from data_export_request d, member m, dataset t, regular_dataset r
+
+		where d.member_code = m.member_code
+
+		and d.member_code = #{memberCode}
+
+		and d.data_code = t.data_code
+
+		and t.data_code = r.data_code
+
+		and r.status = '다음뉴스'
+
+		<if test="daumSort == 0">
+			AND export_collect_word like '%${daumSearchWrd}%'
+			AND export_collect_status IN ('N','S','Y')
+		</if>
+		<if test="daumSort == 1">
+			AND export_collect_word like '%${daumSearchWrd}%'
+			AND export_collect_status IN ('N')
+		</if>
+		<if test="daumSort == 2">
+			AND export_collect_word like '%${daumSearchWrd}%'
+			AND export_collect_status IN ('S')
+		</if>
+		<if test="daumSort == 3">
+			AND export_collect_word like '%${daumSearchWrd}%'
+			AND export_collect_status IN ('Y')
+		</if>
+		ORDER BY dataExportRequestCode desc
+		LIMIT ${(currentPage-1)*perPage},${perPage};
+	</select>
+	
+	<!-- MY다음뉴스 데이터 반출 요청 게시글 수 -->
+	<select id="selectMyDaumNewsExportRecords" resultType="java.lang.Integer">
+		select count(distinct d.data_export_request_code)
+
+		from data_export_request d, member m, dataset t, regular_dataset r
+
+		where d.member_code = m.member_code
+
+		and d.member_code = #{memberCode}
+
+		and d.data_code = t.data_code
+
+		and t.data_code = r.data_code
+
+		and r.status = '다음뉴스'
+
+		<if test="daumSort == 0">
+			AND export_collect_word like '%${daumSearchWrd}%'
+			AND export_collect_status IN ('N','S','Y')
+		</if>
+		<if test="daumSort == 1">
+			AND export_collect_word like '%${daumSearchWrd}%'
+			AND export_collect_status IN ('N')
+		</if>
+		<if test="daumSort == 2">
+			AND export_collect_word like '%${daumSearchWrd}%'
+			AND export_collect_status IN ('S')
+		</if>
+		<if test="daumSort == 3">
+			AND export_collect_word like '%${daumSearchWrd}%'
+			AND export_collect_status IN ('Y')
+		</if>
+	</select>
+	
+	<select id="selectApprovalDaumNewsRequest" parameterType="net.su.dialog.dataSet.domain.DataRequest" resultType="net.su.dialog.dataSet.domain.DataRequest">
+		select
+			d.data_export_request_code as dataExportRequestCode
+			,d.export_collect_word as exportCollectWord
+			,d.export_collect_date as exportCollectDate
+			,d.export_collect_start_date as exportCollectStartDate
+			,d.export_collect_end_date as exportCollectEndDate
+			,d.export_collect_status as exportCollectStatus
+			,t.dataset_name as datasetName
+			,r.status as status
+			,m.member_id as memberId
+	
+			from data_export_request d, member m, dataset t, regular_dataset r
+	
+			where d.member_code = m.member_code
+	
+			and d.data_code = t.data_code
+	
+			and t.data_code = r.data_code
+	
+			and r.status = '다음뉴스'
+	
+			<if test="daumSort == 0">
+			AND export_collect_word like '%${daumSearchWrd}%'
+			AND export_collect_status IN ('N','S','Y')
+			</if>
+			
+			<if test="daumSort == 1">
+				AND export_collect_word like '%${daumSearchWrd}%'
+				AND export_collect_status IN ('N')
+			</if>
+			<if test="daumSort == 2">
+				AND export_collect_word like '%${daumSearchWrd}%'
+				AND export_collect_status IN ('S')
+			</if>
+			<if test="daumSort == 3">
+				AND export_collect_word like '%${daumSearchWrd}%'
+				AND export_collect_status IN ('Y')
+			</if>
+			ORDER BY dataExportRequestCode desc
+			LIMIT ${(currentPage-1)*perPage},${perPage};
+	</select>
+	
+	<select id="selectApprovalDaumNewsRequestRecords" parameterType="net.su.dialog.dataSet.domain.DataRequest" resultType="java.lang.Integer">
+		select count(distinct d.data_export_request_code)
+
+		from data_export_request d, member m, dataset t, regular_dataset r
+
+		where d.member_code = m.member_code
+
+		and d.data_code = t.data_code
+
+		and t.data_code = r.data_code
+
+		and r.status = '다음뉴스'
+
+		<if test="daumSort == 0">
+			AND export_collect_word like '%${daumSearchWrd}%'
+			AND export_collect_status IN ('N','S','Y')
+		</if>
+		<if test="daumSort == 1">
+			AND export_collect_word like '%${daumSearchWrd}%'
+			AND export_collect_status IN ('N')
+		</if>
+		<if test="daumSort == 2">
+			AND export_collect_word like '%${daumSearchWrd}%'
+			AND export_collect_status IN ('S')
+		</if>
+		<if test="daumSort == 3">
+			AND export_collect_word like '%${daumSearchWrd}%'
+			AND export_collect_status IN ('Y')
+		</if>
+	</select>
+	
+	<select id="selectApprovalDaumNewsExportRequest" resultType="net.su.dialog.dataSet.domain.DataRequest">
+		select
+		d.data_export_request_code as dataExportRequestCode
+		,d.export_collect_word as exportCollectWord
+		,d.export_collect_date as exportCollectDate
+		,d.export_collect_start_date as exportCollectStartDate
+		,d.export_collect_end_date as exportCollectEndDate
+		,d.export_collect_status as exportCollectStatus
+		,t.dataset_name as datasetName
+		,m.member_id as memberId
+
+		from data_export_request d, member m, dataset t, regular_dataset r
+
+		where d.member_code = m.member_code
+
+		and d.data_code = t.data_code
+		and r.data_code = t.data_code
+		and r.status = '다음뉴스'
+		and d.export_collect_status = 'N'
+	</select>
+</mapper>

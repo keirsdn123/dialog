@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.su.dialog.management.mapper.ManagementMapper">
+
+	<select id="selectMemberList" parameterType="net.su.dialog.main.domain.User" resultType="net.su.dialog.main.domain.User" >
+		select 	member_code as memberCode
+				,member_id as memberId
+				,member_name as memberName
+				,member_email_address as memberEmailAddress
+				,member_rating_code as memberRatingCode
+		from member
+		where member_status = 'Y'
+		and member_rating_code not in (3)
+		<if test="searchType == 'memName'">
+			and member_name like '%${searchContent}%'
+		</if>
+		<if test="searchType == 'memId'">
+			and member_id like '%${searchContent}%'
+		</if>
+		<if test="searchType == 'memEmail'">
+			and member_email_address like '%${searchContent}%'
+		</if>
+		;
+	</select>
+	<select id="selectAuthorityList" resultType="net.su.dialog.management.domain.Authority" >
+		select 	member_rating_code as memberRatingCode
+				,rating_name as ratingName
+		from member_rating;
+	</select>
+	<update id="updateRatingCodeList" parameterType="net.su.dialog.main.domain.User">
+		UPDATE member 
+		SET member_rating_code = #{memberRatingCode} 
+		WHERE member_code = #{memberCode};
+	</update>
+	<update id="deleteMember" parameterType="net.su.dialog.main.domain.User">
+		update member 
+		set member_status = 'D'
+		where member_code = #{memberCode};
+	</update>
+	<select id="SelectManageMenuList" resultType="net.su.dialog.dataSet.domain.Menulist" >
+		select 	menu_code as menuCode
+				,menu_title as menuTitle
+				,menu_url as menuUrl
+				,menu_index as menuIndex
+				,menu_root as menuRoot
+				,menu_level as menuLevel
+				,member_rating_code as memberRatingCode
+				,menu_use as menuUse
+		from menu_table
+	</select>
+	<update id="updateManageRatingCode" parameterType="net.su.dialog.management.domain.Authority">
+		update menu_table 
+		set member_rating_code = #{memberRatingCode}, menu_title = #{menuTitle}, menu_use = #{menuUse}
+		where menu_code = #{menuCode};
+	</update>
+</mapper>

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.su.dialog.formalModule.mapper.DaumNewsModuleMapper">
+<!-- 	다음뉴스수집요청 (실행대기) 조회 -->
+	<select id="selectDaumNewsList" resultType="net.su.dialog.formalModule.domain.DaumNewsModule">
+		select 	schedule_code as scheduleCode
+				, data_code as dataCode
+				, sche_work_title as scheWorkTitle
+				, news_collect_keyword as newsCollectKeyword
+				, news_collect_start_date as newsCollectStartDate
+				, news_collect_end_date as newsCollectEndDate
+				, daum_news_collect_request_code as daumNewsCollectRequestCode
+		from news_crawling n, schedules s
+		where	n.schedule_code = s.sche_code 
+		and s.sche_type = "다음 뉴스 수집" 
+		and s.sche_status_code ="N";
+	</select>
+	
+	
+<!-- 	다음뉴스데이터 인서트 -->
+	<insert id="insertDaumNews" parameterType="java.util.HashMap">
+		INSERT
+		INTO ${tableName} 
+		(
+				daum_news_collect_module_seq
+			 ,  daum_news_collect_module_title
+			 ,  daum_news_collect_module_content
+			 ,  daum_news_collect_module_writer
+			 ,  daum_news_collect_module_news_paper
+			 ,  daum_news_collect_module_date
+			 ,  daum_news_collect_module_news_modify_date
+			 ,  sche_code
+		)
+		VALUES 
+			<foreach collection="daumNewsLists" item="r" separator=",">
+			((SELECT   IFNULL(MAX(f.daum_news_collect_module_seq), 0)+1 FROM ${tableName} f)
+	         , #{r.daumNewsCollectModuleTitle}
+	         , #{r.daumNewsCollectModuleContent}
+	         , #{r.daumNewsCollectModuleWriter}
+	         , #{r.daumNewsCollectModuleDate}
+	         , #{r.daumNewsCollectModuleModifyDate}
+	         , #{r.daumNewsCollectModuleNewsPaper}
+	         , #{r.scheduleCode}
+			)
+			</foreach>
+			;
+	</insert>
+	<select id="createDaumNewsTable" parameterType="HashMap">
+		${create_table};
+	</select>
+	
+	<!-- 에러발생시 뉴스 데이터 삭제  -->
+	<delete id="deleteDaumNews" parameterType="java.util.HashMap">
+		DROP TABLE ${deleteTable};
+	</delete>
+	
+	<!-- updateStatus 인서트 후 스케줄 테이블 상태코드 실행완료 변경 -->
+	<update id="updateStatus"  parameterType="int">
+		update schedules
+		set sche_status_code =  '실행완료'
+		where sche_code =  #{scheduleCode};
+	</update>
+	
+	<select id="selectDaumNewsSchedule" resultType="net.su.dialog.developSource.domain.DevelopSource">
+		select module.dev_source_code as devSourceCode, module.dev_source_title as devSourceTitle, module.dev_source_explanation as devSourceExplanation, module.dev_source_enroll_date as devSourceEnrollmentDate, module.file_route as devSourcefileRoute , module.activate_status as devSourceActStatus, module.dev_source_file_method_name as devSourceFileMethodName, module.dev_source_file_package_name as devSourceFilePackageName, module.dev_source_file_class_name as devSourceFileClassName, sche_cron as scheCron 
+			from dev_source_file_formal_module module, news_crawling news, schedules sche
+			where module.dev_source_code = news.dev_source_code
+			and news.schedule_code = sche.sche_code;
+	</select>
+	
+	
+	
+		<insert id="insertTest">
+		INSERT
+		INTO aaaa 
+		(
+				idaaa
+			 ,  aaacol
+		)
+		VALUES 
+	           1
+	         , "ada"
+			);
+			
+		</insert>
+	
+	
+	
+</mapper>

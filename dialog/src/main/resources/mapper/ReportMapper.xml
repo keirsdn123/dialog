@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.su.dialog.report.mapper.ReportMapper">
+
+<!-- 	연관 참조 데이터셋에서 데이터 불러오기 (정회원, 관리자)-->
+	<select id="selectDataList" resultType="net.su.dialog.dataSet.domain.Dataset" > 
+		SELECT d.data_code as dataCode, d.dataset_name as dataSetName, d.type_normal_regularly as typeNormalRegularly
+		FROM dataset d, dataset_category dc, category1 c
+		WHERE c.cate_code = dc.cate_code and d.data_code = dc.data_code
+		GROUP BY dataCode;
+	</select>
+	
+<!-- 	연관 참조 데이터셋에서 데이터 불러오기 (일반회원)-->	
+	<select id="selectJDataList" resultType="net.su.dialog.dataSet.domain.Dataset" > 
+		SELECT d.data_code as dataCode, d.dataset_name as dataSetName, d.type_normal_regularly as typeNormalRegularly
+		FROM dataset d, dataset_category dc, category1 c
+		WHERE c.cate_code = dc.cate_code and d.data_code = dc.data_code and d.type_normal_regularly  = "일시"
+		GROUP BY dataCode;
+	</select>
+	
+	<select id = "selectCategory" resultType ="net.su.dialog.dataSet.domain.CategoryValueObject">
+		SELECT cate_code as categorySeq,
+				cate_title as categoryNme
+		FROM category1
+		WHERE cate_code NOT IN (7,8,9);
+	</select>
+	
+	<select id = "selectJCategory" resultType ="net.su.dialog.dataSet.domain.CategoryValueObject">
+		SELECT cate_code as categorySeq,
+				cate_title as categoryNme
+		FROM category1
+	</select>
+<!-- 	수정: 1차카테고리 -->
+	<select id="selectUCategoryList" resultType="net.su.dialog.dataSet.domain.CategoryValueObject" >	
+		select 	rc.cate_code as categorySeq
+				,cate_title as categoryNme
+		from category1 c, report r, report_category rc
+        where c.cate_code = rc.cate_code and rc.report_code = r.report_code and r.report_code = #{reportCode}
+        group by rc.cate_code;
+	</select>
+<!--  	수정 : 2차카테고리 -->
+	<select id ="selectUSecCategoryList" resultType = "net.su.dialog.dataSet.domain.CategoryValueObject">		
+		SELECT rc.cate_code2 as categorySeq
+		FROM report_category rc, category2 tc, report r
+		WHERE r.report_code = rc.report_code and rc.cate_code = tc.cate_code  and  r.report_code = #{reportCode} and rc.cate_code = #{categorySeq}
+        group by rc.cate_code2;
+	</select>
+	
+	<select id ="selectReportCate" resultType="net.su.dialog.report.domain.ReportDomain" parameterType="net.su.dialog.report.domain.ReportDomain">
+		SELECT r.report_code as reportCode, r.report_title as reportTitle, m.member_name as memberName,
+				r.report_enroll_date as reportEnrollDate, r.report_type_normal_paper as reportTypeNormalPaper
+		FROM report r, report_category rc, category1 c, member m
+		WHERE r.report_code = rc.report_code and rc.cate_code = c.cate_code and r.member_code = m.member_code and c.cate_code = #{categorySeq} and report_vis ='Y'
+				and r.member_rating_code<![CDATA[<=]]> #{memberRatingCode}
+				<if test = "reportSort == 1">
+					and m.member_name like '%${reportSearchWrd}%'
+				</if>
+				<if test = "reportSort == 2">
+					and r.report_title like '%${reportSearchWrd}%'
+				</if>
+		GROUP BY reportCode
+		ORDER BY reportEnrollDate DESC
+		LIMIT ${(currentPage-1)*perPage},${perPage};	
+	</select>
+	
+	<select id ="selectReportCate2" resultType="net.su.dialog.report.domain.ReportDomain" parameterType="net.su.dialog.report.domain.ReportDomain">
+		SELECT r.report_code as reportCode, r.report_title as reportTitle, m.member_name as memberName,
+				r.report_enroll_date as reportEnrollDate, r.report_type_normal_paper as reportTypeNormalPaper
+		FROM report r, report_category rc, category1 c, member m
+		WHERE rc.cate_code = c.cate_code and r.member_code = m.member_code and report_vis ='Y' 
+				and r.member_rating_code<![CDATA[<=]]> #{memberRatingCode}
+				<if test = "reportSort == 1">
+					and m.member_name like '%${reportSearchWrd}%'
+				</if>
+				<if test = "reportSort == 2">
+					and r.report_title like '%${reportSearchWrd}%'
+				</if>
+		GROUP BY reportCode
+		ORDER BY reportEnrollDate DESC
+		LIMIT ${(currentPage-1)*perPage},${perPage};
+	</select>
+	
+	<select id ="selectDataCate" resultType="net.su.dialog.dataSet.domain.CategoryValueObject">
+		SELECT d.data_code as dataCode, d.dataset_name as dataSetName, d.type_normal_regularly as typeNormalRegularly
+		FROM dataset d, dataset_category dc, category1 c
+		WHERE c.cate_code = dc.cate_code and d.data_code = dc.data_code and c.cate_code = #{categorySeq}
+		GROUP BY dataCode;
+	</select>
+	
+	<select id ="selectDataCate2" resultType="net.su.dialog.dataSet.domain.CategoryValueObject">
+		SELECT d.data_code as dataCode, d.dataset_name as dataSetName, d.type_normal_regularly as typeNormalRegularly
+		FROM dataset d, dataset_category dc, category1 c
+		WHERE c.cate_code = dc.cate_code and d.data_code = dc.data_code
+		GROUP BY dataCode;
+	</select>
+<!-- 	참조데이터(불러오기)  -->
+	<select id="selectDataSetBox" resultType="net.su.dialog.dataSet.domain.Dataset" >
+		SELECT 	data_code as dataCode
+				,dataset_name as datasetName		
+		FROM dataset
+		WHERE data_code = #{dataCode};
+	</select>
+<!-- 	수정: 참조데이터(불러오기) -->
+	<select id="selectUDataSetBox" resultType="net.su.dialog.dataSet.domain.Dataset" >
+		SELECT 	rd.data_code as dataCode
+				,d.dataset_name as datasetName	
+		FROM  dataset d , report r, report_dataset rd
+		WHERE d.data_code = rd.data_code and r.report_code = rd.report_code and r.report_code = #{reportCode};
+	</select>
+<!-- 	일시데이터만 보기 -->
+	<select id="selectFileType1" resultType="net.su.dialog.dataSet.domain.Dataset" >
+		SELECT 	data_code as dataCode
+				,dataset_name as datasetName
+				,type_normal_regularly as typeNormalRegularly	
+		FROM dataset
+		WHERE type_normal_regularly = "일시";
+	</select>
+<!-- 	정기적데이터만 보기 -->
+	<select id="selectFileType2" resultType="net.su.dialog.dataSet.domain.Dataset" >
+		SELECT 	data_code as dataCode
+				,dataset_name as datasetName
+				,type_normal_regularly as typeNormalRegularly	
+		FROM dataset
+		WHERE type_normal_regularly = "정기";
+	</select>
+<!-- 	내파일만 찾기 -->
+	<select id="selectMyFile" resultType="net.su.dialog.dataSet.domain.Dataset" parameterType="net.su.dialog.dataSet.domain.Dataset">
+		SELECT 	data_code as dataCode
+				,dataset_name as datasetName
+				,type_normal_regularly as typeNormalRegularly	
+		FROM dataset
+		WHERE member_code = #{memberCode};
+	</select>
+<!-- 	검색 -->
+	<select id ="selectDtSearchDataSet" resultType="net.su.dialog.dataSet.domain.Dataset" parameterType="net.su.dialog.dataSet.domain.Dataset">
+		SELECT 	data_code as dataCode
+				,dataset_name as datasetName
+				,type_normal_regularly as typeNormalRegularly
+		FROM dataset
+		WHERE		
+		<if test = "dataSort == 0">
+			dataset_name like '%${dataSearchWrd}%'
+		</if>	
+	</select>
+
+<!-- 	검색 -->
+		<select id ="selectPDtSearchDataSet" resultType="net.su.dialog.dataSet.domain.Dataset" parameterType="net.su.dialog.dataSet.domain.Dataset">
+		SELECT 	data_code as dataCode
+				,dataset_name as datasetName
+				,type_normal_regularly as typeNormalRegularly
+		FROM dataset
+		WHERE		
+		<if test = "dataSort == 0">
+			dataset_name like '%${dataSearchWrd}%'
+		</if>	
+		AND type_normal_regularly = '일시';
+	</select>
+	
+<!-- 	보고서 검색 -->
+<!-- 	<select id ="selectDtSearchReportSet" resultType="net.su.dialog.report.domain.ReportDomain" parameterType="net.su.dialog.report.domain.ReportDomain"> -->
+<!-- 		SELECT 	rp.report_code as reportCode -->
+<!-- 			  ,rp.report_title as reportTitle -->
+<!-- 			  ,mb.member_name as memberName -->
+<!-- 			  ,rp.report_enroll_date as reportEnrollDate -->
+<!-- 			  ,rp.report_type_normal_paper as reportTypeNormalPaper		   -->
+<!-- 		FROM report rp JOIN member mb ON (rp.member_code = mb.member_code) -->
+<!-- 		WHERE rp.member_rating_code<![CDATA[<=]]> #{memberRatingCode} AND report_vis='Y' -->
+<!-- 		<if test = "reportSort == 0"> -->
+<!-- 			 and rp.report_title like '%${reportSearchWrd}%' -->
+<!-- 		</if> -->
+<!-- 		<if test = "reportSort == 1"> -->
+<!-- 			and mb.member_name like '%${reportSearchWrd}%' -->
+<!-- 		</if> -->
+<!-- 		<if test = "reportSort == 2"> -->
+<!-- 			and rp.report_title like '%${reportSearchWrd}%' -->
+<!-- 		</if> -->
+<!-- 		GROUP BY rp.report_code	 -->
+<!-- 		ORDER BY rp.report_enroll_date DESC -->
+<!-- 		LIMIT ${(currentPage-1)*perPage},${perPage}; -->
+<!-- 	</select> -->
+	
+<!-- 	보고서 검색 -->
+<!-- 	<select id ="selectPDtSearchReportSet" resultType="net.su.dialog.report.domain.ReportDomain" parameterType="net.su.dialog.report.domain.ReportDomain"> -->
+<!-- 		SELECT 	rp.report_code as reportCode -->
+<!-- 			  ,rp.report_title as reportTitle -->
+<!-- 			  ,mb.member_name as memberName -->
+<!-- 			  ,rp.report_enroll_date as reportEnrollDate -->
+<!-- 			  ,rp.report_type_normal_paper as reportTypeNormalPaper		   -->
+<!-- 		FROM report rp JOIN member mb ON (rp.member_code = mb.member_code) -->
+<!-- 		WHERE rp.member_rating_code<![CDATA[<=]]> #{memberRatingCode} AND report_vis='Y'  -->
+<!-- 		<if test = "reportSort == 0"> -->
+<!-- 			and	rp.report_title like '%${reportSearchWrd}%' -->
+<!-- 		</if> -->
+<!-- 		<if test = "reportSort == 1"> -->
+<!-- 			and mb.member_name like '%${reportSearchWrd}%' -->
+<!-- 		</if> -->
+<!-- 		<if test = "reportSort == 2"> -->
+<!-- 			and rp.report_title like '%${reportSearchWrd}%' -->
+<!-- 		</if> -->
+<!-- 		AND type_normal_regularly = '일시'; -->
+<!-- 		GROUP BY rp.report_code	 -->
+<!-- 		ORDER BY rp.report_enroll_date DESC -->
+<!-- 		LIMIT ${(currentPage-1)*perPage},${perPage};	 -->
+<!-- 	</select> -->
+	
+	<select id="selectRatingList" resultType="net.su.dialog.management.domain.Authority" >
+		SELECT 	member_rating_code as memberRatingCode
+				,rating_name as ratingName
+		FROM member_rating;
+	</select>
+	
+	<!-- 보고서 조회 -->	
+	<select id ="selectReportList" resultType="net.su.dialog.report.domain.ReportDomain" parameterType="net.su.dialog.report.domain.ReportDomain">
+				SELECT 	rp.report_code as reportCode
+			  ,rp.report_title as reportTitle
+			  ,mb.member_name as memberName
+			  ,rp.report_enroll_date as reportEnrollDate
+			  ,rp.report_type_normal_paper as reportTypeNormalPaper		  
+		FROM report rp JOIN member mb ON (rp.member_code = mb.member_code) <if test="categorySeq != 0">, report_category rc, category1 c</if>
+		WHERE rp.member_rating_code<![CDATA[<=]]> #{memberRatingCode} AND report_vis='Y'
+		<if test = "reportSort == 1">
+			and mb.member_name like '%${reportSearchWrd}%'
+		</if>
+		<if test = "reportSort == 2">
+			and rp.report_title like '%${reportSearchWrd}%'
+		</if>
+		<if test="categorySeq != 0">
+			and rp.report_code = rc.report_code 
+			and rc.cate_code = c.cate_code 
+			and c.cate_code = #{categorySeq}
+		</if>
+		GROUP BY rp.report_code	
+		ORDER BY rp.report_code DESC
+		LIMIT ${(currentPage-1)*perPage},${perPage};		  
+	</select>
+	
+	<!-- 총게시글 페이징 카운트 -->
+	<select id="selectReportDataRowCount" parameterType="net.su.dialog.report.domain.ReportDomain"  resultType="java.lang.Integer">
+		SELECT COUNT(DISTINCT r.report_code) AS rowCount
+		FROM report r, member m <if test="categorySeq != 0">, report_category rc, category1 c</if>
+        WHERE r.member_code = m.member_code and report_vis = 'Y' and r.member_rating_code<![CDATA[<=]]> #{memberRatingCode}
+		<if test = "reportSort == 1">
+			and m.member_name like '%${reportSearchWrd}%'
+		</if>
+		<if test = "reportSort == 2">
+			and r.report_title like '%${reportSearchWrd}%'
+		</if>
+		<if test="categorySeq != 0">
+			and r.report_code = rc.report_code 
+			and rc.cate_code = c.cate_code 
+			and c.cate_code = #{categorySeq}
+		</if>;
+	</select>
+	
+	<!-- 나의 data > 보고서 조회 -->
+	<select id ="selectMyReportList" resultType="net.su.dialog.report.domain.ReportDomain">
+		SELECT report_code as reportCode
+			  ,report_title as reportTitle
+			  ,report_enroll_date as reportEnrollDate
+			  ,report_type_normal_paper as reportTypeNormalPaper
+		FROM report
+		WHERE member_code = #{memberCode}
+		AND report_title like '%${reportSearchWrd}%'
+		AND report_vis = 'Y'		
+		GROUP BY report_code	
+		ORDER BY report_code DESC
+		LIMIT ${(currentPage-1)*perPage},${perPage}
+		;	
+	</select>
+	
+	
+	<!-- 보고서 상세조회 -->
+	<select id="selectReportView" parameterType="net.su.dialog.report.domain.ReportDomain" resultType="net.su.dialog.report.domain.ReportDomain">
+		SELECT 
+				r.report_code as reportCode, r.report_title as reportTitle, r.report_content as reportContent, 
+				r.report_type_normal_paper as reportTypeNormalPaper, r.report_enroll_date as reportEnrollDate,
+			    r.report_mod_date as reportModDate, origin_file_title as originFileTitle, m.member_name as memberName, rs.file_route as fileRoute,
+		        r.member_code as memberCode, m.member_id as memberId, report_views as reportViews
+		FROM 
+				report r join report_file rs on r.report_code = rs.report_code join member m on r.member_code = m.member_code
+		WHERE 
+				r.report_code = #{reportCode};
+    </select>
+	<!--    보고서 수정 , 이전에 작성한 내용 보기 -->
+    <select id="selectReportInfo" parameterType="net.su.dialog.report.domain.ReportDomain" resultType="net.su.dialog.report.domain.ReportDomain">
+		SELECT 
+				r.report_code as reportCode, r.report_title as reportTitle, r.report_content as reportContent,
+				r.report_enroll_date as reportEnrollDate, m.member_id as memberId,
+		        r.member_code as memberCode, r.member_rating_code as memberRatingCode
+		FROM 
+				report r join report_file rs on r.report_code = rs.report_code join member m on r.member_code = m.member_code
+		WHERE 
+				r.report_code = #{reportCode};
+    </select>
+    
+	<!--  보고서 수정, 일반/논문, 멤버 권한 -->
+    
+    <select id="selectTypePaper" parameterType="net.su.dialog.report.domain.ReportDomain" resultType="net.su.dialog.report.domain.ReportDomain">
+		SELECT 
+				report_type_normal_paper as reportTypeNormalPaper
+				,member_rating_code as memberRatingCode
+		FROM
+				report
+		WHERE
+				report_code = #{reportCode};	
+	
+	</select>
+	
+	<!-- 보고서 수정 파일 불러오기 -->
+		
+	<select id="selectOriginFileNme" parameterType="net.su.dialog.report.domain.ReportDomain" resultType="net.su.dialog.report.domain.ReportDomain">
+		SELECT 
+				origin_file_title as originFileTitle
+		FROM
+				report_file
+		WHERE
+				report_code = #{reportCode};	
+	
+	</select>	
+	
+	<!-- 보고서 수정 카테고리 가지고 오기 -->
+	<select id="selectReportViewCate" parameterType="net.su.dialog.report.domain.ReportDomain" resultType="net.su.dialog.report.domain.ReportDomain">
+      SELECT DISTINCT(c.cate_title) AS cateTitle, c2.cate_title AS cateTitle2
+      FROM category1 c JOIN report_category d ON c.cate_code = d.cate_code 
+      LEFT JOIN category2 c2 ON c2.cate_code2 = d.cate_code2
+      WHERE d.report_code = #{reportCode};
+    </select> 
+    
+
+	
+	<!-- 보고서 등록 -->
+	
+	<insert id="insertReport" parameterType="net.su.dialog.report.domain.ReportDomain" useGeneratedKeys="true" keyProperty="reportCode">
+		INSERT INTO 
+					report
+					(report_code 
+					, report_title
+					, report_content 
+					, report_type_normal_paper			
+					, report_enroll_date 
+					, member_code
+					, member_rating_code
+					, report_vis
+					)
+		VALUES		(null
+					,#{reportName}
+					,#{reportInfo}
+					,#{typeNormalRegularly}				
+					,CURDATE()
+					,#{memberCode}
+					,#{memberRatingCode}
+					,'Y'
+					)		
+	</insert>
+	
+	<insert id="insertReportDataset" parameterType="net.su.dialog.report.domain.ReportDomain">
+		INSERT INTO 
+					report_dataset
+					(report_dataset_seq
+					, report_code
+					, data_code
+					)
+		VALUES		(null
+					,#{reportCode}
+					,#{dataCode}					
+					)		
+	</insert>
+	
+	<insert id="insertReportFile" parameterType="net.su.dialog.dataSet.domain.Dataset">
+		INSERT INTO 
+					report_file
+					(report_file_seq
+					, file_title
+					, file_route
+					, report_code
+					, origin_file_title
+					
+				
+					)
+		VALUES		(null
+					,#{fileTitle}
+					,#{fileRoute}
+					,#{reportCode}
+					,#{originFileTitle}
+					
+					)	
+	</insert>
+	
+	<insert id="insertReportCategory" parameterType="net.su.dialog.dataSet.domain.Dataset">
+		INSERT INTO 
+					report_category
+					(rcseq
+					, report_code
+					, cate_code
+					, cate_code2
+					)
+		VALUES		(null
+					,#{reportCode}
+					,#{cateCode1}
+					,#{cateCode2}
+					)
+	</insert>
+	
+	<delete id ="deleteCateList" parameterType="net.su.dialog.report.domain.ReportDomain">
+		DELETE
+		FROM report_category
+		WHERE report_code = #{reportCode};
+	</delete>
+	
+	<delete id ="deleteDatasetList" parameterType="net.su.dialog.report.domain.ReportDomain">
+		DELETE
+		FROM report_dataset
+		WHERE report_code = #{reportCode};
+	</delete>
+	
+	<update id ="updateReport" parameterType = "net.su.dialog.report.domain.ReportDomain">
+		UPDATE report
+		SET	report_title = #{reportName},
+			report_content = #{reportInfo},
+			report_type_normal_paper = #{typeNormalRegularly},
+			report_mod_date = SYSDATE(),
+			member_rating_code = #{memberRatingCode}
+		WHERE report_code = #{reportCode};		
+	</update>
+	
+	<update id ="inVisibleReport" parameterType = "net.su.dialog.report.domain.ReportDomain">
+		UPDATE report
+		SET	report_vis = 'N'
+		WHERE report_code = #{reportCode};		
+	</update>
+	
+	<update id = "updateReportFile" parameterType="net.su.dialog.dataSet.domain.Dataset">
+		UPDATE report_file
+		SET	file_title = #{fileTitle},
+			file_route = #{fileRoute},
+			origin_file_title = #{originFileTitle}
+		WHERE report_code = #{reportCode};
+	</update>
+	
+   	<select id="selectReferenceDataSetList" resultType="net.su.dialog.dataSet.domain.Dataset">
+		SELECT d.data_code as dataCode,
+				d.dataset_name as datasetName,
+            	d.data_enroll_date as dataEnrollDate,
+            	m.member_name as memberName,
+            	d.type_normal_regularly as typeNormalRegularly,
+            	d.member_rating_code as memberRatingCode,
+				re.report_code as reportCode
+		FROM  	dataset d, member m, report_dataset re
+	    WHERE 	re.data_code = d.data_code
+	    AND 	d.member_code = m.member_code
+	    AND 	report_code = #{reportCode};
+	</select>
+<!-- 	내가 등록한 보고서 전체 갯수  -->
+	<select id="selectMyReportRowCount" resultType="java.lang.Integer" >
+		SELECT count(report_code)
+		FROM report
+		WHERE member_code = #{memberCode}
+		AND report_title like '%${reportSearchWrd}%'
+		;
+	</select>
+	<!-- 조회수 업데이트 -->
+	<update id="updateReportViews" parameterType="java.lang.Integer">
+		UPDATE report
+		SET report_views = report_views+1
+		WHERE report_code = #{reportCode};
+	</update>
+	
+	<!-- 연관데이터셋 조회 위한 타입 셀렉 -->
+	<select id="selectDatasetType" parameterType="java.lang.Integer" resultType="String">
+		SELECT d.type_normal_regularly as typeNormalRegularly
+		FROM dataset d
+		WHERE d.data_code = #{dataCode};
+	</select>
+	
+	
+</mapper>

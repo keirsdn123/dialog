@@ -1,0 +1,29 @@
+selectBarChart: function(x, y,condition, seq, title){
+				var vm = this;
+				console.log(asdf);
+				console.log(x);
+				console.log(y);
+				console.log(condition);
+				console.log(seq);
+				console.log(title);				
+				$.ajax({
+					url: "/makeChartView",
+					data :{
+						"xcolName" : x,
+						"ycolName" : y,
+						"condition" : condition,
+						"pauseStandarSeq" : seq,
+						"normalDataStandardTableTitle" : title,
+					},
+					type: "post",
+					success : function(list){
+						console.log(list);
+						new d3plus.BarChart()
+						.select(""#graph")
+						.data(list)
+						.x("xcolName")
+						.y("ycolName")
+						.render();
+					}
+				});
+			},

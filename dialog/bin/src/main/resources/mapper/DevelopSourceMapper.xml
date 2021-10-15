@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="net.su.dialog.developSource.mapper.DevelopSourceMapper">
+<!-- 	개발 소스 리스트 조회 -->
+	<select id="selectDevelopSourceList" resultType="net.su.dialog.developSource.domain.DevelopSource" parameterType="net.su.dialog.developSource.domain.DevelopSource">
+		SELECT 		dev_source_code as devSourceCode
+					, dev_source_title as devSourceTitle
+					, dev_source_explanation as devSourceExplanation
+					, dev_source_enrollment_date as devSourceEnrollmentDate
+					, dev_source_act_status as devSourceActStatus
+					, dev_source_type as devSourceType
+					, sche_code as scheCode
+				
+		FROM 		development_source_file_customizing
+		ORDER BY	dev_source_code desc
+		LIMIT		${(currentPage-1)*perPage},${perPage}
+	</select>
+	
+<!-- 	개발 소스 총 갯수 조회 -->
+	<select id="selectdevSourceRowCount" resultType="int" parameterType="net.su.dialog.developSource.domain.DevelopSource">
+		SELECT 	count(*)
+		FROM	development_source_file_customizing
+	</select>
+
+<!-- 	개발 소스 총 갯수 조회 -->
+	<select id="selectDevelopSourceTypeCount" resultType="int" parameterType="net.su.dialog.developSource.domain.DevelopSource">
+		SELECT 	count(*)
+		FROM	development_source_file_customizing
+		WHERE  	dev_source_type = '수집'
+		AND		dev_source_code not in(select  a.root
+									from development_source_file_customizing a
+									where a.dev_source_type='표준')
+	</select>
+	
+<!-- 	수집 개발 소스 리스트 조회 -->
+	<select id="selectDevelopSourceListType" resultType="net.su.dialog.developSource.domain.DevelopSource" parameterType="net.su.dialog.developSource.domain.DevelopSource">
+		SELECT 	dev_source_code as devSourceCode
+				, dev_source_title as devSourceTitle
+				, dev_source_type as devSourceType
+				, dev_source_enrollment_date as devSourceEnrollmentDate
+		FROM	development_source_file_customizing
+		WHERE  	dev_source_type = '수집'
+		AND		dev_source_code not in(select  a.root
+									from development_source_file_customizing a
+									where a.dev_source_type='표준')
+		ORDER BY	dev_source_code desc
+		LIMIT		${(currentPage-1)*perPage},${perPage}
+	</select>
+	
+<!-- 	연관 소스파일 조회 -->
+	<select id="selectReferenceSource" resultType="net.su.dialog.developSource.domain.DevelopSource" parameterType="net.su.dialog.developSource.domain.DevelopSource">
+		SELECT	dev_source_code as devSourceCode
+				, dev_source_title as devSourceTitle
+		FROM	development_source_file_customizing
+		<if test="devSourceType =='수집'">
+		WHERE	root =	#{devSourceCode}		
+		</if>
+		<if test="devSourceType =='표준'">
+		WHERE	dev_source_code = 	(select dev.root
+									from development_source_file_customizing dev
+                    				where dev.dev_source_code = #{devSourceCode})		
+		</if>
+	</select>
+	
+<!-- 	개발 소스 등록 -->
+	<insert id="insertDevelopSource" parameterType="net.su.dialog.developSource.domain.DevelopSource" useGeneratedKeys="true" keyProperty="devSourceCode">
+		INSERT INTO 
+					development_source_file_customizing
+					(dev_source_code
+					, dev_source_title
+					, dev_source_explanation
+					, dev_source_type
+					, dev_source_enrollment_date
+					, dev_source_act_status
+					, root
+					)
+		VALUES		(null
+					,#{devSourceTitle}
+					,#{devSourceExplanation}
+					,#{devSourceType}
+					,now()
+					,'미사용'
+					,#{devSourceRoot}
+					)
+	</insert>
+	
+<!-- 	개발 소스 파일 등록 -->
+	<insert id="insertDevelopSourceFile" parameterType="net.su.dialog.developSource.domain.DevelopSource">
+		INSERT INTO	
+					development_source_file_list
+					(dev_source_file_code
+					, dev_source_file_title
+					, dev_source_file_route
+					, dev_source_file_extension
+					, dev_source_code)
+		VALUES		(null
+					,#{devSourceFileTitle}
+					,#{devSourcefileRoute}
+					,#{devSourceFileExtension}
+					,#{devSourceCode})
+		
+	</insert>
+	
+<!-- 	개발 소스 상세 조회 -->
+	<select id="selectDataSourceInfo" parameterType="net.su.dialog.developSource.domain.DevelopSource" resultType="net.su.dialog.developSource.domain.DevelopSource">
+		SELECT 	dev_source_code as devSourceCode
+				, dev_source_title as devSourceTitle
+				, dev_source_explanation as devSourceExplanation
+				, dev_source_enrollment_date as devSourceEnrollmentDate
+				, dev_source_act_status as devSourceActStatus
+				, dev_source_type as devSourceType
+				, sche_code as scheCode
+				
+		FROM 	development_source_file_customizing
+		WHERE 	dev_source_code = ${devSourceCode}
+	</select>
+
+<!-- 	개발 소스 파일 상세 조회 -->
+	<select id="selectDevelopSourceFileInfo" parameterType="net.su.dialog.developSource.domain.DevelopSource" resultType="net.su.dialog.developSource.domain.DevelopSource">
+		SELECT	dev_source_file_code as devSourceFileCode
+				, dev_source_file_title as devSourceFileTitle
+				, dev_source_file_route as devSourcefileRoute
+				, dev_source_file_extension as devSourceFileExtension
+				, dev_source_code as devSourceCode
+		FROM	development_source_file_list
+		WHERE	dev_source_code = ${devSourceCode}
+	</select>
+
+<!-- 	개발 소스 삭제 -->
+	<delete id="deleteDataSourceInfo" parameterType="net.su.dialog.developSource.domain.DevelopSource">
+		DELETE 	FROM 	development_source_file_customizing
+		WHERE	dev_source_code = ${devSourceCode}
+	</delete>
+</mapper>
